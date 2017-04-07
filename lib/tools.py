@@ -30,7 +30,7 @@ def write_log(message, level=xbmc.LOGNOTICE):
 
 
 def str_sanitize(text):
-    return str(text.replace('\t', '').replace('\n', ' ')).strip()
+    return str(text.encode('utf8').replace('\t', '').replace('\n', ' ')).strip()
 
 
 def random_agent():

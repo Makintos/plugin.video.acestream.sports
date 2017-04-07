@@ -24,7 +24,7 @@ class Kodi:
         :return: plugin call URL
         :rtype: str
         """
-        return '{0}?{1}'.format(self.__url, urlencode(kwargs))
+        return '{0}?{1}'.format(self.__url, urlencode(kwargs, 'utf-8'))
 
     def show_menu(self, entries, source=None, sort_method=xbmcplugin.SORT_METHOD_NONE):
         """
