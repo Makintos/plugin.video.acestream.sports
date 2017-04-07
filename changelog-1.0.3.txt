@@ -1,0 +1,9 @@
+Version 1.0.3
+- Añadido al repositorio
+- Añadido auto-update
+
+Version 1.0.2
+- Arreglado el problema con la codificación de caracteres
+
+Version 1.0.1
+- Versión inicial
