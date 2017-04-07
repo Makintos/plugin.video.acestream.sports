@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.1"
+       version="1.0.2"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,6 +28,6 @@
             <screenshot>resources\screenshots\screenshot-04.jpg</screenshot>
             <screenshot>resources\screenshots\screenshot-05.jpg</screenshot>
         </assets>
-        <news>1.0.1: Versión inicial</news>
+        <news>1.0.2: Arreglado el problema con la codificación de caracteres</news>
     </extension>
 </addon>

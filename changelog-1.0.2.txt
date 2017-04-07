@@ -1,0 +1,5 @@
+1.0.2
+- Arreglado el problema con la codificación de caracteres
+
+1.0.1
+- Versión inicial
