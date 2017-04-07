@@ -57,6 +57,6 @@ target/
 
 # PyCharm project files
 .idea/
-resources/cache/*
+resources/cache/*.json
 
 *.zip
