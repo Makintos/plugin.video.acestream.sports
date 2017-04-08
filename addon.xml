@@ -28,7 +28,10 @@
             <screenshot>resources\screenshots\screenshot-04.jpg</screenshot>
             <screenshot>resources\screenshots\screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.3
+        <news>Version 1.0.4
+- Corregido addon.xml
+
+Version 1.0.3
 - Añadido al repositorio
 - Añadido auto-update
 
