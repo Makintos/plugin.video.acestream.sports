@@ -87,15 +87,17 @@ def random_agent():
 
 
 def get_web_page(url):
-    req = urllib2.Request(url)
-    req.add_header('User-Agent', random_agent())
-    response = urllib2.urlopen(req)
-    link = response.read()
-    response.close()
-    write_log('GET %i %s' % (response.getcode(), url))
-    if response.getcode() == 200:
-        return str(link).decode("utf8")
-    else:
+    try:
+        req = urllib2.Request(url)
+        req.add_header('User-Agent', random_agent())
+        response = urllib2.urlopen(req)
+        content = response.read().decode(response.headers.getparam('charset') or 'utf-8')
+        response.close()
+        write_log('GET %i %s' % (response.getcode(), url))
+        if response.getcode() == 200:
+            return content
+        return None
+    except:
         return None
 
 
@@ -108,7 +110,7 @@ class Notify(object):
         self.prev_header = ''
         self.prev_message = ''
 
-    def notify(self, header, message, icon=xbmcgui.NOTIFICATION_INFO, disp_time=5000, repeat=False):
+    def notify(self, header, message, icon=xbmcgui.NOTIFICATION_INFO, disp_time=7000, repeat=False):
         if repeat or (header != self.prev_header or message != self.prev_message):
             xbmcgui.Dialog().notification(header.encode('utf-8'), message.encode('utf-8'), icon, disp_time)
         else:

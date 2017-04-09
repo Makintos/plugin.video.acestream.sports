@@ -11,9 +11,9 @@ from lib.cache import Cache
 
 class Arenavision:
 
-    __agenda_url = 'http://arenavision.in/schedule'
-    __channel_url = 'http://arenavision.in/av%s'
+    __web_url = 'http://arenavision.in/'
 
+    # TODO: sacar esto de aquí
     __translations = {
         'SOCCER': 'Fútbol',
         'BASKETBALL': 'Baloncesto',
@@ -28,10 +28,11 @@ class Arenavision:
         'GOLF': 'Golf',
         'HOCKEY': 'Hockey',
         'RUGBY': 'Rugby',
-        'USA NBA': 'NBA',
+        'BOXING': 'Boxeo',
         'URUGUAY LEAGUE': 'Liga Uruguaya',
         'COPA SUDAMERICANA': 'Copa Sudamericana',
         'COLOMBIA PRIMERA': 'Liga Colombiana',
+        'ARGENTINA PRIMERA': 'Liga Argentina',
         'MEXICO COPA MX': 'Copa de Mexico',
         'MEXICO LIGA MX': 'Liga Mexicana',
         'SPANISH LA LIGA': 'La Liga',
@@ -44,8 +45,10 @@ class Arenavision:
         'ITALY SERIE A': 'Liga Italiana',
         'PREMIER LEAGUE': 'Liga Inglesa',
         'BUNDESLIGA': 'Liga Alemana',
+        'USA MLS': 'Liga de USA',
         'SPANISH ACB': 'Liga ACB',
-        'USA MLS': 'Liga de USA'
+        'USA NBA': 'NBA',
+        'WBO WORLD TITLE': 'Título Mundial WBO'
     }
 
     def __build_thumbs(self):
@@ -101,6 +104,10 @@ class Arenavision:
             'RUGBY': {
                 'icon': tools.build_path(self.__path, 'rugby.png'),
                 'fanart': tools.build_path(self.__path, 'rugby_art.jpg')
+            },
+            'BOXING': {
+                'icon': tools.build_path(self.__path, 'boxeo.png'),
+                'fanart': tools.build_path(self.__path, 'boxeo_art.jpg')
             }
         }
         self.__competition_thumbs = {
@@ -118,6 +125,7 @@ class Arenavision:
             'CONCACAF CHAMPIONS LEAGUE': tools.build_path(self.__path, 'liga_concaf.jpg'),
             'URUGUAY LEAGUE': tools.build_path(self.__path, 'liga_ur.png'),
             'COLOMBIA PRIMERA': tools.build_path(self.__path, 'liga_col.png'),
+            'ARGENTINA PRIMERA': tools.build_path(self.__path, 'liga_ar.png'),
             'EUROLEAGUE': tools.build_path(self.__path, 'euroliga.png'),
             'SPANISH LA LIGA 2': tools.build_path(self.__path, 'liga_es_2.png'),
             'FRENCH LIGUE 1': tools.build_path(self.__path, 'liga_fr.png'),
@@ -125,6 +133,7 @@ class Arenavision:
             'ITALY SERIE A': tools.build_path(self.__path, 'liga_it_serie_a.png'),
             'PORTUGAL A LIGA': tools.build_path(self.__path, 'liga_po.png'),
             'SPANISH ACB': tools.build_path(self.__path, 'liga_acb.png'),
+            'WBO WORLD TITLE': tools.build_path(self.__path, 'wbo.png')
         }
 
     def __init__(self, path):
@@ -170,21 +179,55 @@ class Arenavision:
         })
 
     def __get_event_name(self, event, date, time, competition):
-        color = 'yellow'
+        color = 'Yellow'
         now = datetime.datetime.now()
 
         event_date = date.split('/')
         event_time = time.split(':')
 
-        if now >= datetime.datetime(
-                int(event_date[2]), int(event_date[1]), int(event_date[0]), int(event_time[0]), int(event_time[1])):
-            color = 'orange'
+        event_dt_start = datetime.datetime(
+            int(event_date[2]),
+            int(event_date[1]),
+            int(event_date[0]),
+            int(event_time[0]),
+            int(event_time[1])
+        )
+
+        event_dt_end = datetime.datetime(
+            int(event_date[2]),
+            int(event_date[1]),
+            int(event_date[0]),
+            int(event_time[0]),
+            int(event_time[1])
+        ) + datetime.timedelta(hours=2)
+
+        # PyCharm
+        # noinspection PyTypeChecker
+        if event_dt_start <= now <= event_dt_end:
+            color = 'LawnGreen'
+        elif now >= event_dt_start:
+            color = 'Orange'
 
         name = event.split('-')
         name = '%s - %s' % (name[0], name[1]) if len(name) == 2 else event
 
         return '[COLOR %s](%s %s:%s)[/COLOR] (%s) [B]%s[/B]' % \
                (color, date[:5], event_time[0], event_time[1], self.__translations.get(competition, competition), name)
+
+    def __get_urls(self, page):
+        channels = []
+        agenda_url = None
+        urls = re.findall(r'href=[\'"]?([^\'" >]+)', page, re.U)
+        if not (urls and type(urls) == list and len(urls) > 30):
+            return None
+        for url in urls:
+            if re.search(r'^.*av.*[1-3]?[0-9]$', url, re.U):
+                channels.append(url if 'http' in url else '%s%s' % (self.__web_url, url))
+            elif 'sc' in url:
+                agenda_url = url if 'http' in url else '%s%s' % (self.__web_url, url)
+        if agenda_url and len(channels) > 0:
+            return {'agenda': agenda_url, 'channels': channels}
+        return None
 
     def get_all_events(self):
         """
@@ -195,24 +238,49 @@ class Arenavision:
         """
         cache = Cache(self.__path)
 
-        # Busca la agenda en cache
-        events = cache.load(self.__agenda_url)
-        if events:
-            return events
+        # Busca la URI de la agenda y los enlaces de los canales en caché
+        page = cache.load(self.__web_url)
+        if page:
+            # La URI de la agenda está en caché, busca también los eventos
+            events = cache.load(page['agenda'])
+            if events:
+                for event in events:
+                    event['name'] = self.__get_event_name(
+                        event['event'], event['date'], event['time'], event['competition'])
+                return events
 
-        # No está en cache, la obtiene
+        # La URI de la agenda y los enlaces no están en cache
+        # Vuelve a obtener la agenda, los enlaces a los canales y los eventos
         events = []
-        page = tools.get_web_page(self.__agenda_url)
 
+        # GET arenavision.in
+        page = tools.get_web_page(self.__web_url)
         if not page:
             return events
 
-        soup = BeautifulSoup(page, 'html5lib')
+        # Averigua la URI de la agenda y los enlaces de los canales
+        # buscando en todas las URL de la página principal:
+        # 'av*1' para los canales AV1, AV2...
+        # 'sc' para la agenda
+        urls = self.__get_urls(page)
+        if not urls:
+            return events
+
+        # Guarda la URI de la agenda y los enlaces de los canales en caché
+        cache.save(self.__web_url, urls)
+
+        # GET agenda
+        agenda = tools.get_web_page(urls['agenda'])
+        if not agenda:
+            return events
+
+        # Obtiene la tabla de eventos
+        soup = BeautifulSoup(agenda, 'html5lib')
         table = soup.find('table', attrs={'class': 'auto-style1'})
 
         for row in table.findAll("tr")[1:-2]:
             cells = row.findAll("td")
-            links = self.__get_links(tools.str_sanitize(cells[5].get_text()))
+            links = self.__get_links(tools.str_sanitize(cells[5].get_text()), urls['channels'])
             if links and len(links) > 0:
                 art = self.__get_competition_art(cells[2].get_text(), cells[3].get_text())
                 events.append(
@@ -232,10 +300,11 @@ class Arenavision:
                         'fanart': art['fanart']
                     }
                 )
-        cache.save(self.__agenda_url, events)
+        # Guarda los eventos en caché
+        cache.save(urls['agenda'], events)
         return events
 
-    def __get_links(self, channels):
+    def __get_links(self, channels, urls):
         """
         Get channel links list for a given event
 
@@ -259,7 +328,7 @@ class Arenavision:
                     'name': 'AV%s %s' % (number, lang),
                     'icon': tools.build_path(self.__path, 'arenavision.jpg'),
                     'fanart': tools.build_path(self.__path, 'arenavision_art.jpg'),
-                    'link': self.__channel_url % number
+                    'link': urls[int(number) - 1]
                 })
 
         return ch_list
@@ -385,6 +454,10 @@ class Arenavision:
 
         :param event_name: The event name
         :type: event_name: str
+        :param event_date: The event date
+        :type: event_date: str
+        :param event_time: The event time
+        :type: event_time: str
         :return: The list of Arenavision event links
         :rtype: list
         """
@@ -393,7 +466,8 @@ class Arenavision:
         events = self.get_all_events()
 
         for event in events:
-            if event_name == event['name'] and event_date == event['date'] and event_time == event['time']:
+            if event_name.decode('utf-8') == \
+                    event['name'] and event_date == event['date'] and event_time == event['time']:
                 for channel in event['channels']:
                     # Busca el hash en cache
                     c_hash = cache.load(channel['link'])

@@ -7,7 +7,7 @@ from urlparse import parse_qsl
 from lib import tools
 from lib.kodi import Kodi
 from lib.arenavision import Arenavision
-
+from lib.torrenttv import TorrentTV
 
 __addon__ = xbmcaddon.Addon()
 __version__ = __addon__.getAddonInfo('version')
@@ -27,6 +27,11 @@ _web_pages = [
         'name': 'Arenavision',
         'icon': tools.build_path(__path__, 'arenavision.jpg'),
         'fanart': tools.build_path(__path__, 'arenavision_art.jpg')
+    },
+    {
+        'name': 'TorrentTV',
+        'icon': tools.build_path(__path__, 'ttv.png'),
+        'fanart': tools.build_path(__path__, 'ttv_art.jpg')
     }
 ]
 
@@ -52,7 +57,7 @@ def controller(paramstring):
     # Hay parámetros: muestra el menú o la lista de enlaces/canales correspondiente
     else:
 
-        # Crea los objetos y lanza el menu de la web (en params['page'])
+        # Crea los objetos y lanza el menu de la web (viene en params['page'])
         if 'source' not in params:
             exec "%s = %s('%s')" % (params['page'].lower(), params['page'], __path__)
             exec "kodi.show_menu(%s.get_menu(), source='%s')" % (params['page'].lower(), params['page'])
@@ -81,6 +86,14 @@ def controller(paramstring):
                 elif 'competition_id' in params:
                     events = arenavision.get_events_by_competition(params['competition_id'])
                     kodi.show_menu(events, source=params['source'])
+
+        # Opciones de TorrentTV
+        elif params['source'] == 'TorrentTV':
+            torrenttv = TorrentTV(__path__)
+            if params['action'] == 'show':
+                if 'category_id' in params:
+                    events = torrenttv.get_events_by_category(params['category_id'])
+                    kodi.show_events(events)
 
         elif params['action'] == 'play':
             kodi.play_acestream_link(params['url'], params['name'], params['icon'])

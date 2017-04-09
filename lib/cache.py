@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hashlib
 import json
 
@@ -19,11 +20,11 @@ class Cache:
     def load(self, url):
         try:
             with open(tools.build_path(self.__path, '%s.json' % self.__get_hash(url), 'cache'), 'r') as fp:
-                data = json.load(fp)
-            if datetime.datetime.now() <= datetime.datetime.fromtimestamp(data['timestamp']) + \
+                content = json.load(fp)
+            if datetime.datetime.now() <= datetime.datetime.fromtimestamp(content['timestamp']) + \
                     datetime.timedelta(minutes=self.__minutes):
                 tools.write_log("Cache: '%s' read ok" % url)
-                return data['data']
+                return content['data']
             else:
                 tools.write_log("Cache: '%s' expired" % url)
                 return None

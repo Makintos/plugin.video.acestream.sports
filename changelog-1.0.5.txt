@@ -1,3 +1,8 @@
+Version 1.0.5
+- Nuevo scrapper Torrent-TV.ru
+- Reescrito el scrapper de Arenavision
+- Arreglos en la codificación de caracteres
+
 Version 1.0.4
 - Corregido addon.xml
 

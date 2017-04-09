@@ -68,10 +68,14 @@ class Kodi:
             if source is None:
                 url = self.__get_url(action='show', page=entry['name'])
 
-            # Si hay competición vengo de la lista de eventos y voy a la lista de enlaces (AV8, AV9...)
+            # Si hay competición vengo de la lista de eventos y voy a la lista de enlaces (AV8, AV9, Canal1...)
             elif 'competition' in entry:
-                url = self.__get_url(
-                    source=source, action='show', event=entry['name'], date=entry['date'], time=entry['time'])
+                try:
+                    url = self.__get_url(source=source, action='show',
+                                         event=entry['name'].encode('utf-8'), date=entry['date'], time=entry['time'])
+                except UnicodeDecodeError:
+                    url = self.__get_url(source=source, action='show',
+                                         event=entry['name'], date=entry['date'], time=entry['time'])
 
             # Si hay sport_id vengo de la lista de deportes y voy a la lista de enlaces (AV8, AV9...)
             elif 'sport_id' in entry:
@@ -80,6 +84,10 @@ class Kodi:
             # Si hay competition_id vengo de la lista de competiciones y voy a la lista de enlaces (AV8, AV9...)
             elif 'competition_id' in entry:
                 url = self.__get_url(source=source, action='show', competition_id=entry['competition_id'])
+
+            # Si hay category_id vengo de la lista de categorías de TorrentTV y voy a la lista de enlaces (canales)
+            elif 'category_id' in entry:
+                url = self.__get_url(source=source, action='show', category_id=entry['category_id'])
 
             # Vengo de entry['name'] y voy a la lista de eventos/deportes/competiciones
             else:

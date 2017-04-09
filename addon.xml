@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.4"
+       version="1.0.5"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -18,17 +18,22 @@
         <description lang="es">Todo el deporte en el salón de tu casa. Descarga las agendas de Arenavision.in y otras páginas web y reproduce los enlaces en Kodi.
         </description>
         <disclaimer lang="en">Use at your own risk</disclaimer>
-        <disclaimer lang="es">Úsalo bajo tu propia responsabilidad</disclaimer>
+        <disclaimer lang="es">2017</disclaimer>
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.jpg</fanart>
-            <screenshot>resources\screenshots\screenshot-01.jpg</screenshot>
-            <screenshot>resources\screenshots\screenshot-02.jpg</screenshot>
-            <screenshot>resources\screenshots\screenshot-03.jpg</screenshot>
-            <screenshot>resources\screenshots\screenshot-04.jpg</screenshot>
-            <screenshot>resources\screenshots\screenshot-05.jpg</screenshot>
+            <screenshot>https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/resources/screenshots/screenshot-01.jpg</screenshot>
+            <screenshot>https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/resources/screenshots/screenshot-02.jpg</screenshot>
+            <screenshot>https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/resources/screenshots/screenshot-03.jpg</screenshot>
+            <screenshot>https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/resources/screenshots/screenshot-04.jpg</screenshot>
+            <screenshot>https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.4
+        <news>Version 1.0.5
+- Nuevo scrapper Torrent-TV.ru
+- Reescrito el scrapper de Arenavision
+- Arreglos en la codificación de caracteres
+
+Version 1.0.4
 - Corregido addon.xml
 
 Version 1.0.3
