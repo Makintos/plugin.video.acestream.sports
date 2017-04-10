@@ -166,7 +166,7 @@ def controller(paramstring):
 
         # Opciones de TorrentTV
         elif params['source'] == 'TorrentTV':
-            torrenttv = TorrentTV(__path__)
+            torrenttv = TorrentTV(__path__, settings['adult'])
             if params['action'] == 'show':
                 if 'category_id' in params:
                     kodi.show_events(torrenttv.get_events_by_category(params['category_id']))
