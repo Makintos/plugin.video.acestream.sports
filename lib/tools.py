@@ -98,6 +98,7 @@ def get_web_page(url):
             return content
         return None
     except:
+        write_log('Exception on GET %s' % url, xbmc.LOGERROR)
         return None
 
 

@@ -17,13 +17,14 @@ class Cache:
     def __get_hash(self, url):
         return hashlib.sha224(url).hexdigest()
 
-    def load(self, url):
+    def load(self, url, log_read_ok=True):
         try:
             with open(tools.build_path(self.__path, '%s.json' % self.__get_hash(url), 'cache'), 'r') as fp:
                 content = json.load(fp)
             if datetime.datetime.now() <= datetime.datetime.fromtimestamp(content['timestamp']) + \
                     datetime.timedelta(minutes=self.__minutes):
-                tools.write_log("Cache: '%s' read ok" % url)
+                if log_read_ok:
+                    tools.write_log("Cache: '%s' read ok" % url)
                 return content['data']
             else:
                 tools.write_log("Cache: '%s' expired" % url)

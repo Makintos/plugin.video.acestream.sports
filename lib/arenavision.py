@@ -179,7 +179,7 @@ class Arenavision:
         })
 
     def __get_event_name(self, event, date, time, competition):
-        color = 'Yellow'
+        color = 'yellow'
         now = datetime.datetime.now()
 
         event_date = date.split('/')
@@ -204,9 +204,9 @@ class Arenavision:
         # PyCharm
         # noinspection PyTypeChecker
         if event_dt_start <= now <= event_dt_end:
-            color = 'LawnGreen'
+            color = 'lime'
         elif now >= event_dt_start:
-            color = 'Orange'
+            color = 'orange'
 
         name = event.split('-')
         name = '%s - %s' % (name[0], name[1]) if len(name) == 2 else event

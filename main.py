@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+import re
 import sys
+
 import xbmcaddon
 
 from urlparse import parse_qsl
 
 from lib import tools
+from lib.cache import Cache
 from lib.kodi import Kodi
 from lib.arenavision import Arenavision
 from lib.torrenttv import TorrentTV
@@ -21,6 +24,10 @@ _url = sys.argv[0]
 # Plugin handle
 _handle = int(sys.argv[1])
 
+# Server addon.xml
+_server_addon_xml_url = \
+    'https://raw.githubusercontent.com/Makintos/repository.makintos/master/plugin.video.acestream.sports/addon.xml'
+
 
 _web_pages = [
     {
@@ -36,6 +43,27 @@ _web_pages = [
 ]
 
 
+def check_for_updates():
+    cache = Cache(__path__, minutes=5)
+
+    # Si está en caché no muestro notificación
+    c_version = cache.load(_server_addon_xml_url, False)
+    if c_version:
+        return
+
+    lv = __version__.split('.')
+
+    # No está en caché, la obtiene
+    xml = tools.get_web_page(_server_addon_xml_url)
+    if xml:
+        s_version = re.findall(r'version="([0-9]{1,5}\.[0-9]{1,5}\.[0-9]{1,5})"', xml, re.U)
+        if s_version and type(s_version) == list and len(s_version) > 0:
+            cache.save(_server_addon_xml_url, {'version': s_version[0]})
+            tools.write_log('Server version: %s' % s_version[0])
+            tools.write_log('Installed version: %s' % __version__)
+            tools.Notify().notify(u'Acestream Sports', u'Nueva versión disponible %s' % s_version[0])
+
+
 def controller(paramstring):
     """
     Router function that calls other functions
@@ -44,6 +72,9 @@ def controller(paramstring):
     :param paramstring: URL encoded plugin paramstring
     :type paramstring: str
     """
+    # Busca actualizaciones
+    check_for_updates()
+
     # Kodi: funciones para mostar las listas y los vídeos
     kodi = Kodi(_url, _handle)
 
