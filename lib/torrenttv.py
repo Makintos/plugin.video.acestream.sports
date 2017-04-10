@@ -42,8 +42,9 @@ class TorrentTV:
             }
         }
 
-    def __init__(self, path):
+    def __init__(self, path, adult):
         self.__path = path
+        self.__adult = adult
         self.__build_thumbs()
 
     def get_menu(self):
@@ -71,7 +72,7 @@ class TorrentTV:
                 if event['cat'] == category:
                     category_events.append(category)
             category_id = self.__translations.get(category[1:], None)
-            if category_id:
+            if category_id and (category_id != 'Adultos' or self.__adult):
                 categories_list.append({
                     'name': '[B]%s[/B] (%i)' % (category_id, len(category_events)),
                     'category_id': category_id,

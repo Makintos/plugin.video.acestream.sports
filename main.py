@@ -44,7 +44,17 @@ _web_pages = [
 ]
 
 
-def check_for_updates():
+# Opciones del addon
+def _get_addon_settings(self):
+    return {
+        'plot': tools.get_addon_setting('plot', s_type=tools.BOOL),
+        'adult': tools.get_addon_setting('adult', s_type=tools.BOOL),
+        'notify': tools.get_addon_setting('notify', s_type=tools.BOOL),
+        'notify_secs': tools.get_addon_setting('notify_secs', s_type=tools.NUM)
+    }
+
+
+def check_for_updates(notify, notify_secs):
     cache = Cache(__path__, minutes=5)
 
     # Si está en caché no muestro notificación
@@ -65,7 +75,12 @@ def check_for_updates():
                      sv[2] > lv[2]):
                 tools.write_log('Server version: %s' % server_v[0])
                 tools.write_log('Installed version: %s' % __version__)
-                tools.Notify().notify(u'Acestream Sports', u'Se está actualizando a la versión: %s' % server_v[0])
+                if notify:
+                    tools.Notify().notify(
+                        u'Acestream Sports',
+                        u'Se está actualizando a la versión %s' % server_v[0],
+                        disp_time=notify_secs
+                    )
                 xbmc.executebuiltin("UpdateAddonRepos")
                 xbmc.executebuiltin("UpdateLocalAddons")
 
@@ -78,8 +93,11 @@ def controller(paramstring):
     :param paramstring: URL encoded plugin paramstring
     :type paramstring: str
     """
+    # Obtiene las opciones del plugin
+    settings = _get_addon_settings()
+
     # Busca actualizaciones
-    check_for_updates()
+    check_for_updates(settings['notify'], settings['notify_secs'] + 5)
 
     # Kodi: funciones para mostar las listas y los vídeos
     kodi = Kodi(_url, _handle)
@@ -96,7 +114,8 @@ def controller(paramstring):
 
         # Crea los objetos y lanza el menu de la web (viene en params['page'])
         if 'source' not in params:
-            exec "%s = %s('%s')" % (params['page'].lower(), params['page'], __path__)
+            exec "%s = %s('%s'%s)" % (params['page'].lower(), params['page'], __path__, ', %s' % settings['adult']
+                                      if params['page'] == 'TorrentTV' else '')
             exec "kodi.show_menu(%s.get_menu(), source='%s')" % (params['page'].lower(), params['page'])
 
         # Opciones de Arenavision
@@ -104,33 +123,53 @@ def controller(paramstring):
             arenavision = Arenavision(__path__)
             if params['action'] == 'show':
                 if 'item' in params:
-                    events = []
                     if params['item'] == 'Hoy y mañana':
-                        events = arenavision.get_events_today_and_tomorrow()
+                        kodi.show_menu(
+                            arenavision.get_events_today_and_tomorrow(),
+                            source=params['source'],
+                            show_plot=settings['plot']
+                        )
                     elif params['item'] == 'Agenda 7 días':
-                        events = arenavision.get_all_events()
+                        kodi.show_menu(
+                            arenavision.get_all_events(),
+                            source=params['source'],
+                            show_plot=settings['plot']
+                        )
                     elif params['item'] == 'Deportes':
-                        events = arenavision.get_sports()
+                        kodi.show_menu(
+                            arenavision.get_sports(),
+                            source=params['source']
+                        )
                     elif params['item'] == 'Competiciones':
-                        events = arenavision.get_competitions()
-                    kodi.show_menu(events, source=params['source'])
+                        kodi.show_menu(
+                            arenavision.get_competitions(),
+                            source=params['source']
+                        )
                 elif 'event' in params:
-                    links = arenavision.get_event_links(params['event'], params['date'], params['time'])
-                    kodi.show_events(links)
+                    kodi.show_events(arenavision.get_event_links(
+                        params['event'],
+                        params['date'],
+                        params['time'])
+                    )
                 elif 'sport_id' in params:
-                    events = arenavision.get_events_by_sport(params['sport_id'])
-                    kodi.show_menu(events, source=params['source'])
+                    kodi.show_menu(arenavision.get_events_by_sport(
+                        params['sport_id']),
+                        source=params['source'],
+                        show_plot=settings['plot']
+                    )
                 elif 'competition_id' in params:
-                    events = arenavision.get_events_by_competition(params['competition_id'])
-                    kodi.show_menu(events, source=params['source'])
+                    kodi.show_menu(
+                        arenavision.get_events_by_competition(params['competition_id']),
+                        source=params['source'],
+                        show_plot=settings['plot']
+                    )
 
         # Opciones de TorrentTV
         elif params['source'] == 'TorrentTV':
             torrenttv = TorrentTV(__path__)
             if params['action'] == 'show':
                 if 'category_id' in params:
-                    events = torrenttv.get_events_by_category(params['category_id'])
-                    kodi.show_events(events)
+                    kodi.show_events(torrenttv.get_events_by_category(params['category_id']))
 
         elif params['action'] == 'play':
             kodi.play_acestream_link(params['url'], params['name'], params['icon'])

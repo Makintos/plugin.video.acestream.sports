@@ -26,7 +26,7 @@ class Kodi:
         """
         return '{0}?{1}'.format(self.__url, urlencode(kwargs, 'utf-8'))
 
-    def show_menu(self, entries, source=None, sort_method=xbmcplugin.SORT_METHOD_NONE):
+    def show_menu(self, entries, source=None, sort_method=xbmcplugin.SORT_METHOD_NONE, show_plot=False):
         """
         Create the list of menu entries in the Kodi interface.
         """
@@ -43,8 +43,8 @@ class Kodi:
                 'genre': 'Sports'
             }
 
-            # if 'competition' in entry:
-            #    info['plot'] = entry['name']
+            if show_plot:
+                info['plot'] = entry['name']
 
             list_item.setInfo('video', info)
 

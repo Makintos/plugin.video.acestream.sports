@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+    <category label="General">
+        <setting label="Opciones de Kodi" type="lsep"/>
+        <setting id="plot"
+                 type="bool"
+                 label="Establecer el nombre del canal o del evento como descripción"
+                 default="false"/>
+        <setting label="Adultos" type="lsep"/>
+        <setting id="adult"
+                 type="bool"
+                 label="Mostrar contenido para adultos"
+                 default="false"/>
+    </category>
+    <category label="Actualizaciones">
+        <setting label="Notificar actualizaciones" type="lsep"/>
+        <setting id="notify"
+                 type="bool"
+                 label="Ver un mensaje en Kodi cuando se vaya a actualizar a una nueva versión"
+                 default="true"/>
+        <setting id="notify_secs"
+                 type="labelenum"
+                 label="Mostrar notificaciones durante"
+                 values="5 segundos|6 segundos|7 segundos|8 segundos|9 segundos|10 segundos"
+                 default="5 segundos"/>
+    </category>
+</settings>
