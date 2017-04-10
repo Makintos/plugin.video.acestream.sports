@@ -1,17 +1,23 @@
 Version 1.0.5
 - Nuevo scrapper Torrent-TV.ru
-- Reescrito el scrapper de Arenavision
-- Arreglos en la codificación de caracteres
+- El scrapper de Arenavision ahora busca siguiendo patrones las URL de la agenda y los canales
+- Nuevos arreglos en la codificación de caracteres
+- Ahora se comprueba la versión del servidor y si es superior actualiza los repositorios y los addons
+- Añadidas las opciones del addon:
+    * Copiar el nombre del partido, evento o canal en la descripción
+    * Mostrar canales para adultos
+    * Ver notificaciones al actualizar
+    * Duración en segundos de las notificaciones
 
 Version 1.0.4
-- Corregido addon.xml
+- Varias correcciones en addon.xml
 
 Version 1.0.3
 - Añadido al repositorio
-- Añadido auto-update
+- Ahora se autoactualiza
 
 Version 1.0.2
-- Arreglado el problema con la codificación de caracteres
+- Arreglados varios problemas con la codificación de caracteres
 
 Version 1.0.1
 - Versión inicial
