@@ -2,6 +2,7 @@
 import re
 import sys
 
+import xbmc
 import xbmcaddon
 
 from urlparse import parse_qsl
@@ -51,17 +52,22 @@ def check_for_updates():
     if c_version:
         return
 
-    lv = __version__.split('.')
-
     # No está en caché, la obtiene
     xml = tools.get_web_page(_server_addon_xml_url)
     if xml:
-        s_version = re.findall(r'version="([0-9]{1,5}\.[0-9]{1,5}\.[0-9]{1,5})"', xml, re.U)
-        if s_version and type(s_version) == list and len(s_version) > 0:
-            cache.save(_server_addon_xml_url, {'version': s_version[0]})
-            tools.write_log('Server version: %s' % s_version[0])
-            tools.write_log('Installed version: %s' % __version__)
-            tools.Notify().notify(u'Acestream Sports', u'Nueva versión disponible %s' % s_version[0])
+        server_v = re.findall(r'version="([0-9]{1,5}\.[0-9]{1,5}\.[0-9]{1,5})"', xml, re.U)
+        if server_v and type(server_v) == list and len(server_v) > 0:
+            cache.save(_server_addon_xml_url, {'version': server_v[0]})
+            sv = server_v[0].split('.')
+            lv = __version__.split('.')
+            if float('%s.%s' % (sv[0], sv[1])) > float('%s.%s' % (lv[0], lv[1])) or \
+                    (float('%s.%s' % (sv[0], sv[1])) == float('%s.%s' % (lv[0], lv[1])) and
+                     sv[2] > lv[2]):
+                tools.write_log('Server version: %s' % server_v[0])
+                tools.write_log('Installed version: %s' % __version__)
+                tools.Notify().notify(u'Acestream Sports', u'Actualizando a la versión %s' % server_v[0])
+                xbmc.executebuiltin("UpdateAddonRepos")
+                xbmc.executebuiltin("UpdateLocalAddons")
 
 
 def controller(paramstring):

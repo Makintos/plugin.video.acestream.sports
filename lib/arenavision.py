@@ -239,7 +239,7 @@ class Arenavision:
         cache = Cache(self.__path)
 
         # Busca la URI de la agenda y los enlaces de los canales en caché
-        page = cache.load(self.__web_url)
+        page = cache.load(self.__web_url, False)
         if page:
             # La URI de la agenda está en caché, busca también los eventos
             events = cache.load(page['agenda'])
