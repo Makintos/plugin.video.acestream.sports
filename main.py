@@ -149,8 +149,7 @@ def controller(paramstring):
                     kodi.show_events(arenavision.get_event_links(
                         params['event'],
                         params['date'],
-                        params['time']),
-                        show_plot=settings['plot']
+                        params['time'])
                     )
                 elif 'sport_id' in params:
                     kodi.show_menu(arenavision.get_events_by_sport(
