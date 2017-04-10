@@ -470,7 +470,7 @@ class Arenavision:
                     event['name'] and event_date == event['date'] and event_time == event['time']:
                 for channel in event['channels']:
                     # Busca el hash en cache
-                    c_hash = cache.load(channel['link'])
+                    c_hash = cache.load(channel['link'], False)
                     if c_hash:
                         ace_hash = c_hash['hash']
                     # No está en cache, lo obtiene
