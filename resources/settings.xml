@@ -16,9 +16,10 @@
         <setting label="Notificar actualizaciones" type="lsep"/>
         <setting id="notify"
                  type="bool"
-                 label="Ver un mensaje en Kodi cuando se vaya a actualizar a una nueva versión"
+                 label="Mostrar un mensaje al actualizar a una nueva versión"
                  default="true"/>
         <setting id="notify_secs"
+                 enable="eq(-1,true)"
                  type="labelenum"
                  label="Mostrar notificaciones durante"
                  values="5 segundos|6 segundos|7 segundos|8 segundos|9 segundos|10 segundos"
