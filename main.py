@@ -149,7 +149,8 @@ def controller(paramstring):
                     kodi.show_events(arenavision.get_event_links(
                         params['event'],
                         params['date'],
-                        params['time'])
+                        params['time']),
+                        show_plot=settings['plot']
                     )
                 elif 'sport_id' in params:
                     kodi.show_menu(arenavision.get_events_by_sport(
@@ -169,7 +170,10 @@ def controller(paramstring):
             torrenttv = TorrentTV(__path__, settings['adult'])
             if params['action'] == 'show':
                 if 'category_id' in params:
-                    kodi.show_events(torrenttv.get_events_by_category(params['category_id']))
+                    kodi.show_events(
+                        torrenttv.get_events_by_category(params['category_id']),
+                        show_plot=settings['plot']
+                    )
 
         elif params['action'] == 'play':
             kodi.play_acestream_link(params['url'], params['name'], params['icon'])

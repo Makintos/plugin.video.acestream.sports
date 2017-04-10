@@ -105,12 +105,14 @@ class Kodi:
         # Finish creating a virtual folder.
         xbmcplugin.endOfDirectory(self.__handle)
 
-    def show_events(self, events):
+    def show_events(self, events, show_plot=False):
         """
         Create the list of event links in the Kodi interface.
 
         :param events: The events list
         :type events: list
+        :param show_plot: Show name as description
+        :type show_plot: bool
         """
         # Iterate through events.
         for event in events:
@@ -120,10 +122,15 @@ class Kodi:
             # Set additional info for the list item
             # Description, year, duration, plot...
 
-            list_item.setInfo('video', {
+            info = {
                 'title': event['name'],
-                'genre': 'Sports'}
-            )
+                'genre': 'Sports'
+            }
+
+            if show_plot:
+                info['plot'] = event['name']
+
+            list_item.setInfo('video', info)
 
             # Set graphics for the list item
             # Thumbnail, fanart, banner, poster, landscape...
