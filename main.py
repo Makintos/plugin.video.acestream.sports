@@ -95,7 +95,6 @@ def controller(paramstring):
     """
     # Obtiene las opciones del plugin
     settings = _get_addon_settings()
-    tools.write_log('%i' % settings['notify_secs'])
 
     # Busca actualizaciones
     check_for_updates(settings['notify'], settings['notify_secs'] * 1000)
