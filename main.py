@@ -95,9 +95,10 @@ def controller(paramstring):
     """
     # Obtiene las opciones del plugin
     settings = _get_addon_settings()
+    tools.write_log('%i' % settings['notify_secs'])
 
     # Busca actualizaciones
-    check_for_updates(settings['notify'], settings['notify_secs'] + 5)
+    check_for_updates(settings['notify'], settings['notify_secs'] * 1000)
 
     # Kodi: funciones para mostar las listas y los vídeos
     kodi = Kodi(_url, _handle)

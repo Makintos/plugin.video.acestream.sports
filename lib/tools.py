@@ -111,7 +111,7 @@ class Notify(object):
         self.prev_header = ''
         self.prev_message = ''
 
-    def notify(self, header, message, icon=xbmcgui.NOTIFICATION_INFO, disp_time=7000, repeat=False):
+    def notify(self, header, message, icon=xbmcgui.NOTIFICATION_INFO, disp_time=5000, repeat=False):
         if repeat or (header != self.prev_header or message != self.prev_message):
             xbmcgui.Dialog().notification(header.encode('utf-8'), message.encode('utf-8'), icon, disp_time)
         else:
