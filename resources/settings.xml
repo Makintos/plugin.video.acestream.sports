@@ -6,7 +6,7 @@
                  type="bool"
                  label="Establecer el nombre del canal o del evento como descripción"
                  default="false"/>
-        <setting label="Adultos" type="lsep"/>
+        <setting label="TorrentTV" type="lsep"/>
         <setting id="adult"
                  type="bool"
                  label="Mostrar contenido para adultos"

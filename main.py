@@ -45,7 +45,7 @@ _web_pages = [
 
 
 # Opciones del addon
-def _get_addon_settings(self):
+def _get_addon_settings():
     return {
         'plot': tools.get_addon_setting('plot', s_type=tools.BOOL),
         'adult': tools.get_addon_setting('adult', s_type=tools.BOOL),
