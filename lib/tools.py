@@ -36,7 +36,7 @@ def str_sanitize(text):
 def random_agent():
     browser_version = [
         [
-            '%s.0' % i for i in xrange(18, 43)
+            '%s.0' % i for i in xrange(39, 46)
         ],
         [
             '37.0.2062.103', '37.0.2062.120', '37.0.2062.124',
