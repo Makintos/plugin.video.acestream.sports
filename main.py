@@ -122,6 +122,8 @@ def controller(paramstring):
         elif params['source'] == 'Arenavision':
             arenavision = Arenavision(__path__)
             if params['action'] == 'show':
+
+                # Menú de Arenavisión
                 if 'item' in params:
                     if params['item'] == 'Hoy y mañana':
                         kodi.show_menu(
@@ -145,23 +147,29 @@ def controller(paramstring):
                             arenavision.get_competitions(),
                             source=params['source']
                         )
-                elif 'event' in params:
-                    kodi.show_events(arenavision.get_event_links(
-                        params['event'],
-                        params['date'],
-                        params['time'])
-                    )
+
+                # Menú de Deportes
                 elif 'sport_id' in params:
                     kodi.show_menu(arenavision.get_events_by_sport(
                         params['sport_id']),
                         source=params['source'],
                         show_plot=settings['plot']
                     )
+
+                # Menú de Competiciones
                 elif 'competition_id' in params:
                     kodi.show_menu(
                         arenavision.get_events_by_competition(params['competition_id']),
                         source=params['source'],
                         show_plot=settings['plot']
+                    )
+
+                # Menú de Canales AV1, AV2, AV3...
+                elif 'event' in params:
+                    kodi.show_events(arenavision.get_event_links(
+                        params['event'],
+                        params['date'],
+                        params['time'])
                     )
 
         # Opciones de TorrentTV
