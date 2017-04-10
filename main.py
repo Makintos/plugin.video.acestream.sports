@@ -65,8 +65,8 @@ def check_for_updates():
                      sv[2] > lv[2]):
                 tools.write_log('Server version: %s' % server_v[0])
                 tools.write_log('Installed version: %s' % __version__)
+                tools.Notify().notify(u'Acestream Sports', u'Se está actualizando a la versión: %s' % server_v[0])
                 xbmc.executebuiltin("UpdateAddonRepos")
-                tools.Notify().notify(u'Acestream Sports', u'Se ha actualizado a la versión %s' % server_v[0])
                 xbmc.executebuiltin("UpdateLocalAddons")
 
 
