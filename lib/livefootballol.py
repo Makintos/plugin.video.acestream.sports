@@ -298,12 +298,12 @@ class LiveFootballOL:
                 continue
 
             # Obtiene el idioma
-            if not ch_lang:
+            if not ch_lang or not re.findall(r'(\[[A-Z]{2}\])', ch_lang, re.U):
                 ch_lang = prev_lang
             prev_lang = ch_lang
 
             # Obtiene los datos extendidos y los hashlinks del canal
-            channel_data = self.__get_channel_data(ch_link)
+            channel_data = self.__get_channel_data(cache, ch_link)
             if channel_data:
                 for link in channel_data['links']:
                     channels.append(
@@ -316,7 +316,7 @@ class LiveFootballOL:
                                 ch_lang),
                             'icon': tools.build_path(self.__path, 'lfol.png'),
                             'fanart': tools.build_path(self.__path, 'lfol_art.jpg'),
-                            'link': link['hash']
+                            'hash': link['hash']
                         }
                     )
 
@@ -325,7 +325,7 @@ class LiveFootballOL:
 
         return channels
 
-    def __get_channel_data(self, url):
+    def __get_channel_data(self, cache, url):
         """
         Get channel data for an URL
 
@@ -334,6 +334,15 @@ class LiveFootballOL:
         :return: The Acestream channel data
         :rtype: dict
         """
+        # Busca los datos del canal en caché
+        channel_data = cache.load(url, True)
+        if channel_data:
+            return channel_data
+
+        # Los datos del canal no están en cache
+        # Vuelve a obtenerlos
+        channel_data = {}
+
         # GET url
         page = tools.get_web_page(url)
         if not page:
@@ -373,12 +382,16 @@ class LiveFootballOL:
         if len(ch_links) == 0:
             return None
 
-        return {
+        channel_data = {
             'name': ch_name,
             'bitrate': ch_rate,
             'signal': ch_sign,
             'links': ch_links
         }
+
+        # Guarda los datos del canal en caché
+        cache.save(url, channel_data)
+        return channel_data
 
     def __get_channel_name(self, name, bitrate, signal, is_hd, lang):
         color = 'yellow'
