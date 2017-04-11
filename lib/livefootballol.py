@@ -287,7 +287,7 @@ class LiveFootballOL:
                 match = re.findall(r'[Mm][Aa][Tt][Cc][Hh]</td>\s*<td><strong>(.*)</strong></td>', page, re.U)
                 tools.Notify().notify(
                     match[0] if match else u'LiveFootballOL',
-                    u'Todavía no han publicado los enlaces',
+                    u'Todavía no se han publicado los enlaces del partido',
                     disp_time=5000
                 )
                 return channels
