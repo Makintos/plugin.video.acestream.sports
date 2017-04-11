@@ -45,7 +45,7 @@ _web_pages = [
 
 
 # Opciones del addon
-def _get_addon_settings():
+def get_addon_settings():
     return {
         'plot': tools.get_addon_setting('plot', s_type=tools.BOOL),
         'adult': tools.get_addon_setting('adult', s_type=tools.BOOL),
@@ -84,6 +84,13 @@ def check_for_updates(notify, notify_secs):
                 xbmc.executebuiltin("UpdateAddonRepos")
                 xbmc.executebuiltin("UpdateLocalAddons")
 
+# Sacar URL de la lista de eventos
+# urls = re.findall(r'href=[\'"]?([^\'" >]+).*title="Live Football Streaming"', e, re.U)
+
+# Lista de eventos
+# urls = re.findall(r'([0-9]{1,2}:[0-9]{2}).*\[(.*)\].*<a href=[\'"]?(.*[0-9]{2}-[0-9]{2}-[0-9]{4}-.*)[\'"]>(.*)</a>', e1, re.U)
+
+
 
 def controller(paramstring):
     """
@@ -94,7 +101,7 @@ def controller(paramstring):
     :type paramstring: str
     """
     # Obtiene las opciones del plugin
-    settings = _get_addon_settings()
+    settings = get_addon_settings()
 
     # Busca actualizaciones
     check_for_updates(settings['notify'], settings['notify_secs'] * 1000)
