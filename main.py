@@ -11,6 +11,7 @@ from lib import tools
 from lib.cache import Cache
 from lib.kodi import Kodi
 from lib.arenavision import Arenavision
+from lib.livefootballol import LiveFootballOL
 from lib.torrenttv import TorrentTV
 
 __addon__ = xbmcaddon.Addon()
@@ -35,6 +36,11 @@ _web_pages = [
         'name': 'Arenavision',
         'icon': tools.build_path(__path__, 'arenavision.jpg'),
         'fanart': tools.build_path(__path__, 'arenavision_art.jpg')
+    },
+{
+        'name': 'LiveFootballOL',
+        'icon': tools.build_path(__path__, 'lfol.png'),
+        'fanart': tools.build_path(__path__, 'lfol_art.jpg')
     },
     {
         'name': 'TorrentTV',
@@ -178,6 +184,43 @@ def controller(paramstring):
                         params['date'],
                         params['time'])
                     )
+
+        # Opciones de LiveFootballOL
+        elif params['source'] == 'LiveFootballOL':
+            livefootballol = LiveFootballOL(__path__)
+            if params['action'] == 'show':
+
+                # Menú de LiveFootballOL
+                if 'item' in params:
+                    if params['item'] == 'Hoy y mañana':
+                        kodi.show_menu(
+                            livefootballol.get_events_today_and_tomorrow(),
+                            source=params['source'],
+                            show_plot=settings['plot']
+                        )
+                    elif params['item'] == 'Agenda 7 días':
+                        kodi.show_menu(
+                            livefootballol.get_all_events(),
+                            source=params['source'],
+                            show_plot=settings['plot']
+                        )
+                    elif params['item'] == 'Competiciones':
+                        kodi.show_menu(
+                            livefootballol.get_competitions(),
+                            source=params['source']
+                        )
+
+                # Menú de Competiciones
+                elif 'competition_id' in params:
+                    kodi.show_menu(
+                        livefootballol.get_events_by_competition(params['competition_id']),
+                        source=params['source'],
+                        show_plot=settings['plot']
+                    )
+
+                # Menú de Canales AV1, AV2, AV3...
+                elif 'event' in params:
+                    kodi.show_events(livefootballol.get_event_links(params['event']))
 
         # Opciones de TorrentTV
         elif params['source'] == 'TorrentTV':

@@ -22,11 +22,11 @@
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.jpg</fanart>
-            <screenshot>https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/resources/screenshots/screenshot-01.jpg</screenshot>
-            <screenshot>https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/resources/screenshots/screenshot-02.jpg</screenshot>
-            <screenshot>https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/resources/screenshots/screenshot-03.jpg</screenshot>
-            <screenshot>https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/resources/screenshots/screenshot-04.jpg</screenshot>
-            <screenshot>https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/resources/screenshots/screenshot-05.jpg</screenshot>
+            <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+            <screenshot>resources/screenshots/screenshot-02.jpg</screenshot>
+            <screenshot>resources/screenshots/screenshot-03.jpg</screenshot>
+            <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
+            <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
         <news>Version 1.0.5
 - Nuevo scrapper para Torrent-TV.ru

@@ -29,9 +29,14 @@ class Arenavision:
         'HOCKEY': 'Hockey',
         'RUGBY': 'Rugby',
         'BOXING': 'Boxeo',
+        'UEFA CHAMPIONS LEAGUE': 'UEFA Champions League',
+        'UEFA EUROPA LEAGUE': 'UEFA Europa League',
         'URUGUAY LEAGUE': 'Liga Uruguaya',
+        'URUGUAY PRIMERA': 'Liga Uruguaya',
         'COPA SUDAMERICANA': 'Copa Sudamericana',
+        'COPA LIBERTADORES': 'Copa Libertadores',
         'COLOMBIA PRIMERA': 'Liga Colombiana',
+        'COLOMBIA COPA': 'Copa de Colombia',
         'ARGENTINA PRIMERA': 'Liga Argentina',
         'MEXICO COPA MX': 'Copa de Mexico',
         'MEXICO LIGA MX': 'Liga Mexicana',
@@ -48,7 +53,8 @@ class Arenavision:
         'USA MLS': 'Liga de USA',
         'SPANISH ACB': 'Liga ACB',
         'USA NBA': 'NBA',
-        'WBO WORLD TITLE': 'Título Mundial WBO'
+        'WBO WORLD TITLE': 'Título Mundial WBO',
+        'ATP WORLD TOUR': 'ATP World Tour'
     }
 
     def __build_thumbs(self):
@@ -121,10 +127,13 @@ class Arenavision:
             'USA MLS': tools.build_path(self.__path, 'liga_usa_mls.png'),
             'MEXICO LIGA MX': tools.build_path(self.__path, 'liga_mx.png'),
             'MEXICO COPA MX': tools.build_path(self.__path, 'copa_mx.png'),
+            'COPA LIBERTADORES': tools.build_path(self.__path, 'copa_libertadores.png'),
             'COPA SUDAMERICANA': tools.build_path(self.__path, 'copa_sudamerica.png'),
-            'CONCACAF CHAMPIONS LEAGUE': tools.build_path(self.__path, 'liga_concaf.jpg'),
+            'CONCACAF CHAMPIONS LEAGUE': tools.build_path(self.__path, 'concaf_champions.jpg'),
             'URUGUAY LEAGUE': tools.build_path(self.__path, 'liga_ur.png'),
-            'COLOMBIA PRIMERA': tools.build_path(self.__path, 'liga_col.png'),
+            'URUGUAY PRIMERA': tools.build_path(self.__path, 'liga_ur.png'),
+            'COLOMBIA PRIMERA': tools.build_path(self.__path, 'copa_colombia.png'),
+            'COLOMBIA COPA': tools.build_path(self.__path, 'copa_colombia.png'),
             'ARGENTINA PRIMERA': tools.build_path(self.__path, 'liga_ar.png'),
             'EUROLEAGUE': tools.build_path(self.__path, 'euroliga.png'),
             'SPANISH LA LIGA 2': tools.build_path(self.__path, 'liga_es_2.png'),
@@ -133,7 +142,10 @@ class Arenavision:
             'ITALY SERIE A': tools.build_path(self.__path, 'liga_it_serie_a.png'),
             'PORTUGAL A LIGA': tools.build_path(self.__path, 'liga_po.png'),
             'SPANISH ACB': tools.build_path(self.__path, 'liga_acb.png'),
-            'WBO WORLD TITLE': tools.build_path(self.__path, 'wbo.png')
+            'WBO WORLD TITLE': tools.build_path(self.__path, 'wbo.png'),
+            'UEFA CHAMPIONS LEAGUE': tools.build_path(self.__path, 'champions_league.png'),
+            'UEFA EUROPA LEAGUE': tools.build_path(self.__path, 'europa_league.png'),
+            'ATP WORLD TOUR': tools.build_path(self.__path, 'atp_world_tour.png')
         }
 
     def __init__(self, path):
@@ -193,17 +205,9 @@ class Arenavision:
             int(event_time[1])
         )
 
-        event_dt_end = datetime.datetime(
-            int(event_date[2]),
-            int(event_date[1]),
-            int(event_date[0]),
-            int(event_time[0]),
-            int(event_time[1])
-        ) + datetime.timedelta(hours=2)
-
         # PyCharm
         # noinspection PyTypeChecker
-        if event_dt_start <= now <= event_dt_end:
+        if event_dt_start <= now <= event_dt_start + datetime.timedelta(hours=2):
             color = 'lime'
         elif now >= event_dt_start:
             color = 'orange'

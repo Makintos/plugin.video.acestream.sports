@@ -15,53 +15,17 @@ class LiveFootballOL:
 
     # TODO: sacar esto de aquí
     __translations = {
-        'URUGUAY LEAGUE': 'Liga Uruguaya',
-        'COPA SUDAMERICANA': 'Copa Sudamericana',
-        'COLOMBIA PRIMERA': 'Liga Colombiana',
-        'ARGENTINA PRIMERA': 'Liga Argentina',
-        'MEXICO COPA MX': 'Copa de Mexico',
-        'MEXICO LIGA MX': 'Liga Mexicana',
-        'SPANISH LA LIGA': 'La Liga',
-        'SPANISH LA LIGA 2': 'La Liga 123',
-        'EUROLEAGUE': 'Euroliga',
-        'PORTUGAL A LIGA': 'Liga Portuguesa',
-        'CHILE LEAGUE': 'Liga Chilena',
-        'DAVIS CUP': 'Davis CUP',
-        'FRENCH LIGUE 1': 'Liga Francesa',
-        'ITALY SERIE A': 'Liga Italiana',
-        'PREMIER LEAGUE': 'Liga Inglesa',
-        'BUNDESLIGA': 'Liga Alemana',
-        'USA MLS': 'Liga de USA',
-        'SPANISH ACB': 'Liga ACB',
-        'USA NBA': 'NBA',
-        'WBO WORLD TITLE': 'Título Mundial WBO'
+        'Spanish Primera Division': 'La Liga',
+        'Spanish Segunda Division': 'La Liga 123',
+        'English Premier League': 'Liga Inglesa'
     }
 
     def __build_thumbs(self):
         self.__competition_thumbs = {
-            'FRENCH CUP': tools.build_path(self.__path, 'liga_fr.png'),
-            'SPANISH LA LIGA': tools.build_path(self.__path, 'liga_es_1.png'),
-            'BUNDESLIGA': tools.build_path(self.__path, 'liga_de_1.png'),
-            'ITALIA CUP': tools.build_path(self.__path, 'liga_it.png'),
-            'PREMIER LEAGUE': tools.build_path(self.__path, 'liga_en.png'),
-            'PORTUGAL CUP': tools.build_path(self.__path, 'liga_po.png'),
-            'USA NBA': tools.build_path(self.__path, 'nba.png'),
-            'USA MLS': tools.build_path(self.__path, 'liga_usa_mls.png'),
-            'MEXICO LIGA MX': tools.build_path(self.__path, 'liga_mx.png'),
-            'MEXICO COPA MX': tools.build_path(self.__path, 'copa_mx.png'),
-            'COPA SUDAMERICANA': tools.build_path(self.__path, 'copa_sudamerica.png'),
-            'CONCACAF CHAMPIONS LEAGUE': tools.build_path(self.__path, 'liga_concaf.jpg'),
-            'URUGUAY LEAGUE': tools.build_path(self.__path, 'liga_ur.png'),
-            'COLOMBIA PRIMERA': tools.build_path(self.__path, 'liga_col.png'),
-            'ARGENTINA PRIMERA': tools.build_path(self.__path, 'liga_ar.png'),
-            'EUROLEAGUE': tools.build_path(self.__path, 'euroliga.png'),
-            'SPANISH LA LIGA 2': tools.build_path(self.__path, 'liga_es_2.png'),
-            'FRENCH LIGUE 1': tools.build_path(self.__path, 'liga_fr.png'),
-            'CHILE LEAGUE': tools.build_path(self.__path, 'liga_ch.png'),
-            'ITALY SERIE A': tools.build_path(self.__path, 'liga_it_serie_a.png'),
-            'PORTUGAL A LIGA': tools.build_path(self.__path, 'liga_po.png'),
-            'SPANISH ACB': tools.build_path(self.__path, 'liga_acb.png'),
-            'WBO WORLD TITLE': tools.build_path(self.__path, 'wbo.png')
+            'UEFA Champions League': tools.build_path(self.__path, 'champions_league.png'),
+            'UEFA Europa League': tools.build_path(self.__path, 'europa_league.jpg'),
+            'Spanish Primera Division': tools.build_path(self.__path, 'liga_es_1.png'),
+            'English Premier League': tools.build_path(self.__path, 'liga_en.png')
         }
 
     def __init__(self, path):
@@ -90,9 +54,9 @@ class LiveFootballOL:
     def __get_competition_art(self, competition):
         return {
             'icon': self.__competition_thumbs.get(
-                tools.str_sanitize(competition).upper(),
-                tools.build_path(self.__path, 'competitions.png')),
-            'fanart': tools.build_path(self.__path, 'competitions_art.jpg')
+                tools.str_sanitize(competition),
+                tools.build_path(self.__path, 'futbol.png')),
+            'fanart': tools.build_path(self.__path, 'futbol_art.jpg')
         }
 
     def __get_event_name(self, event, date, time, competition):
@@ -110,17 +74,9 @@ class LiveFootballOL:
             int(event_time[1])
         )
 
-        event_dt_end = datetime.datetime(
-            int(event_date[2]),
-            int(event_date[1]),
-            int(event_date[0]),
-            int(event_time[0]),
-            int(event_time[1])
-        ) + datetime.timedelta(hours=2)
-
         # PyCharm
         # noinspection PyTypeChecker
-        if event_dt_start <= now <= event_dt_end:
+        if event_dt_start <= now <= event_dt_start + datetime.timedelta(hours=2):
             color = 'lime'
         elif now >= event_dt_start:
             color = 'orange'
@@ -307,10 +263,11 @@ class LiveFootballOL:
         # Busca la jornada
         # match_week = re.findall(r'[Mm][Aa][Tt][Cc][Hh]\s[Ww][Ee]{2}[Kk]</td>\s*<td>([0-9]+)</td>', page, re.U)
 
-        # Obtiene la tabla de canales
+        # Obtiene la tabla de datos de los canales
         soup = BeautifulSoup(page, 'html5lib')
         table = soup.find('table', attrs={'class': 'uk-table uk-table-hover uk-table-striped'})
 
+        # Obtiene los datos de los canales
         prev_lang = None
         for row in table.findAll("tr")[2:]:
             cells = row.findAll("td")
@@ -343,7 +300,7 @@ class LiveFootballOL:
                                 ch_lang),
                             'icon': tools.build_path(self.__path, 'lfol.png'),
                             'fanart': tools.build_path(self.__path, 'lfol_art.jpg'),
-                            'link': link['hash'],
+                            'link': link['hash']
                         }
                     )
 
