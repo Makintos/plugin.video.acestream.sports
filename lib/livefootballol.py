@@ -17,7 +17,10 @@ class LiveFootballOL:
     __translations = {
         'Spanish Primera Division': 'La Liga',
         'Spanish Segunda Division': 'La Liga 123',
-        'English Premier League': 'Liga Inglesa'
+        'English Premier League': 'Liga Inglesa',
+        'French Ligue 1': 'Liga Francesa',
+        'Italian Serie A': 'Liga Italiana',
+        'German Bundesliga': 'Liga Alemana'
     }
 
     def __build_thumbs(self):
@@ -25,7 +28,10 @@ class LiveFootballOL:
             'UEFA Champions League': tools.build_path(self.__path, 'champions_league.png'),
             'UEFA Europa League': tools.build_path(self.__path, 'europa_league.jpg'),
             'Spanish Primera Division': tools.build_path(self.__path, 'liga_es_1.png'),
-            'English Premier League': tools.build_path(self.__path, 'liga_en.png')
+            'English Premier League': tools.build_path(self.__path, 'liga_en.png'),
+            'French Ligue 1': tools.build_path(self.__path, 'liga_fr.png'),
+            'Italian Serie A': tools.build_path(self.__path, 'liga_it_serie_a.png'),
+            'German Bundesliga': tools.build_path(self.__path, 'liga_de_1.png'),
         }
 
     def __init__(self, path):
