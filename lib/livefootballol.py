@@ -91,7 +91,7 @@ class LiveFootballOL:
         agenda_url = None
         url = re.findall(r'href=[\'"]?([^\'" >]+).*title="Live Football Streaming"', page, re.U)
         if url and len(url) == 1:
-            agenda_url = url if 'http' in url else '%s%s' % (self.__web_url, url)
+            agenda_url = url[0] if 'http' in url[0] else '%s%s' % (self.__web_url, url[0])
         if agenda_url:
             return {'agenda': agenda_url}
         return None
@@ -106,7 +106,7 @@ class LiveFootballOL:
         cache = Cache(self.__path)
 
         # Busca la URI de la agenda y los enlaces de los canales en caché
-        page = cache.load(self.__web_url, True)
+        page = cache.load(self.__web_url, False)
         if page:
             # La URI de la agenda está en caché, busca también los eventos
             events = cache.load(page['agenda'])
@@ -246,7 +246,7 @@ class LiveFootballOL:
         cache = Cache(self.__path, minutes=5)
 
         # Busca los canales del evento en caché
-        channels = cache.load(event_url, True)
+        channels = cache.load(event_url, False)
         if channels:
             return channels
 
@@ -255,7 +255,7 @@ class LiveFootballOL:
         channels = []
 
         # GET event_url
-        page = tools.get_web_page(event_url)
+        page = tools.get_web_page('%s%s' % (self.__web_url, event_url))
         if not page:
             tools.write_log('No se pueden extraer los enlaces: ' + event_url, xbmc.LOGERROR)
             return channels
@@ -275,9 +275,19 @@ class LiveFootballOL:
             # Obtiene los datos generales del canal
             ch_name = tools.str_sanitize(cells[1].get_text())
             ch_lang = tools.str_sanitize(cells[0].get_text())
-            ch_link = tools.str_sanitize(cells[1].find('a').get('href'))
+
+            # ¿Hay ya enlaces?
+            if 'will be here' in ch_name:
+                match = re.findall(r'[Mm][Aa][Tt][Cc][Hh]</td>\s*<td><strong>(.*)</strong></td>', page, re.U)
+                tools.Notify().notify(
+                    match[0] if match else u'LiveFootballOL',
+                    u'Todavía no han publicado los enlaces',
+                    disp_time=5000
+                )
+                return channels
 
             # Si no es un enlace acestream continua
+            ch_link = tools.str_sanitize(cells[1].find('a').get('href'))
             if not ch_link or not 'acestream' in ch_name.lower():
                 continue
 
@@ -334,7 +344,7 @@ class LiveFootballOL:
         ch_rate = ''
         ch_links = []
 
-        # Obtiene los datos del canalch_link = tools.str_sanitize(cells[1].find('a').get('href'))
+        # Obtiene los datos del canal
         for row in table.findAll("tr"):
             cells = row.findAll("td")
             cell_0 = tools.str_sanitize(cells[0].get_text())
