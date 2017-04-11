@@ -1,3 +1,8 @@
+Version 1.0.6
+- Nuevo scrapper para LiveFootbalLOL.me
+- Añadidias nuevas competiciones
+- Varios arreglos
+
 Version 1.0.5
 - Nuevo scrapper para Torrent-TV.ru
 - El scrapper de Arenavision ahora busca siguiendo patrones las URL de la agenda y los canales

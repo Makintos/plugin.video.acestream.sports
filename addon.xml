@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.5"
+       version="1.0.6"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,7 +28,12 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.5
+        <news>Version 1.0.6
+- Nuevo scrapper para LiveFootbalLOL.me
+- Añadidias nuevas competiciones
+- Varios arreglos
+
+Version 1.0.5
 - Nuevo scrapper para Torrent-TV.ru
 - El scrapper de Arenavision ahora busca siguiendo patrones las URL de la agenda y los canales
 - Ahora se comprueba la versión del servidor y, si es superior, fuerza la actualización del addon
