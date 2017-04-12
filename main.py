@@ -66,12 +66,12 @@ def get_addon_settings():
 def check_for_updates(notify, notify_secs):
     cache = Cache(__path__, minutes=5)
 
-    # Si está en caché no muestro notificación
+    # Si está en caché continúa
     c_version = cache.load(_server_addon_xml_url, False)
     if c_version:
         return
 
-    # No está en caché, la obtiene
+    # No está en caché, comprueba la última versión
     xml = tools.get_web_page(_server_addon_xml_url)
     if xml:
         server_v = re.findall(r'version="([0-9]{1,5}\.[0-9]{1,5}\.[0-9]{1,5})"', xml, re.U)
@@ -120,9 +120,6 @@ def controller(paramstring):
 
         # Si no hay source va al menu principal de cada web
         if 'source' not in params:
-
-            # exec "%s = %s('%s')" % (params['page'].lower(), params['page'], settings)
-            # exec "kodi.show_menu(%s.get_menu(), source='%s')" % (params['page'].lower(), params['page'])
 
             if params['page'] == 'Arenavision':
                 kodi.show_menu(Arenavision(settings).get_menu(), source=params['page'])

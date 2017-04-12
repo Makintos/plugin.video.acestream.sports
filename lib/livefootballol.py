@@ -66,34 +66,6 @@ class LiveFootbalLOL:
             'fanart': tools.build_path(self.__settings['path'], 'futbol_art.jpg')
         }
 
-    def __get_event_name(self, event, date, time, competition):
-        color = 'yellow'
-        now = datetime.datetime.now()
-
-        event_date = date.split('-')
-        event_time = time.split(':')
-
-        event_dt_start = datetime.datetime(
-            int(event_date[2]),
-            int(event_date[1]),
-            int(event_date[0]),
-            int(event_time[0]),
-            int(event_time[1])
-        )
-
-        # PyCharm
-        # noinspection PyTypeChecker
-        if event_dt_start <= now <= event_dt_start + datetime.timedelta(hours=2):
-            color = 'lime'
-        elif now >= event_dt_start:
-            color = 'orange'
-
-        name = event.split('-')
-        name = '%s - %s' % (name[0], name[1]) if len(name) == 2 else event
-
-        return '[COLOR %s](%s %s:%s)[/COLOR] (%s) [B]%s[/B]' % \
-               (color, date[:5], event_time[0], event_time[1], self.__translations.get(competition, competition), name)
-
     def __get_urls(self, page):
         agenda_url = None
         url = re.findall(r'href=[\'"]?([^\'" >]+).*title="Live Football Streaming"', page, re.U)
@@ -119,8 +91,11 @@ class LiveFootbalLOL:
             events = cache.load(page['agenda'])
             if events:
                 for event in events:
-                    event['name'] = self.__get_event_name(
-                        event['event'], event['date'], event['time'], event['competition'])
+                    event['name'] = tools.get_event_name(
+                        event['event'],
+                        event['date'],
+                        event['time'],
+                        self.__translations.get(event['competition'], event['competition']))
                 return events
 
         # La URI de la agenda no está en cache
@@ -162,10 +137,11 @@ class LiveFootbalLOL:
                         'competition': tools.str_sanitize(a_event[1]),
                         'event': tools.str_sanitize(a_event[3]),
                         'channel_url': a_event[2],
-                        'name': self.__get_event_name(
+                        'name': tools.get_event_name(
                             tools.str_sanitize(a_event[3]),
                             c_date[0],
                             tools.str_sanitize(a_event[0]),
+                            self.__translations.get(tools.str_sanitize(a_event[1])),
                             tools.str_sanitize(a_event[1])),
                         'icon': art['icon'],
                         'fanart': art['fanart']
