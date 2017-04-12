@@ -95,7 +95,8 @@ class LiveFootbalLOL:
                         event['event'],
                         event['date'],
                         event['time'],
-                        self.__translations.get(event['competition'], event['competition']))
+                        self.__translations.get(event['competition'], event['competition'])
+                    )
                 return events
 
         # La URI de la agenda no está en cache
@@ -141,8 +142,8 @@ class LiveFootbalLOL:
                             tools.str_sanitize(a_event[3]),
                             c_date[0],
                             tools.str_sanitize(a_event[0]),
-                            self.__translations.get(tools.str_sanitize(a_event[1])),
-                            tools.str_sanitize(a_event[1])),
+                            self.__translations.get(tools.str_sanitize(a_event[1]),
+                                                    tools.str_sanitize(a_event[1]))),
                         'icon': art['icon'],
                         'fanart': art['fanart']
                     }
