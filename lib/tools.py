@@ -104,7 +104,7 @@ def get_web_page(url):
         raise WebSiteError(
             u'Error de conexión',
             u'Se ha producido un error en Kodi',
-            time=10000
+            time=6000
         )
 
 
