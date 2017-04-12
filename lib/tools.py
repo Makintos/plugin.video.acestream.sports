@@ -112,6 +112,26 @@ def build_path(path, file_name, resource='images'):
     return xbmc.translatePath(os.path.join(path, 'resources', resource, file_name))
 
 
+def get_channel_art(path, channel_name):
+    if 'arenavision' in channel_name.lower():
+        return build_path(path, 'arenavision.jpg')
+
+    elif 'tsn' in channel_name.lower():
+        return build_path(path, 'tsn.png')
+
+    elif 'match' in channel_name.lower():
+        return build_path(path, 'match.png')
+
+    elif 'viasat' in channel_name.lower():
+        return build_path(path, 'viasat.png')
+
+    elif ' UA' in channel_name:
+        return build_path(path, 'ua.png')
+
+    else:
+        return build_path(path, 'acestream.jpg')
+
+
 class Notify(object):
     def __init__(self):
         self.prev_header = ''

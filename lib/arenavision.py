@@ -226,7 +226,7 @@ class Arenavision:
         if not (urls and type(urls) == list and len(urls) > 30):
             return None
         for url in urls:
-            if re.search(r'^.*av.*[1-3]?[0-9]$', url, re.U):
+            if re.search(r'^.*av.*[1-3]?[0-9]\W*$', url, re.U):
                 channels.append(url if 'http' in url else '%s%s' % (self.__web_url, url))
             elif 'sc' in url:
                 agenda_url = url if 'http' in url else '%s%s' % (self.__web_url, url)
