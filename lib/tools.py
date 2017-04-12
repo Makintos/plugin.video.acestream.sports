@@ -129,7 +129,7 @@ def get_channel_art(path, channel_name):
         return build_path(path, 'ua.png')
 
     else:
-        return build_path(path, 'acestream.jpg')
+        return build_path(path, 'acestream.png')
 
 
 class Notify(object):
