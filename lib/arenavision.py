@@ -191,7 +191,32 @@ class Arenavision:
             'fanart': tools.build_path(self.__settings['path'], 'sports_art.jpg')
         })
 
+    def __get_event_name(self, event, date, time, competition):
+        color = 'yellow'
+        now = datetime.datetime.now()
 
+        event_date = date.split('/')
+        event_time = time.split(':')
+
+        event_dt_start = datetime.datetime(
+            int(event_date[2]),
+            int(event_date[1]),
+            int(event_date[0]),
+            int(event_time[0]),
+            int(event_time[1])
+        )
+
+        # noinspection PyTypeChecker
+        if event_dt_start - datetime.timedelta(minutes=5) <= now <= event_dt_start + datetime.timedelta(hours=2):
+            color = 'lime'
+        elif now >= event_dt_start:
+            color = 'orange'
+
+        name = event.split('-')
+        name = '%s - %s' % (name[0], name[1]) if len(name) == 2 else event
+
+        return '[COLOR %s](%s %s:%s)[/COLOR] (%s) [B]%s[/B]' % \
+               (color, date[:5], event_time[0], event_time[1], self.__translations.get(competition, competition), name)
 
     def __get_urls(self, page):
         channels = []
@@ -224,12 +249,8 @@ class Arenavision:
             events = cache.load(page['agenda'])
             if events:
                 for event in events:
-                    event['name'] = tools.get_event_name(
-                        event['event'],
-                        event['date'],
-                        event['time'],
-                        self.__translations.get(event['competition'], event['competition'])
-                    )
+                    event['name'] = self.__get_event_name(
+                        event['event'], event['date'], event['time'], event['competition'])
                 return events
 
         # La URI de la agenda y los enlaces no están en cache
@@ -274,12 +295,11 @@ class Arenavision:
                         'competition': tools.str_sanitize(cells[3].get_text()),
                         'event': tools.str_sanitize(cells[4].get_text()),
                         'channels': links,
-                        'name': tools.get_event_name(
+                        'name': self.__get_event_name(
                             tools.str_sanitize(cells[4].get_text()),
                             tools.str_sanitize(cells[0].get_text()),
                             tools.str_sanitize(cells[1].get_text()[:5]),
-                            self.__translations.get(tools.str_sanitize(cells[3].get_text()),
-                                                    tools.str_sanitize(cells[3].get_text()))),
+                            tools.str_sanitize(cells[3].get_text())),
                         'icon': art['icon'],
                         'fanart': art['fanart']
                     }

@@ -3,7 +3,6 @@ import os
 import random
 import urllib2
 
-import datetime
 import xbmc
 import xbmcgui
 import xbmcaddon
@@ -131,34 +130,6 @@ def get_channel_art(path, channel_name):
 
     else:
         return build_path(path, 'acestream.png')
-
-
-def get_event_name(event, date, time, competition):
-        color = 'yellow'
-        now = datetime.datetime.now()
-
-        event_date = date.split('/')
-        event_time = time.split(':')
-
-        event_dt_start = datetime.datetime(
-            int(event_date[2]),
-            int(event_date[1]),
-            int(event_date[0]),
-            int(event_time[0]),
-            int(event_time[1])
-        )
-
-        # noinspection PyTypeChecker
-        if event_dt_start - datetime.timedelta(minutes=5) <= now <= event_dt_start + datetime.timedelta(hours=2):
-            color = 'lime'
-        elif now >= event_dt_start:
-            color = 'orange'
-
-        name = event.split('-')
-        name = '%s - %s' % (name[0], name[1]) if len(name) == 2 else event
-
-        return '[COLOR %s](%s %s:%s)[/COLOR] (%s) [B]%s[/B]' % \
-               (color, date[:5], event_time[0], event_time[1], competition, name)
 
 
 class Notify(object):
