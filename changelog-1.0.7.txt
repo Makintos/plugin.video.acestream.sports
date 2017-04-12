@@ -1,3 +1,7 @@
+Version 1.0.7
+- Nuevos iconos de canales
+- Ahora se muestran notificaciones en vez de listas vacías
+
 Version 1.0.6
 - Nuevo scrapper para LiveFootbalLOL.me
 - Añadidias nuevas competiciones
