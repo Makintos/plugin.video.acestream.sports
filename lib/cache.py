@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import hashlib
 import json
+import os
 
 import xbmc
 import tools
@@ -13,6 +14,10 @@ class Cache:
     def __init__(self, path, minutes=30):
         self.__path = path
         self.__minutes = minutes
+        cache_dir = xbmc.translatePath(os.path.join(path, 'resources', 'cache'))
+        if not os.path.isdir(cache_dir):
+            tools.write_log("Creating Cache: '%s'" % cache_dir)
+            os.mkdir(cache_dir)
 
     def __get_hash(self, url):
         return hashlib.sha224(url).hexdigest()
