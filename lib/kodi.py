@@ -11,9 +11,8 @@ from lib import tools
 
 class Kodi:
 
-    def __init__(self, plugin_url, plugin_handle):
-        self.__url = plugin_url
-        self.__handle = plugin_handle
+    def __init__(self, settings):
+        self.__settings = settings
 
     def __get_url(self, **kwargs):
         """
@@ -24,7 +23,7 @@ class Kodi:
         :return: plugin call URL
         :rtype: str
         """
-        return '{0}?{1}'.format(self.__url, urlencode(kwargs, 'utf-8'))
+        return '{0}?{1}'.format(self.__settings['url'], urlencode(kwargs, 'utf-8'))
 
     def show_menu(self, entries, source=None, sort_method=xbmcplugin.SORT_METHOD_NONE, show_plot=False):
         """
@@ -101,13 +100,13 @@ class Kodi:
             is_folder = True
 
             # Add our item to the Kodi virtual folder listing.
-            xbmcplugin.addDirectoryItem(self.__handle, url, list_item, is_folder)
+            xbmcplugin.addDirectoryItem(self.__settings['handle'], url, list_item, is_folder)
 
         # Add a sort method for the virtual folder items (default none)
-        xbmcplugin.addSortMethod(self.__handle, sort_method)
+        xbmcplugin.addSortMethod(self.__settings['handle'], sort_method)
 
         # Finish creating a virtual folder.
-        xbmcplugin.endOfDirectory(self.__handle)
+        xbmcplugin.endOfDirectory(self.__settings['handle'])
 
     def show_events(self, events, show_plot=False):
         """
@@ -161,13 +160,13 @@ class Kodi:
             is_folder = False
 
             # Add our item to the Kodi virtual folder listing.
-            xbmcplugin.addDirectoryItem(self.__handle, url, list_item, is_folder)
+            xbmcplugin.addDirectoryItem(self.__settings['handle'], url, list_item, is_folder)
 
         # Add a sort method for the virtual folder items (alphabetically, ignore articles)
-        xbmcplugin.addSortMethod(self.__handle, xbmcplugin.SORT_METHOD_LABEL_IGNORE_THE)
+        xbmcplugin.addSortMethod(self.__settings['handle'], xbmcplugin.SORT_METHOD_LABEL_IGNORE_THE)
 
         # Finish creating a virtual folder.
-        xbmcplugin.endOfDirectory(self.__handle)
+        xbmcplugin.endOfDirectory(self.__settings['handle'])
 
     def play_acestream_link(self, url, name='Video', icon=None):
         """

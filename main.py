@@ -20,7 +20,6 @@ __version__ = __addon__.getAddonInfo('version')
 __path__ = __addon__.getAddonInfo('path')
 __lang__ = __addon__.getLocalizedString
 
-
 # Plugin url (plugin://)
 _url = sys.argv[0]
 
@@ -30,7 +29,6 @@ _handle = int(sys.argv[1])
 # Server addon.xml
 _server_addon_xml_url = \
     'https://raw.githubusercontent.com/Makintos/repository.makintos/master/plugin.video.acestream.sports/addon.xml'
-
 
 _web_pages = [
     {
@@ -57,7 +55,11 @@ def get_addon_settings():
         'plot': tools.get_addon_setting('plot', s_type=tools.BOOL),
         'adult': tools.get_addon_setting('adult', s_type=tools.BOOL),
         'notify': tools.get_addon_setting('notify', s_type=tools.BOOL),
-        'notify_secs': tools.get_addon_setting('notify_secs', s_type=tools.NUM)
+        'notify_secs': tools.get_addon_setting('notify_secs', s_type=tools.NUM),
+        'handle': _handle,
+        'path': __path__,
+        'version': __version__,
+        'url': _url
     }
 
 
@@ -78,8 +80,7 @@ def check_for_updates(notify, notify_secs):
             sv = server_v[0].split('.')
             lv = __version__.split('.')
             if float('%s.%s' % (sv[0], sv[1])) > float('%s.%s' % (lv[0], lv[1])) or \
-                    (float('%s.%s' % (sv[0], sv[1])) == float('%s.%s' % (lv[0], lv[1])) and
-                     sv[2] > lv[2]):
+                    (float('%s.%s' % (sv[0], sv[1])) == float('%s.%s' % (lv[0], lv[1])) and sv[2] > lv[2]):
                 tools.write_log('Server version: %s' % server_v[0])
                 tools.write_log('Installed version: %s' % __version__)
                 if notify:
@@ -107,7 +108,7 @@ def controller(paramstring):
     check_for_updates(settings['notify'], settings['notify_secs'])
 
     # Kodi: funciones para mostar las listas y los vídeos
-    kodi = Kodi(_url, _handle)
+    kodi = Kodi(settings)
 
     # Convierte la cadena de parámetros URL a un diccionario {<parameter>: <value>}
     params = dict(parse_qsl(paramstring))
@@ -115,28 +116,26 @@ def controller(paramstring):
     # Kodi ha invocado al script sin parámetros: muestra la lista de webs
     if not params:
         kodi.show_menu(_web_pages)
-
-    # Hay parámetros: muestra el menú o la lista de enlaces/canales correspondiente
     else:
 
-        # Crea los objetos y lanza el menu de la web (viene en params['page'])
+        # Si no hay source va al menu principal de cada web
         if 'source' not in params:
-            # exec "%s = %s('%s'%s)" % (params['page'].lower(), params['page'], __path__, ', %s' %
-            # settings['adult'] if params['page'] == 'TorrentTV' else '')
+
+            # exec "%s = %s('%s')" % (params['page'].lower(), params['page'], settings)
             # exec "kodi.show_menu(%s.get_menu(), source='%s')" % (params['page'].lower(), params['page'])
 
             if params['page'] == 'Arenavision':
-                kodi.show_menu(Arenavision(__path__).get_menu(), source=params['page'])
+                kodi.show_menu(Arenavision(settings).get_menu(), source=params['page'])
 
             elif params['page'] == 'LiveFootbalLOL':
-                kodi.show_menu(LiveFootbalLOL(__path__).get_menu(), source=params['page'])
+                kodi.show_menu(LiveFootbalLOL(settings).get_menu(), source=params['page'])
 
             elif params['page'] == 'TorrentTV':
-                kodi.show_menu(TorrentTV(__path__, settings['adult']).get_menu(), source=params['page'])
+                kodi.show_menu(TorrentTV(settings).get_menu(), source=params['page'])
 
         # Opciones de Arenavision
         elif params['source'] == 'Arenavision':
-            arenavision = Arenavision(__path__)
+            arenavision = Arenavision(settings)
             if params['action'] == 'show':
 
                 # Menú de Arenavisión
@@ -154,7 +153,7 @@ def controller(paramstring):
                             arenavision.get_all_events(),
                             source=params['source'],
                             show_plot=settings['plot']
-                    )
+                        )
 
                     elif params['item'] == 'Deportes':
                         kodi.show_menu(arenavision.get_sports(), source=params['source'])
@@ -184,7 +183,7 @@ def controller(paramstring):
 
         # Opciones de LiveFootbalLOL
         elif params['source'] == 'LiveFootbalLOL':
-            livefootballol = LiveFootbalLOL(__path__)
+            livefootballol = LiveFootbalLOL(settings)
             if params['action'] == 'show':
 
                 # Menú de LiveFootbalLOL
@@ -213,9 +212,9 @@ def controller(paramstring):
                 # Menú de Competiciones
                 elif 'competition_id' in params:
                     kodi.show_menu(livefootballol.get_events_by_competition(params['competition_id']),
-                        source=params['source'],
-                        show_plot=settings['plot']
-                    )
+                                   source=params['source'],
+                                   show_plot=settings['plot']
+                                   )
 
                 # Menú de Canales AV1, AV2, AV3...
                 elif 'event' in params:
@@ -223,7 +222,7 @@ def controller(paramstring):
 
         # Opciones de TorrentTV
         elif params['source'] == 'TorrentTV':
-            torrenttv = TorrentTV(__path__, settings['adult'])
+            torrenttv = TorrentTV(settings)
             if params['action'] == 'show':
 
                 # Menú de TorrentTV

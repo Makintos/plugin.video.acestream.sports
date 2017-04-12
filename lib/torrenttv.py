@@ -21,30 +21,29 @@ class TorrentTV:
     def __build_thumbs(self):
         self.__art = {
             'Música': {
-                'icon': tools.build_path(self.__path, 'musica.png'),
-                'fanart': tools.build_path(self.__path, 'musica_art.jpg')
+                'icon': tools.build_path(self.__settings['path'], 'musica.png'),
+                'fanart': tools.build_path(self.__settings['path'], 'musica_art.jpg')
             },
             'Educativo': {
-                'icon': tools.build_path(self.__path, 'educativo.png'),
-                'fanart': tools.build_path(self.__path, 'educativo_art.jpg')
+                'icon': tools.build_path(self.__settings['path'], 'educativo.png'),
+                'fanart': tools.build_path(self.__settings['path'], 'educativo_art.jpg')
             },
             'Adultos': {
-                'icon': tools.build_path(self.__path, 'adultos.png'),
-                'fanart': tools.build_path(self.__path, 'adultos_art.jpg')
+                'icon': tools.build_path(self.__settings['path'], 'adultos.png'),
+                'fanart': tools.build_path(self.__settings['path'], 'adultos_art.jpg')
             },
             'Películas': {
-                'icon': tools.build_path(self.__path, 'peliculas.png'),
-                'fanart': tools.build_path(self.__path, 'ttv_art.jpg')
+                'icon': tools.build_path(self.__settings['path'], 'peliculas.png'),
+                'fanart': tools.build_path(self.__settings['path'], 'ttv_art.jpg')
             },
             'Deportes': {
-                'icon': tools.build_path(self.__path, 'sports.png'),
-                'fanart': tools.build_path(self.__path, 'sports_art.jpg')
+                'icon': tools.build_path(self.__settings['path'], 'sports.png'),
+                'fanart': tools.build_path(self.__settings['path'], 'sports_art.jpg')
             }
         }
 
-    def __init__(self, path, adult):
-        self.__path = path
-        self.__adult = adult
+    def __init__(self, settings):
+        self.__settings = settings
         self.__build_thumbs()
 
     def get_menu(self):
@@ -72,7 +71,7 @@ class TorrentTV:
                 if event['cat'] == category:
                     category_events.append(category)
             category_id = self.__translations.get(category[1:], None)
-            if category_id and (category_id != 'Adultos' or self.__adult):
+            if category_id and (category_id != 'Adultos' or self.__settings['adult']):
                 categories_list.append({
                     'name': '[B]%s[/B] (%i)' % (category_id, len(category_events)),
                     'category_id': category_id,
@@ -90,8 +89,8 @@ class TorrentTV:
         :rtype: dict
         """
         return self.__art.get(self.__translations.get(category[1:]), {
-            'icon': tools.build_path(self.__path, 'sports.png'),
-            'fanart': tools.build_path(self.__path, 'sports_art.jpg')
+            'icon': tools.build_path(self.__settings['path'], 'sports.png'),
+            'fanart': tools.build_path(self.__settings['path'], 'sports_art.jpg')
         })
 
     def __get_all_events(self):
@@ -101,7 +100,7 @@ class TorrentTV:
         :return: The list of Torrent-TV.ru events
         :rtype: list
         """
-        cache = Cache(self.__path)
+        cache = Cache(self.__settings['path'])
 
         # Busca la agenda en cache
         events = cache.load(self.__agenda_url)

@@ -26,17 +26,17 @@ class LiveFootbalLOL:
 
     def __build_thumbs(self):
         self.__competition_thumbs = {
-            'UEFA Champions League': tools.build_path(self.__path, 'champions_league.png'),
-            'UEFA Europa League': tools.build_path(self.__path, 'europa_league.jpg'),
-            'Spanish Primera Division': tools.build_path(self.__path, 'liga_es_1.png'),
-            'English Premier League': tools.build_path(self.__path, 'liga_en.png'),
-            'French Ligue 1': tools.build_path(self.__path, 'liga_fr.png'),
-            'Italian Serie A': tools.build_path(self.__path, 'liga_it_serie_a.png'),
-            'German Bundesliga': tools.build_path(self.__path, 'liga_de_1.png'),
+            'UEFA Champions League': tools.build_path(self.__settings['path'], 'champions_league.png'),
+            'UEFA Europa League': tools.build_path(self.__settings['path'], 'europa_league.jpg'),
+            'Spanish Primera Division': tools.build_path(self.__settings['path'], 'liga_es_1.png'),
+            'English Premier League': tools.build_path(self.__settings['path'], 'liga_en.png'),
+            'French Ligue 1': tools.build_path(self.__settings['path'], 'liga_fr.png'),
+            'Italian Serie A': tools.build_path(self.__settings['path'], 'liga_it_serie_a.png'),
+            'German Bundesliga': tools.build_path(self.__settings['path'], 'liga_de_1.png'),
         }
 
-    def __init__(self, path):
-        self.__path = path
+    def __init__(self, settings):
+        self.__settings = settings
         self.__build_thumbs()
 
     def get_menu(self):
@@ -49,21 +49,21 @@ class LiveFootbalLOL:
         return [
             {
                 'name': 'Hoy y mañana',
-                'icon': tools.build_path(self.__path, 'hoy_manana.png'),
+                'icon': tools.build_path(self.__settings['path'], 'hoy_manana.png'),
             }, {
                 'name': 'Agenda 7 días',
-                'icon': tools.build_path(self.__path, 'siete_dias.png'),
+                'icon': tools.build_path(self.__settings['path'], 'siete_dias.png'),
             }, {
                 'name': 'Competiciones',
-                'icon': tools.build_path(self.__path, 'competiciones.png'),
+                'icon': tools.build_path(self.__settings['path'], 'competiciones.png'),
             }]
 
     def __get_competition_art(self, competition):
         return {
             'icon': self.__competition_thumbs.get(
                 tools.str_sanitize(competition),
-                tools.build_path(self.__path, 'futbol.png')),
-            'fanart': tools.build_path(self.__path, 'futbol_art.jpg')
+                tools.build_path(self.__settings['path'], 'futbol.png')),
+            'fanart': tools.build_path(self.__settings['path'], 'futbol_art.jpg')
         }
 
     def __get_event_name(self, event, date, time, competition):
@@ -110,7 +110,7 @@ class LiveFootbalLOL:
         :return: The list of LiveFootbalLOL events
         :rtype: list
         """
-        cache = Cache(self.__path)
+        cache = Cache(self.__settings['path'])
 
         # Busca la URI de la agenda y los enlaces de los canales en caché
         page = cache.load(self.__web_url, False)
@@ -259,7 +259,7 @@ class LiveFootbalLOL:
         :return: The list of LiveFootbalLOL event links
         :rtype: list
         """
-        cache = Cache(self.__path, minutes=5)
+        cache = Cache(self.__settings['path'], minutes=5)
 
         # Busca los canales del evento en caché
         channels = cache.load(event_url, False)
@@ -327,8 +327,8 @@ class LiveFootbalLOL:
                                 channel_data['signal'],
                                 link['hd'],
                                 ch_lang),
-                            'icon': tools.build_path(self.__path, 'lfol.png'),
-                            'fanart': tools.build_path(self.__path, 'lfol_art.jpg'),
+                            'icon': tools.build_path(self.__settings['path'], 'lfol.png'),
+                            'fanart': tools.build_path(self.__settings['path'], 'lfol_art.jpg'),
                             'hash': link['hash']
                         }
                     )
