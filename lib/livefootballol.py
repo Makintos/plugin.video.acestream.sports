@@ -7,6 +7,7 @@ import xbmc
 
 from bs4 import BeautifulSoup
 from lib.cache import Cache
+from lib.errors import WebSiteError
 
 
 class LiveFootballOL:
@@ -129,12 +130,12 @@ class LiveFootballOL:
         # GET livefootballol.in
         page = tools.get_web_page(self.__web_url)
         if not page:
-            return events
+            raise WebSiteError(u'La página no está online', u'¿Estás conectado a Internet?', time=8000)
 
         # Averigua la URI de la agenda
         urls = self.__get_urls(page)
         if not urls:
-            return events
+            raise WebSiteError(u'Agenda no encontrada', u'Los de LiveFootbalLOL han hecho cambios en la Web', time=6000)
 
         # Guarda la URI de la agenda en caché
         cache.save(self.__web_url, urls)
@@ -142,7 +143,7 @@ class LiveFootballOL:
         # GET agenda
         agenda = tools.get_web_page(urls['agenda'])
         if not agenda:
-            return events
+            raise WebSiteError(u'Error de conexión', u'¿Estás conectado a Internet?', time=8000)
 
         # Obtiene la tabla de eventos
         a_events = re.findall(
@@ -170,8 +171,17 @@ class LiveFootballOL:
                         'fanart': art['fanart']
                     }
                 )
+
+        if len(events) == 0:
+            raise WebSiteError(
+                u'Problema en la agenda',
+                u'Está vacía o no hay enlaces, ve a la Web y compruébalo',
+                time=8000
+            )
+
         # Guarda los eventos en caché
         cache.save(urls['agenda'], events)
+
         return events
 
     def get_events_today_and_tomorrow(self):
@@ -264,7 +274,11 @@ class LiveFootballOL:
         page = tools.get_web_page('%s%s' % (self.__web_url, event_url))
         if not page:
             tools.write_log('No se pueden extraer los enlaces: ' + event_url, xbmc.LOGERROR)
-            return channels
+            raise WebSiteError(
+                u'Error de conexión',
+                u'¿Estás conectado a Internet?',
+                time=8000
+            )
 
         # Busca la jornada
         # match_week = re.findall(r'[Mm][Aa][Tt][Cc][Hh]\s[Ww][Ee]{2}[Kk]</td>\s*<td>([0-9]+)</td>', page, re.U)
@@ -285,12 +299,11 @@ class LiveFootballOL:
             # ¿Hay ya enlaces?
             if 'will be here' in ch_name:
                 match = re.findall(r'[Mm][Aa][Tt][Cc][Hh]</td>\s*<td><strong>(.*)</strong></td>', page, re.U)
-                tools.Notify().notify(
+                raise WebSiteError(
                     match[0] if match else u'LiveFootballOL',
                     u'Todavía no se han publicado los enlaces del partido',
-                    disp_time=5000
+                    time=5000
                 )
-                return channels
 
             # Si no es un enlace acestream continua
             ch_link = tools.str_sanitize(cells[1].find('a').get('href'))
@@ -320,6 +333,13 @@ class LiveFootballOL:
                         }
                     )
 
+        if len(channels) == 0:
+            raise WebSiteError(
+                u'No hay enlaces',
+                u'Los de LiveFootbalLOL han hecho cambios en la Web',
+                time=6000
+            )
+
         # Guarda los eventos en caché
         cache.save(event_url, channels)
 
@@ -346,8 +366,12 @@ class LiveFootballOL:
         # GET url
         page = tools.get_web_page(url)
         if not page:
-            tools.write_log('No se pueden extraer los hashlinks: ' + url, xbmc.LOGERROR)
-            return None
+            tools.write_log('Error al conectar: ' + url, xbmc.LOGERROR)
+            raise WebSiteError(
+                u'Error de conexión',
+                u'¿Estás conectado a Internet?',
+                time=8000
+            )
 
         # Obtiene la tabla de canales
         soup = BeautifulSoup(page, 'html5lib')

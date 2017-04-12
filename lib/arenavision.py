@@ -7,6 +7,7 @@ import xbmc
 
 from bs4 import BeautifulSoup
 from lib.cache import Cache
+from lib.errors import WebSiteError
 
 
 class Arenavision:
@@ -260,7 +261,7 @@ class Arenavision:
         # GET arenavision.in
         page = tools.get_web_page(self.__web_url)
         if not page:
-            return events
+            raise WebSiteError(u'La página no está online', u'¿Estás conectado a Internet?', time=8000)
 
         # Averigua la URI de la agenda y los enlaces de los canales
         # buscando en todas las URL de la página principal:
@@ -268,7 +269,7 @@ class Arenavision:
         # 'sc' para la agenda
         urls = self.__get_urls(page)
         if not urls:
-            return events
+            raise WebSiteError(u'Agenda no encontrada', u'Los de Arenavision han hecho cambios en la Web', time=6000)
 
         # Guarda la URI de la agenda y los enlaces de los canales en caché
         cache.save(self.__web_url, urls)
@@ -276,7 +277,7 @@ class Arenavision:
         # GET agenda
         agenda = tools.get_web_page(urls['agenda'])
         if not agenda:
-            return events
+            raise WebSiteError(u'Error de conexión', u'¿Estás conectado a Internet?', time=8000)
 
         # Obtiene la tabla de eventos
         soup = BeautifulSoup(agenda, 'html5lib')
@@ -304,8 +305,17 @@ class Arenavision:
                         'fanart': art['fanart']
                     }
                 )
+
+        if len(events) == 0:
+            raise WebSiteError(
+                u'Problema en la agenda',
+                u'Está vacía o no hay enlaces, ve a la Web y compruébalo',
+                time=8000
+            )
+
         # Guarda los eventos en caché
         cache.save(urls['agenda'], events)
+
         return events
 
     def __get_links(self, channels, urls):
@@ -480,13 +490,26 @@ class Arenavision:
                     # No está en cache, lo obtiene
                     else:
                         page = tools.get_web_page(channel['link'])
-                        ace_hash = re.search(r'.*loadPlayer\(\"([a-f0-9]{40})\",.*', page, re.U).groups()[0]
-                        cache.save(channel['link'], {"hash": ace_hash})
+                        if not page:
+                            raise WebSiteError(
+                                u'Error de conexión',
+                                u'¿Estás conectado a Internet?',
+                                time=8000
+                            )
+                        ace_hash = re.search(r'.*loadPlayer\(\"([a-f0-9]{40})\",.*', page, re.U).groups()
+                        if ace_hash:
+                            ace_hash = ace_hash[0]
+                            cache.save(channel['link'], {"hash": ace_hash})
                     if ace_hash:
                         channel['hash'] = ace_hash
                         channels.append(channel)
                     else:
                         tools.write_log("Enlace de acestream no encontrado: '%s' de '%s' a las %s del %s" %
                                         (channel['name'], event['event'], event['time'], event['date']), xbmc.LOGERROR)
+                        raise WebSiteError(
+                            u'Enlace no encontrado',
+                            u'Los de Arenavision han hecho cambios en la Web',
+                            time=8000
+                        )
 
         return channels

@@ -9,6 +9,7 @@ from urlparse import parse_qsl
 
 from lib import tools
 from lib.cache import Cache
+from lib.errors import WebSiteError
 from lib.kodi import Kodi
 from lib.arenavision import Arenavision
 from lib.livefootballol import LiveFootballOL
@@ -37,7 +38,7 @@ _web_pages = [
         'icon': tools.build_path(__path__, 'arenavision.jpg'),
         'fanart': tools.build_path(__path__, 'arenavision_art.jpg')
     },
-{
+    {
         'name': 'LiveFootballOL',
         'icon': tools.build_path(__path__, 'lfol.png'),
         'fanart': tools.build_path(__path__, 'lfol_art.jpg')
@@ -85,17 +86,10 @@ def check_for_updates(notify, notify_secs):
                     tools.Notify().notify(
                         u'Acestream Sports',
                         u'Se está actualizando a la versión %s' % server_v[0],
-                        disp_time=notify_secs
+                        disp_time=notify_secs * 1000
                     )
                 xbmc.executebuiltin("UpdateAddonRepos")
                 xbmc.executebuiltin("UpdateLocalAddons")
-
-# Sacar URL de la lista de eventos
-# urls = re.findall(r'href=[\'"]?([^\'" >]+).*title="Live Football Streaming"', e, re.U)
-
-# Lista de eventos
-# urls = re.findall(r'([0-9]{1,2}:[0-9]{2}).*\[(.*)\].*<a href=[\'"]?(.*[0-9]{2}-[0-9]{2}-[0-9]{4}-.*)[\'"]>(.*)</a>', e1, re.U)
-
 
 
 def controller(paramstring):
@@ -110,7 +104,7 @@ def controller(paramstring):
     settings = get_addon_settings()
 
     # Busca actualizaciones
-    check_for_updates(settings['notify'], settings['notify_secs'] * 1000)
+    check_for_updates(settings['notify'], settings['notify_secs'])
 
     # Kodi: funciones para mostar las listas y los vídeos
     kodi = Kodi(_url, _handle)
@@ -127,9 +121,21 @@ def controller(paramstring):
 
         # Crea los objetos y lanza el menu de la web (viene en params['page'])
         if 'source' not in params:
-            exec "%s = %s('%s'%s)" % (params['page'].lower(), params['page'], __path__, ', %s' % settings['adult']
-                                      if params['page'] == 'TorrentTV' else '')
-            exec "kodi.show_menu(%s.get_menu(), source='%s')" % (params['page'].lower(), params['page'])
+            # exec "%s = %s('%s'%s)" % (params['page'].lower(), params['page'], __path__, ', %s' % settings['adult']
+            #                          if params['page'] == 'TorrentTV' else '')
+            # exec "kodi.show_menu(%s.get_menu(), source='%s')" % (params['page'].lower(), params['page'])
+
+            if params['page'] == 'Arenavision':
+                arenavision = Arenavision(__path__)
+                kodi.show_menu(arenavision.get_menu(), source=params['page'])
+
+            elif params['page'] == 'LiveFootballOL':
+                livefootballol = LiveFootballOL(__path__)
+                kodi.show_menu(livefootballol.get_menu(), source=params['page'])
+
+            elif params['page'] == 'TorrentTV':
+                torrenttv = TorrentTV(__path__, settings['adult'])
+                kodi.show_menu(torrenttv.get_menu(), source=params['page'])
 
         # Opciones de Arenavision
         elif params['source'] == 'Arenavision':
@@ -237,6 +243,10 @@ def controller(paramstring):
 
 
 if __name__ == '__main__':
-    # Llama al router y le pasa la cadena de parámetros
-    # Slicing para eliminar la '?' de los parámetros
-    controller(sys.argv[2][1:])
+    try:
+        # Llama al router y le pasa la cadena de parámetros
+        # Slicing para eliminar la '?' de los parámetros
+        controller(sys.argv[2][1:])
+    except WebSiteError as e:
+        tools.write_log('%s: %s' % (e.title, e.message))
+        tools.Notify().notify(e.title, e.message, disp_time=e.time)

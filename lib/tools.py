@@ -12,6 +12,8 @@ import re
 
 
 # Constants
+from lib.errors import WebSiteError
+
 
 def STRING():
     return 0
@@ -99,7 +101,11 @@ def get_web_page(url):
         return None
     except:
         write_log('Exception on GET %s' % url, xbmc.LOGERROR)
-        return None
+        raise WebSiteError(
+            u'Error de conexión',
+            u'Se ha producido un error interno de Kodi',
+            time=10000
+        )
 
 
 def build_path(path, file_name, resource='images'):
