@@ -242,4 +242,4 @@ if __name__ == '__main__':
         controller(sys.argv[2][1:])
     except WebSiteError as e:
         tools.write_log('%s: %s' % (e.title, e.message))
-        tools.Notify().notify(e.title, e.message, disp_time=e.time)
+        tools.Notify().notify(e.title, e.message, disp_time=e.time, repeat=True)
