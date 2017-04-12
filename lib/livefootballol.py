@@ -10,7 +10,7 @@ from lib.cache import Cache
 from lib.errors import WebSiteError
 
 
-class LiveFootballOL:
+class LiveFootbalLOL:
 
     __web_url = 'http://livefootballol.me/'
 
@@ -41,9 +41,9 @@ class LiveFootballOL:
 
     def get_menu(self):
         """
-        Get the list of LiveFootballOL categories: agenda and competitions
+        Get the list of LiveFootbalLOL categories: agenda and competitions
 
-        :return: The list of LiveFootballOL categories
+        :return: The list of LiveFootbalLOL categories
         :rtype: list
         """
         return [
@@ -105,9 +105,9 @@ class LiveFootballOL:
 
     def get_all_events(self):
         """
-        Get all LiveFootballOL events
+        Get all LiveFootbalLOL events
 
-        :return: The list of LiveFootballOL events
+        :return: The list of LiveFootbalLOL events
         :rtype: list
         """
         cache = Cache(self.__path)
@@ -186,9 +186,9 @@ class LiveFootballOL:
 
     def get_events_today_and_tomorrow(self):
         """
-        Get today and tomorrow LiveFootballOL events
+        Get today and tomorrow LiveFootbalLOL events
 
-        :return: The list of LiveFootballOL events
+        :return: The list of LiveFootbalLOL events
         :rtype: list
         """
         today_tomorrow = []
@@ -207,11 +207,11 @@ class LiveFootballOL:
 
     def get_events_by_competition(self, competition):
         """
-        Get LiveFootballOL events by a given competition
+        Get LiveFootbalLOL events by a given competition
 
         :param competition: The competition name
         :type: competition: str
-        :return: The list of LiveFootballOL events
+        :return: The list of LiveFootbalLOL events
         :rtype: list
         """
         competitions = []
@@ -252,11 +252,11 @@ class LiveFootballOL:
 
     def get_event_links(self, event_url):
         """
-        Get LiveFootballOL event links by a given event URL
+        Get LiveFootbalLOL event links by a given event URL
 
         :param event_url: The event URL
         :type: event_url: str
-        :return: The list of LiveFootballOL event links
+        :return: The list of LiveFootbalLOL event links
         :rtype: list
         """
         cache = Cache(self.__path, minutes=5)
@@ -300,7 +300,7 @@ class LiveFootballOL:
             if 'will be here' in ch_name:
                 match = re.findall(r'[Mm][Aa][Tt][Cc][Hh]</td>\s*<td><strong>(.*)</strong></td>', page, re.U)
                 raise WebSiteError(
-                    match[0] if match else u'LiveFootballOL',
+                    match[0] if match else u'LiveFootbalLOL',
                     u'Todavía no se han publicado los enlaces del partido',
                     time=5000
                 )

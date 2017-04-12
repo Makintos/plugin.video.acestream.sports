@@ -12,7 +12,7 @@ from lib.cache import Cache
 from lib.errors import WebSiteError
 from lib.kodi import Kodi
 from lib.arenavision import Arenavision
-from lib.livefootballol import LiveFootballOL
+from lib.livefootballol import LiveFootbalLOL
 from lib.torrenttv import TorrentTV
 
 __addon__ = xbmcaddon.Addon()
@@ -39,7 +39,7 @@ _web_pages = [
         'fanart': tools.build_path(__path__, 'arenavision_art.jpg')
     },
     {
-        'name': 'LiveFootballOL',
+        'name': 'LiveFootbalLOL',
         'icon': tools.build_path(__path__, 'lfol.png'),
         'fanart': tools.build_path(__path__, 'lfol_art.jpg')
     },
@@ -121,21 +121,18 @@ def controller(paramstring):
 
         # Crea los objetos y lanza el menu de la web (viene en params['page'])
         if 'source' not in params:
-            # exec "%s = %s('%s'%s)" % (params['page'].lower(), params['page'], __path__, ', %s' % settings['adult']
-            #                          if params['page'] == 'TorrentTV' else '')
+            # exec "%s = %s('%s'%s)" % (params['page'].lower(), params['page'], __path__, ', %s' %
+            # settings['adult'] if params['page'] == 'TorrentTV' else '')
             # exec "kodi.show_menu(%s.get_menu(), source='%s')" % (params['page'].lower(), params['page'])
 
             if params['page'] == 'Arenavision':
-                arenavision = Arenavision(__path__)
-                kodi.show_menu(arenavision.get_menu(), source=params['page'])
+                kodi.show_menu(Arenavision(__path__).get_menu(), source=params['page'])
 
-            elif params['page'] == 'LiveFootballOL':
-                livefootballol = LiveFootballOL(__path__)
-                kodi.show_menu(livefootballol.get_menu(), source=params['page'])
+            elif params['page'] == 'LiveFootbalLOL':
+                kodi.show_menu(LiveFootbalLOL(__path__).get_menu(), source=params['page'])
 
             elif params['page'] == 'TorrentTV':
-                torrenttv = TorrentTV(__path__, settings['adult'])
-                kodi.show_menu(torrenttv.get_menu(), source=params['page'])
+                kodi.show_menu(TorrentTV(__path__, settings['adult']).get_menu(), source=params['page'])
 
         # Opciones de Arenavision
         elif params['source'] == 'Arenavision':
@@ -144,33 +141,31 @@ def controller(paramstring):
 
                 # Menú de Arenavisión
                 if 'item' in params:
+
                     if params['item'] == 'Hoy y mañana':
                         kodi.show_menu(
                             arenavision.get_events_today_and_tomorrow(),
                             source=params['source'],
                             show_plot=settings['plot']
                         )
+
                     elif params['item'] == 'Agenda 7 días':
                         kodi.show_menu(
                             arenavision.get_all_events(),
                             source=params['source'],
                             show_plot=settings['plot']
-                        )
+                    )
+
                     elif params['item'] == 'Deportes':
-                        kodi.show_menu(
-                            arenavision.get_sports(),
-                            source=params['source']
-                        )
+                        kodi.show_menu(arenavision.get_sports(), source=params['source'])
+
                     elif params['item'] == 'Competiciones':
-                        kodi.show_menu(
-                            arenavision.get_competitions(),
-                            source=params['source']
-                        )
+                        kodi.show_menu(arenavision.get_competitions(), source=params['source'])
 
                 # Menú de Deportes
                 elif 'sport_id' in params:
-                    kodi.show_menu(arenavision.get_events_by_sport(
-                        params['sport_id']),
+                    kodi.show_menu(
+                        arenavision.get_events_by_sport(params['sport_id']),
                         source=params['source'],
                         show_plot=settings['plot']
                     )
@@ -185,31 +180,30 @@ def controller(paramstring):
 
                 # Menú de Canales AV1, AV2, AV3...
                 elif 'event' in params:
-                    kodi.show_events(arenavision.get_event_links(
-                        params['event'],
-                        params['date'],
-                        params['time'])
-                    )
+                    kodi.show_events(arenavision.get_event_links(params['event'], params['date'], params['time']))
 
-        # Opciones de LiveFootballOL
-        elif params['source'] == 'LiveFootballOL':
-            livefootballol = LiveFootballOL(__path__)
+        # Opciones de LiveFootbalLOL
+        elif params['source'] == 'LiveFootbalLOL':
+            livefootballol = LiveFootbalLOL(__path__)
             if params['action'] == 'show':
 
-                # Menú de LiveFootballOL
+                # Menú de LiveFootbalLOL
                 if 'item' in params:
+
                     if params['item'] == 'Hoy y mañana':
                         kodi.show_menu(
                             livefootballol.get_events_today_and_tomorrow(),
                             source=params['source'],
                             show_plot=settings['plot']
                         )
+
                     elif params['item'] == 'Agenda 7 días':
                         kodi.show_menu(
                             livefootballol.get_all_events(),
                             source=params['source'],
                             show_plot=settings['plot']
                         )
+
                     elif params['item'] == 'Competiciones':
                         kodi.show_menu(
                             livefootballol.get_competitions(),
@@ -218,8 +212,7 @@ def controller(paramstring):
 
                 # Menú de Competiciones
                 elif 'competition_id' in params:
-                    kodi.show_menu(
-                        livefootballol.get_events_by_competition(params['competition_id']),
+                    kodi.show_menu(livefootballol.get_events_by_competition(params['competition_id']),
                         source=params['source'],
                         show_plot=settings['plot']
                     )
@@ -232,6 +225,8 @@ def controller(paramstring):
         elif params['source'] == 'TorrentTV':
             torrenttv = TorrentTV(__path__, settings['adult'])
             if params['action'] == 'show':
+
+                # Menú de TorrentTV
                 if 'category_id' in params:
                     kodi.show_events(
                         torrenttv.get_events_by_category(params['category_id']),
@@ -244,8 +239,7 @@ def controller(paramstring):
 
 if __name__ == '__main__':
     try:
-        # Llama al router y le pasa la cadena de parámetros
-        # Slicing para eliminar la '?' de los parámetros
+        # Llama al controlador y le pasa la cadena de parámetros
         controller(sys.argv[2][1:])
     except WebSiteError as e:
         tools.write_log('%s: %s' % (e.title, e.message))
