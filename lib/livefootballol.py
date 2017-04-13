@@ -262,7 +262,8 @@ class LiveFootbalLOL:
         channels = []
 
         # GET event_url
-        page = tools.get_web_page('%s%s' % (self.__web_url, event_url))
+        page = tools.get_web_page(
+            '%s%s' % (self.__web_url[:-1] if event_url.startswith('/') else self.__web_url, event_url))
         if not page:
             tools.write_log('Can\'t retrieve: ' + event_url, xbmc.LOGERROR)
             raise WebSiteError(
