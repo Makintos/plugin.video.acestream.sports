@@ -56,7 +56,7 @@ class TorrentTV:
         :return: The dict containing icon and fanart for a given category
         :rtype: dict
         """
-        return art.get_genre_art(lang.es.get(category[1:], self.__settings['path']))
+        return art.get_genre_art(lang.es.get(category[1:]), self.__settings['path'])
 
     def __get_all_events(self):
         """
