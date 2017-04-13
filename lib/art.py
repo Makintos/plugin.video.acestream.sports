@@ -158,6 +158,24 @@ def get_competition_icon(competition, path, default=None):
     return icon
 
 
+def get_genre_art(genre, path):
+    """
+    Get a dict containing the icon and fanart URLs for a given category
+
+    :return: The dict containing icon and fanart for a given category
+    :rtype: dict
+    """
+    art = __genre.get(genre, {
+        'icon': 'sports.png',
+        'fanart': 'sports_art.jpg'
+    })
+
+    return {
+        'icon': tools.build_path(path, art['icon']),
+        'fanart': tools.build_path(path, art['fanart'])
+    }
+
+
 def get_channel_art(channel_name, path):
     if 'arenavision' in channel_name.lower():
         return tools.build_path(path, 'arenavision.jpg')
@@ -176,21 +194,3 @@ def get_channel_art(channel_name, path):
 
     else:
         return tools.build_path(path, 'acestream.png')
-
-
-def get_genre_art(genre, path):
-    """
-    Get a dict containing the icon and fanart URLs for a given category
-
-    :return: The dict containing icon and fanart for a given category
-    :rtype: dict
-    """
-    art = __genre.get(genre, {
-        'icon': 'sports.png',
-        'fanart': 'sports_art.jpg'
-    })
-
-    return {
-        'icon': tools.build_path(path, art['icon']),
-        'fanart': tools.build_path(path, art['fanart'])
-    }
