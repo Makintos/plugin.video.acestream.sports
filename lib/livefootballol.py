@@ -129,12 +129,20 @@ class LiveFootbalLOL:
         # GET livefootballol.in
         page = tools.get_web_page(self.__web_url)
         if not page:
-            raise WebSiteError(u'La página no está online', u'¿Estás conectado a Internet?', time=8000)
+            raise WebSiteError(
+                u'La página no está online',
+                u'¿Estás conectado a Internet?',
+                time=self.__settings['notify_secs']
+            )
 
         # Averigua la URI de la agenda
         urls = self.__get_urls(page)
         if not urls:
-            raise WebSiteError(u'Agenda no encontrada', u'Los de LiveFootbalLOL han hecho cambios en la Web', time=6000)
+            raise WebSiteError(
+                u'Agenda no encontrada',
+                u'Los de LiveFootbalLOL han hecho cambios en la Web',
+                time=self.__settings['notify_secs']
+            )
 
         # Guarda la URI de la agenda en caché
         cache.save(self.__web_url, urls)
@@ -142,7 +150,11 @@ class LiveFootbalLOL:
         # GET agenda
         agenda = tools.get_web_page(urls['agenda'])
         if not agenda:
-            raise WebSiteError(u'Error de conexión', u'¿Estás conectado a Internet?', time=8000)
+            raise WebSiteError(
+                u'Error de conexión',
+                u'¿Estás conectado a Internet?',
+                time=self.__settings['notify_secs']
+            )
 
         # Obtiene la tabla de eventos
         a_events = re.findall(
@@ -175,7 +187,7 @@ class LiveFootbalLOL:
             raise WebSiteError(
                 u'Problema en la agenda',
                 u'Está vacía o no hay enlaces, ve a la Web y compruébalo',
-                time=8000
+                time=self.__settings['notify_secs']
             )
 
         # Guarda los eventos en caché
@@ -276,7 +288,7 @@ class LiveFootbalLOL:
             raise WebSiteError(
                 u'Error de conexión',
                 u'¿Estás conectado a Internet?',
-                time=8000
+                time=self.__settings['notify_secs']
             )
 
         # Busca la jornada
@@ -301,7 +313,7 @@ class LiveFootbalLOL:
                 raise WebSiteError(
                     match[0] if match else u'LiveFootbalLOL',
                     u'Todavía no se han publicado los enlaces del partido',
-                    time=5000
+                    time=self.__settings['notify_secs']
                 )
 
             # Si no es un enlace acestream continua
@@ -336,7 +348,7 @@ class LiveFootbalLOL:
             raise WebSiteError(
                 u'No hay enlaces',
                 u'Los de LiveFootbalLOL han hecho cambios en la Web',
-                time=6000
+                time=self.__settings['notify_secs']
             )
 
         # Guarda los eventos en caché
@@ -369,7 +381,7 @@ class LiveFootbalLOL:
             raise WebSiteError(
                 u'Error de conexión',
                 u'¿Estás conectado a Internet?',
-                time=8000
+                time=self.__settings['notify_secs']
             )
 
         # Obtiene la tabla de canales

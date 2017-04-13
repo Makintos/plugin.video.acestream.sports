@@ -3,6 +3,7 @@ import re
 
 import tools
 from lib.cache import Cache
+from lib.errors import WebSiteError
 
 
 class TorrentTV:
@@ -113,13 +114,21 @@ class TorrentTV:
         # GET http://super-pomoyka.us.to/trash/ttv-list/ttv.json
         channels = tools.get_web_page(self.__agenda_url)
         if not channels:
-            return events
+            raise WebSiteError(
+                u'La página no está online',
+                u'¿Estás conectado a Internet?',
+                time=self.__settings['notify_secs']
+            )
 
         # Busca todas las etiquetas name, url y cat
         # y las guarda en una lista de tuplas ('etiqueta', 'valor')
         data = re.findall(r'(name|url|cat)":"([^"]*)"', channels, re.U)
         if not (data and type(data) == list and len(data) > 0):
-            return events
+            raise WebSiteError(
+                u'Lista de canales no encontrada',
+                u'Los de TorrentTV.ru han hecho cambios en la Web',
+                time=self.__settings['notify_secs']
+            )
 
         # Recorre la lista de 3 en 3
         for x in range(0, len(data) / 3):
@@ -133,7 +142,11 @@ class TorrentTV:
             })
 
         if len(events) == 0:
-            return events
+            raise WebSiteError(
+                u'Problema en TorrentTV',
+                u'No hay canales o no hay enlaces en la Web',
+                time=self.__settings['notify_secs']
+            )
 
         cache.save(self.__agenda_url, events)
         return events

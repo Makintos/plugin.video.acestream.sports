@@ -260,7 +260,11 @@ class Arenavision:
         # GET arenavision.in
         page = tools.get_web_page(self.__web_url)
         if not page:
-            raise WebSiteError(u'La página no está online', u'¿Estás conectado a Internet?', time=8000)
+            raise WebSiteError(
+                u'La página no está online',
+                u'¿Estás conectado a Internet?',
+                time=self.__settings['notify_secs']
+            )
 
         # Averigua la URI de la agenda y los enlaces de los canales
         # buscando en todas las URL de la página principal:
@@ -268,7 +272,11 @@ class Arenavision:
         # 'sc' para la agenda
         urls = self.__get_urls(page)
         if not urls:
-            raise WebSiteError(u'Agenda no encontrada', u'Los de Arenavision han hecho cambios en la Web', time=6000)
+            raise WebSiteError(
+                u'Agenda no encontrada',
+                u'Los de Arenavision han hecho cambios en la Web',
+                time=self.__settings['notify_secs']
+            )
 
         # Guarda la URI de la agenda y los enlaces de los canales en caché
         cache.save(self.__web_url, urls)
@@ -276,7 +284,11 @@ class Arenavision:
         # GET agenda
         agenda = tools.get_web_page(urls['agenda'])
         if not agenda:
-            raise WebSiteError(u'Error de conexión', u'¿Estás conectado a Internet?', time=8000)
+            raise WebSiteError(
+                u'Error de conexión',
+                u'¿Estás conectado a Internet?',
+                time=self.__settings['notify_secs']
+            )
 
         # Obtiene la tabla de eventos
         soup = BeautifulSoup(agenda, 'html5lib')
@@ -309,7 +321,7 @@ class Arenavision:
             raise WebSiteError(
                 u'Problema en la agenda',
                 u'Está vacía o no hay enlaces, ve a la Web y compruébalo',
-                time=8000
+                time=self.__settings['notify_secs']
             )
 
         # Guarda los eventos en caché
@@ -493,7 +505,7 @@ class Arenavision:
                             raise WebSiteError(
                                 u'Error de conexión',
                                 u'¿Estás conectado a Internet?',
-                                time=8000
+                                time=self.__settings['notify_secs']
                             )
                         ace_hash = re.search(r'.*loadPlayer\(\"([a-f0-9]{40})\",.*', page, re.U).groups()
                         if ace_hash:
@@ -508,7 +520,7 @@ class Arenavision:
                         raise WebSiteError(
                             u'Enlace no encontrado',
                             u'Los de Arenavision han hecho cambios en la Web',
-                            time=8000
+                            time=self.__settings['notify_secs']
                         )
 
         return channels

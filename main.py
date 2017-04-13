@@ -55,7 +55,7 @@ def get_addon_settings():
         'plot': tools.get_addon_setting('plot', s_type=tools.BOOL),
         'adult': tools.get_addon_setting('adult', s_type=tools.BOOL),
         'notify': tools.get_addon_setting('notify', s_type=tools.BOOL),
-        'notify_secs': tools.get_addon_setting('notify_secs', s_type=tools.NUM),
+        'notify_secs': tools.get_addon_setting('notify_secs', s_type=tools.NUM) * 1000,
         'handle': _handle,
         'path': __path__,
         'version': __version__,
@@ -87,7 +87,7 @@ def check_for_updates(notify, notify_secs):
                     tools.Notify().notify(
                         u'Acestream Sports',
                         u'Se está actualizando a la versión %s' % server_v[0],
-                        disp_time=notify_secs * 1000
+                        disp_time=notify_secs
                     )
                 xbmc.executebuiltin("UpdateAddonRepos")
                 xbmc.executebuiltin("UpdateLocalAddons")
