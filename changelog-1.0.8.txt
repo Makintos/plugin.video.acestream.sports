@@ -1,3 +1,7 @@
+Version 1.0.8
+- Los canales de Arenavision se obtienen sólo si se intentan reproducir
+- Varios arreglos menores
+
 Version 1.0.7
 - Nuevos iconos de canales
 - Ahora se muestran notificaciones en vez de listas vacías

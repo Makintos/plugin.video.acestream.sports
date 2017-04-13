@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.7"
+       version="1.0.8"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,7 +28,11 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.7
+        <news>Version 1.0.8
+- Los canales de Arenavision se obtienen sólo si se intentan reproducir
+- Varios arreglos menores
+
+Version 1.0.7
 - Nuevos iconos de canales
 - Ahora se muestran notificaciones en vez de listas vacías
 
