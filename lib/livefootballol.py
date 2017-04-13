@@ -76,7 +76,8 @@ class LiveFootbalLOL:
         agenda_url = None
         url = re.findall(r'href=[\'"]?([^\'" >]+).*title="Live Football Streaming"', page, re.U)
         if url and len(url) == 1:
-            agenda_url = url[0] if 'http' in url[0] else '%s%s' % (self.__web_url, url[0])
+            agenda_url = url[0] if 'http' in url[0] else '%s%s' % (
+                    self.__web_url[:-1] if url[0].startswith('/') else self.__web_url, url[0])
         if agenda_url:
             return {'agenda': agenda_url}
         return None

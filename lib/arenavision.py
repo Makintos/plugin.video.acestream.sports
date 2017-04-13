@@ -87,9 +87,11 @@ class Arenavision:
             return None
         for url in urls:
             if re.search(r'^.*av.*[1-3]?[0-9]\W*$', url, re.U):
-                channels.append(url if 'http' in url else '%s%s' % (self.__web_url, url))
+                channels.append(url if 'http' in url else '%s%s' % (
+                    self.__web_url[:-1] if url.startswith('/') else self.__web_url, url))
             elif 'sc' in url:
-                agenda_url = url if 'http' in url else '%s%s' % (self.__web_url, url)
+                agenda_url = url if 'http' in url else '%s%s' % (
+                    self.__web_url[:-1] if url.startswith('/') else self.__web_url, url)
         if agenda_url and len(channels) > 0:
             return {'agenda': agenda_url, 'channels': channels}
         return None
