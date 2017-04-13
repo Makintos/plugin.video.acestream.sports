@@ -240,7 +240,7 @@ class LiveFootbalLOL:
 
         return competitions_list
 
-    def get_event_links(self, event_url):
+    def get_channels(self, event_url):
         """
         Get LiveFootbalLOL event links by a given event URL
 
@@ -249,7 +249,7 @@ class LiveFootbalLOL:
         :return: The list of LiveFootbalLOL event links
         :rtype: list
         """
-        cache = Cache(self.__settings['path'], minutes=5)
+        cache = Cache(self.__settings['path'], minutes=10)
 
         # Busca los canales del evento en caché
         channels = cache.load(event_url, False)
@@ -263,7 +263,7 @@ class LiveFootbalLOL:
         # GET event_url
         page = tools.get_web_page('%s%s' % (self.__web_url, event_url))
         if not page:
-            tools.write_log('No se pueden extraer los enlaces: ' + event_url, xbmc.LOGERROR)
+            tools.write_log('Can\'t retrieve: ' + event_url, xbmc.LOGERROR)
             raise WebSiteError(
                 u'Error de conexión',
                 u'¿Estás conectado a Internet?',

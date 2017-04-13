@@ -115,7 +115,7 @@ class TorrentTV:
         cache.save(self.__agenda_url, events)
         return events
 
-    def get_events_by_category(self, category):
+    def get_channels_by_category(self, category):
         """
         Get Torrent-TV.ru events by a given category
 

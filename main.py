@@ -176,7 +176,15 @@ def controller(paramstring):
 
                 # Menú de Canales AV1, AV2, AV3...
                 elif 'event' in params:
-                    kodi.show_events(arenavision.get_event_links(params['event'], params['date'], params['time']))
+                    kodi.show_channels(
+                        arenavision.get_channels(params['event'], params['date'], params['time']),
+                        source=params['source']
+                    )
+
+            # Viene del menú de canales: busca hashlink en url y lo reproduce
+            if params['action'] == 'link':
+                hashlink = arenavision.get_hashlink(params['url'])
+                Kodi.play_acestream_link(hashlink, params['name'], params['icon'])
 
         # Opciones de LiveFootbalLOL
         elif params['source'] == 'LiveFootbalLOL':
@@ -216,7 +224,7 @@ def controller(paramstring):
 
                 # Menú de Canales AV1, AV2, Match TV HD...
                 elif 'event' in params:
-                    kodi.show_events(livefootballol.get_event_links(params['event']))
+                    kodi.show_channels(livefootballol.get_channels(params['event']))
 
         # Opciones de TorrentTV
         elif params['source'] == 'TorrentTV':
@@ -225,8 +233,8 @@ def controller(paramstring):
 
                 # Menú de TorrentTV
                 if 'category_id' in params:
-                    kodi.show_events(
-                        torrenttv.get_events_by_category(params['category_id']),
+                    kodi.show_channels(
+                        torrenttv.get_channels_by_category(params['category_id']),
                         show_plot=settings['plot']
                     )
 

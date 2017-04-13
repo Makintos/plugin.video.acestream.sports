@@ -67,11 +67,11 @@ class Kodi:
             if source is None:
                 url = self.__get_url(action='show', page=entry['name'])
 
-            # Si hay channel_url vengo de la lista de eventos de LiveFootbalLOL y voy a lista de enlaces (AV8, Canal1..)
+            # Si hay channel_url vengo de la lista de eventos de LiveFootbalLOL y voy a lista de canales (AV8, Canal1..)
             elif 'channel_url' in entry:
                 url = self.__get_url(source=source, action='show', event=entry['channel_url'])
 
-            # Si hay competición vengo de la lista de eventos de Arenavision y voy a la lista de enlaces (AV8, Canal1..)
+            # Si hay competición vengo de la lista de eventos de Arenavision y voy a la lista de canles (AV8, Canal1..)
             elif 'competition' in entry:
                 try:
                     url = self.__get_url(source=source, action='show',
@@ -80,15 +80,15 @@ class Kodi:
                     url = self.__get_url(source=source, action='show',
                                          event=entry['name'], date=entry['date'], time=entry['time'])
 
-            # Si hay sport_id vengo de la lista de deportes y voy a la lista de enlaces (AV8, AV9...)
+            # Si hay sport_id vengo de la lista de deportes y voy a la lista de canales (AV8, AV9...)
             elif 'sport_id' in entry:
                 url = self.__get_url(source=source, action='show', sport_id=entry['sport_id'])
 
-            # Si hay competition_id vengo de la lista de competiciones y voy a la lista de enlaces (AV8, AV9...)
+            # Si hay competition_id vengo de la lista de competiciones y voy a la lista de canales (AV8, AV9...)
             elif 'competition_id' in entry:
                 url = self.__get_url(source=source, action='show', competition_id=entry['competition_id'])
 
-            # Si hay category_id vengo de la lista de categorías de TorrentTV y voy a la lista de enlaces (canales)
+            # Si hay category_id vengo de la lista de categorías de TorrentTV y voy a la lista de canales
             elif 'category_id' in entry:
                 url = self.__get_url(source=source, action='show', category_id=entry['category_id'])
 
@@ -108,7 +108,7 @@ class Kodi:
         # Finish creating a virtual folder.
         xbmcplugin.endOfDirectory(self.__settings['handle'])
 
-    def show_events(self, events, show_plot=False):
+    def show_channels(self, events, source='acestream', show_plot=False):
         """
         Create the list of event links in the Kodi interface.
 
@@ -147,13 +147,23 @@ class Kodi:
             # Create a URL for a plugin recursive call.
             # plugin://plugin.video.acestream.sports/?source=Arenavision&action=play&url=2af45ce4cd32c3998af2ed
 
-            url = self.__get_url(
-                source='acestream',
-                action='play',
-                url=event['hash'],
-                name=event['name'],
-                icon=event['icon']
-            )
+            # Si hay link vengo de la lista de canales (AV1, Canal1...)
+            if 'link' in event:
+                url = self.__get_url(
+                    source=source,
+                    action='link',
+                    url=event['link'],
+                    name=event['name'],
+                    icon=event['icon']
+                )
+            else:
+                url = self.__get_url(
+                    source=source,
+                    action='play',
+                    url=event['hash'],
+                    name=event['name'],
+                    icon=event['icon']
+                )
 
             # Add the list item to a virtual Kodi folder.
             # is_folder = False means that this item won't open any sub-list.

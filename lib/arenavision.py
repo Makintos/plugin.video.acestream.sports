@@ -181,7 +181,7 @@ class Arenavision:
         if len(events) == 0:
             raise WebSiteError(
                 u'Problema en la agenda',
-                u'Está vacía o no hay enlaces, ve a la Web y compruébalo',
+                u'No hay eventos, ve a la Web y compruébalo',
                 time=self.__settings['notify_secs']
             )
 
@@ -335,54 +335,57 @@ class Arenavision:
             if event['competition'] == competition:
                 return event['sport']
 
-    def get_event_links(self, event_name, event_date, event_time):
+    def get_channels(self, name, date, time):
         """
-        Get Arenavision event links by a given event name
+        Get Arenavision channels by a given event name
 
-        :param event_name: The event name
-        :type: event_name: str
-        :param event_date: The event date
-        :type: event_date: str
-        :param event_time: The event time
-        :type: event_time: str
-        :return: The list of Arenavision event links
+        :param name: The event name
+        :type: name: str
+        :param date: The event date
+        :type: date: str
+        :param time: The event time
+        :type: time: str
+        :return: The list of Arenavision event channels
         :rtype: list
         """
-        channels = []
-        cache = Cache(self.__settings['path'], minutes=10)
         events = self.get_all_events()
 
         for event in events:
-            if event_name.decode('utf-8') == \
-                    event['name'] and event_date == event['date'] and event_time == event['time']:
-                for channel in event['channels']:
-                    # Busca el hash en cache
-                    c_hash = cache.load(channel['link'], False)
-                    if c_hash:
-                        ace_hash = c_hash['hash']
-                    # No está en cache, lo obtiene
-                    else:
-                        page = tools.get_web_page(channel['link'])
-                        if not page:
-                            raise WebSiteError(
-                                u'Error de conexión',
-                                u'¿Estás conectado a Internet?',
-                                time=self.__settings['notify_secs']
-                            )
-                        ace_hash = re.search(r'.*loadPlayer\(\"([a-f0-9]{40})\",.*', page, re.U).groups()
-                        if ace_hash:
-                            ace_hash = ace_hash[0]
-                            cache.save(channel['link'], {"hash": ace_hash})
-                    if ace_hash:
-                        channel['hash'] = ace_hash
-                        channels.append(channel)
-                    else:
-                        tools.write_log("Enlace de acestream no encontrado: '%s' de '%s' a las %s del %s" %
-                                        (channel['name'], event['event'], event['time'], event['date']), xbmc.LOGERROR)
-                        raise WebSiteError(
-                            u'Enlace no encontrado',
-                            u'Los de Arenavision han hecho cambios en la Web',
-                            time=self.__settings['notify_secs']
-                        )
+            if name.decode('utf-8') == event['name'] and date == event['date'] and time == event['time']:
+                if len(event['channels']) == 0:
+                    raise WebSiteError(
+                        u'Problema en la agenda',
+                        u'No hay enlaces para %s' % event['name'],
+                        time=self.__settings['notify_secs'])
+                return event['channels']
 
-        return channels
+    def get_hashlink(self, url):
+        cache = Cache(self.__settings['path'], minutes=10)
+
+        # Busca el hash en cache
+        c_hash = cache.load(url)
+        if c_hash:
+            return c_hash['hash']
+
+        # No está en cache, lo obtiene
+        page = tools.get_web_page(url)
+        if not page:
+            raise WebSiteError(
+                u'Error de conexión',
+                u'¿Estás conectado a Internet?',
+                time=self.__settings['notify_secs']
+            )
+
+        ace_hash = re.search(r'.*loadPlayer\(\"([a-f0-9]{40})\",.*', page, re.U).groups()
+        if not ace_hash:
+            tools.write_log("Hashlink no encontrado en '%s'" % url, xbmc.LOGERROR)
+            raise WebSiteError(
+                u'Enlace no encontrado',
+                u'Los de Arenavision han hecho cambios en la Web',
+                time=self.__settings['notify_secs']
+            )
+
+        # Guarda el hash en caché
+        cache.save(url, {"hash": ace_hash[0]})
+
+        return ace_hash[0]
