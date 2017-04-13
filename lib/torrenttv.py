@@ -129,11 +129,11 @@ class TorrentTV:
 
         for event in events:
             if lang.es.get(event['cat'][1:]) == category:
-                art = self.__get_art(event['cat'])
+                event_art = self.__get_art(event['cat'])
                 categories.append({
                     'name': event['name'],
-                    'icon': art['icon'],
-                    'fanart': art['fanart'],
+                    'icon': event_art['icon'],
+                    'fanart': event_art['fanart'],
                     'hash': event['url']
                 })
 

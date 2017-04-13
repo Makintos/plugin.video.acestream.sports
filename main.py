@@ -231,7 +231,7 @@ def controller(paramstring):
                     )
 
         elif params['action'] == 'play':
-            kodi.play_acestream_link(params['url'], params['name'], params['icon'])
+            Kodi.play_acestream_link(params['url'], params['name'], params['icon'])
 
 
 if __name__ == '__main__':

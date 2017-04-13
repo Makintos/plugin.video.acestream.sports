@@ -168,7 +168,8 @@ class Kodi:
         # Finish creating a virtual folder.
         xbmcplugin.endOfDirectory(self.__settings['handle'])
 
-    def play_acestream_link(self, url, name='Video', icon=None):
+    @staticmethod
+    def play_acestream_link(url, name='Video', icon=None):
         """
         Play an acestream link by the provided name, icon and url.
 

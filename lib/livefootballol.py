@@ -44,7 +44,8 @@ class LiveFootbalLOL:
             'fanart': tools.build_path(self.__settings['path'], 'futbol_art.jpg')
         }
 
-    def __get_event_name(self, event, date, time, competition):
+    @staticmethod
+    def __get_event_name(event, date, time, competition):
         color = 'yellow'
         now = datetime.datetime.now()
 
@@ -141,7 +142,7 @@ class LiveFootbalLOL:
             re.U)
 
         for a_event in a_events:
-            art = self.__get_competition_art(a_event[1])
+            competition_art = self.__get_competition_art(a_event[1])
             c_date = re.findall(r'([0-9]{2}-[0-9]{2}-[0-9]{4})-', tools.str_sanitize(a_event[2]), re.U)
             if c_date:
                 events.append(
@@ -156,8 +157,8 @@ class LiveFootbalLOL:
                             c_date[0],
                             tools.str_sanitize(a_event[0]),
                             tools.str_sanitize(a_event[1])),
-                        'icon': art['icon'],
-                        'fanart': art['fanart']
+                        'icon': competition_art['icon'],
+                        'fanart': competition_art['fanart']
                     }
                 )
 
@@ -405,7 +406,8 @@ class LiveFootbalLOL:
         cache.save(url, channel_data)
         return channel_data
 
-    def __get_channel_name(self, name, bitrate, signal, is_hd, lang):
+    @staticmethod
+    def __get_channel_name(name, bitrate, signal, is_hd, lang_code):
         color = 'yellow'
 
         if 'high' == signal.lower():
@@ -413,4 +415,4 @@ class LiveFootbalLOL:
         elif 'low' == signal.lower():
             color = 'red'
 
-        return '%s %s [COLOR %s]%s(%s)[/COLOR]' % (name, lang, color, '[B](HD)[/B] ' if is_hd else '', bitrate)
+        return '%s %s [COLOR %s]%s(%s)[/COLOR]' % (name, lang_code, color, '[B](HD)[/B] ' if is_hd else '', bitrate)

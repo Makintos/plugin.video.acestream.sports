@@ -51,7 +51,8 @@ class Arenavision:
             'fanart': sport_art['fanart']
         }
 
-    def __get_event_name(self, event, date, time, competition):
+    @staticmethod
+    def __get_event_name(event, date, time, competition):
         color = 'yellow'
         now = datetime.datetime.now()
 
@@ -158,7 +159,7 @@ class Arenavision:
             cells = row.findAll("td")
             links = self.__get_links(tools.str_sanitize(cells[5].get_text()), urls['channels'])
             if links and len(links) > 0:
-                art = self.__get_competition_art(cells[2].get_text(), cells[3].get_text())
+                competition_art = self.__get_competition_art(cells[2].get_text(), cells[3].get_text())
                 events.append(
                     {
                         'date': tools.str_sanitize(cells[0].get_text()),
@@ -172,8 +173,8 @@ class Arenavision:
                             tools.str_sanitize(cells[0].get_text()),
                             tools.str_sanitize(cells[1].get_text()[:5]),
                             tools.str_sanitize(cells[3].get_text())),
-                        'icon': art['icon'],
-                        'fanart': art['fanart']
+                        'icon': competition_art['icon'],
+                        'fanart': competition_art['fanart']
                     }
                 )
 
@@ -207,10 +208,10 @@ class Arenavision:
 
         for x in range(0, len(ch_temp) / 2):
             numbers = ch_temp[x * 2].split('-')
-            lang = ch_temp[x * 2 + 1]
+            lang_code = ch_temp[x * 2 + 1]
             for number in numbers:
                 ch_list.append({
-                    'name': 'AV%s %s' % (number, lang),
+                    'name': 'AV%s %s' % (number, lang_code),
                     'icon': tools.build_path(self.__settings['path'], 'arenavision.jpg'),
                     'fanart': tools.build_path(self.__settings['path'], 'arenavision_art.jpg'),
                     'link': urls[int(number) - 1]
@@ -315,20 +316,21 @@ class Arenavision:
         for competition in competitions:
             competition_events[:] = []
             sport = self.__get_sport(events, competition)
-            art = self.__get_competition_art(sport, competition)
+            competition_art = self.__get_competition_art(sport, competition)
             for event in events:
                 if event['competition'] == competition:
                     competition_events.append(competition)
             competitions_list.append({
                 'name': '[B]%s[/B] (%i)' % (lang.es.get(competition, competition), len(competition_events)),
                 'competition_id': competition,
-                'icon': art['icon'],
-                'fanart': art['fanart']
+                'icon': competition_art['icon'],
+                'fanart': competition_art['fanart']
             })
 
         return competitions_list
 
-    def __get_sport(self, events, competition):
+    @staticmethod
+    def __get_sport(events, competition):
         for event in events:
             if event['competition'] == competition:
                 return event['sport']
