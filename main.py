@@ -208,10 +208,11 @@ def controller(paramstring):
 
                 # Menú de Competiciones
                 elif 'competition_id' in params:
-                    kodi.show_menu(livefootballol.get_events_by_competition(params['competition_id']),
-                                   source=params['source'],
-                                   show_plot=settings['plot']
-                                   )
+                    kodi.show_menu(
+                        livefootballol.get_events_by_competition(params['competition_id']),
+                        source=params['source'],
+                        show_plot=settings['plot']
+                    )
 
                 # Menú de Canales AV1, AV2, AV3...
                 elif 'event' in params:

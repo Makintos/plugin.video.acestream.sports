@@ -6,8 +6,9 @@ import urllib2
 import xbmc
 import xbmcgui
 import xbmcaddon
-import json
 import platform
+
+import json
 import re
 
 

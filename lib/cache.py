@@ -4,6 +4,7 @@ import json
 import os
 
 import xbmc
+
 import tools
 import datetime
 import time
@@ -19,12 +20,9 @@ class Cache:
             tools.write_log("Creating Cache: '%s'" % cache_dir)
             os.mkdir(cache_dir)
 
-    def __get_hash(self, url):
-        return hashlib.sha224(url).hexdigest()
-
     def load(self, url, log_read_ok=True):
         try:
-            with open(tools.build_path(self.__path, '%s.json' % self.__get_hash(url), 'cache'), 'r') as fp:
+            with open(tools.build_path(self.__path, '%s.json' % hashlib.sha224(url).hexdigest(), 'cache'), 'r') as fp:
                 content = json.load(fp)
             if datetime.datetime.now() <= datetime.datetime.fromtimestamp(content['timestamp']) + \
                     datetime.timedelta(minutes=self.__minutes):
@@ -42,7 +40,7 @@ class Cache:
         try:
             content['timestamp'] = time.time()
             content['data'] = data
-            with open(tools.build_path(self.__path, '%s.json' % self.__get_hash(url), 'cache'), 'w') as fp:
+            with open(tools.build_path(self.__path, '%s.json' % hashlib.sha224(url).hexdigest(), 'cache'), 'w') as fp:
                 json.dump(content, fp, indent=4)
             tools.write_log("Cache: new '%s'" % url)
         except IOError:

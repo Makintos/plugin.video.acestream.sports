@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
-
 import tools
+
 from lib.cache import Cache
 from lib.errors import WebSiteError
 
@@ -10,7 +10,6 @@ class TorrentTV:
 
     __agenda_url = 'http://super-pomoyka.us.to/trash/ttv-list/ttv.json'
 
-    # TODO: sacar esto de aquí
     __translations = {
         u'узыка': 'Música',
         u'ознавательные': 'Educativo',

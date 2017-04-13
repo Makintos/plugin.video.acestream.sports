@@ -318,7 +318,7 @@ class LiveFootbalLOL:
 
             # Si no es un enlace acestream continua
             ch_link = tools.str_sanitize(cells[1].find('a').get('href'))
-            if not ch_link or not 'acestream' in ch_name.lower():
+            if not ch_link or 'acestream' not in ch_name.lower():
                 continue
 
             # Obtiene el idioma
@@ -372,7 +372,6 @@ class LiveFootbalLOL:
 
         # Los datos del canal no están en cache
         # Vuelve a obtenerlos
-        channel_data = {}
 
         # GET url
         page = tools.get_web_page(url)
