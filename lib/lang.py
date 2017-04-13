@@ -6,6 +6,7 @@ es = {
         u'ротика': 'Adultos',
         u'ильмы': 'Películas',
         u'порт': 'Deportes',
+
         'SOCCER': 'Fútbol',
         'BASKETBALL': 'Baloncesto',
         'FORMULA 1': 'Formula 1',
@@ -20,6 +21,7 @@ es = {
         'HOCKEY': 'Hockey',
         'RUGBY': 'Rugby',
         'BOXING': 'Boxeo',
+
         'UEFA CHAMPIONS LEAGUE': 'UEFA Champions League',
         'UEFA EUROPA LEAGUE': 'UEFA Europa League',
         'URUGUAY LEAGUE': 'Liga Uruguaya',
