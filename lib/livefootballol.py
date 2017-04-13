@@ -6,6 +6,8 @@ import tools
 import xbmc
 
 from bs4 import BeautifulSoup
+
+from lib import lang, art
 from lib.cache import Cache
 from lib.errors import WebSiteError
 
@@ -14,30 +16,8 @@ class LiveFootbalLOL:
 
     __web_url = 'http://livefootballol.me/'
 
-    # TODO: sacar esto de aquí
-    __translations = {
-        'Spanish Primera Division': 'La Liga',
-        'Spanish Segunda Division': 'La Liga 123',
-        'English Premier League': 'Liga Inglesa',
-        'French Ligue 1': 'Liga Francesa',
-        'Italian Serie A': 'Liga Italiana',
-        'German Bundesliga': 'Liga Alemana'
-    }
-
-    def __build_thumbs(self):
-        self.__competition_thumbs = {
-            'UEFA Champions League': tools.build_path(self.__settings['path'], 'champions_league.png'),
-            'UEFA Europa League': tools.build_path(self.__settings['path'], 'europa_league.jpg'),
-            'Spanish Primera Division': tools.build_path(self.__settings['path'], 'liga_es_1.png'),
-            'English Premier League': tools.build_path(self.__settings['path'], 'liga_en.png'),
-            'French Ligue 1': tools.build_path(self.__settings['path'], 'liga_fr.png'),
-            'Italian Serie A': tools.build_path(self.__settings['path'], 'liga_it_serie_a.png'),
-            'German Bundesliga': tools.build_path(self.__settings['path'], 'liga_de_1.png'),
-        }
-
     def __init__(self, settings):
         self.__settings = settings
-        self.__build_thumbs()
 
     def get_menu(self):
         """
@@ -60,9 +40,7 @@ class LiveFootbalLOL:
 
     def __get_competition_art(self, competition):
         return {
-            'icon': self.__competition_thumbs.get(
-                tools.str_sanitize(competition),
-                tools.build_path(self.__settings['path'], 'futbol.png')),
+            'icon': art.get_competition_icon(competition, self.__settings['path'], default='futbol.png'),
             'fanart': tools.build_path(self.__settings['path'], 'futbol_art.jpg')
         }
 
@@ -91,7 +69,7 @@ class LiveFootbalLOL:
         name = '%s - %s' % (name[0], name[1]) if len(name) == 2 else event
 
         return '[COLOR %s](%s %s:%s)[/COLOR] (%s) [B]%s[/B]' % \
-               (color, date[:5], event_time[0], event_time[1], self.__translations.get(competition, competition), name)
+               (color, date[:5], event_time[0], event_time[1], lang.es.get(competition, competition), name)
 
     def __get_urls(self, page):
         agenda_url = None
@@ -253,7 +231,7 @@ class LiveFootbalLOL:
                 if event['competition'] == competition:
                     competition_events.append(competition)
             competitions_list.append({
-                'name': '[B]%s[/B] (%i)' % (self.__translations.get(competition, competition), len(competition_events)),
+                'name': '[B]%s[/B] (%i)' % (lang.es.get(competition, competition), len(competition_events)),
                 'competition_id': competition,
                 'icon': competition_art['icon'],
                 'fanart': competition_art['fanart']

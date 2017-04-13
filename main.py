@@ -214,7 +214,7 @@ def controller(paramstring):
                         show_plot=settings['plot']
                     )
 
-                # Menú de Canales AV1, AV2, AV3...
+                # Menú de Canales AV1, AV2, Match TV HD...
                 elif 'event' in params:
                     kodi.show_events(livefootballol.get_event_links(params['event']))
 

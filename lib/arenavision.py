@@ -6,6 +6,8 @@ import tools
 import xbmc
 
 from bs4 import BeautifulSoup
+
+from lib import lang, art
 from lib.cache import Cache
 from lib.errors import WebSiteError
 
@@ -14,144 +16,8 @@ class Arenavision:
 
     __web_url = 'http://arenavision.in/'
 
-    # TODO: sacar esto de aquí
-    __translations = {
-        'SOCCER': 'Fútbol',
-        'BASKETBALL': 'Baloncesto',
-        'FORMULA 1': 'Formula 1',
-        'MOTOGP': 'Moto GP',
-        'TENNIS': 'Tenis',
-        'MMA': 'Lucha',
-        'CYCLING': 'Ciclismo',
-        'FOOTBALL': 'Football americano',
-        'BASEBALL': 'Beisbol',
-        'VOLLEYBALL': 'Voleybol',
-        'GOLF': 'Golf',
-        'HOCKEY': 'Hockey',
-        'RUGBY': 'Rugby',
-        'BOXING': 'Boxeo',
-        'UEFA CHAMPIONS LEAGUE': 'UEFA Champions League',
-        'UEFA EUROPA LEAGUE': 'UEFA Europa League',
-        'URUGUAY LEAGUE': 'Liga Uruguaya',
-        'URUGUAY PRIMERA': 'Liga Uruguaya',
-        'COPA SUDAMERICANA': 'Copa Sudamericana',
-        'COPA LIBERTADORES': 'Copa Libertadores',
-        'COLOMBIA PRIMERA': 'Liga Colombiana',
-        'COLOMBIA COPA': 'Copa de Colombia',
-        'ARGENTINA PRIMERA': 'Liga Argentina',
-        'MEXICO COPA MX': 'Copa de Mexico',
-        'MEXICO LIGA MX': 'Liga Mexicana',
-        'SPANISH LA LIGA': 'La Liga',
-        'SPANISH LA LIGA 2': 'La Liga 123',
-        'EUROLEAGUE': 'Euroliga',
-        'PORTUGAL A LIGA': 'Liga Portuguesa',
-        'CHILE LEAGUE': 'Liga Chilena',
-        'DAVIS CUP': 'Davis CUP',
-        'FRENCH LIGUE 1': 'Liga Francesa',
-        'ITALY SERIE A': 'Liga Italiana',
-        'PREMIER LEAGUE': 'Liga Inglesa',
-        'BUNDESLIGA': 'Liga Alemana',
-        'USA MLS': 'Liga de USA',
-        'SPANISH ACB': 'Liga ACB',
-        'USA NBA': 'NBA',
-        'WBO WORLD TITLE': 'Título Mundial WBO',
-        'ATP WORLD TOUR': 'ATP World Tour'
-    }
-
-    def __build_thumbs(self):
-        self.__sport_art = {
-            'SOCCER': {
-                'icon': tools.build_path(self.__settings['path'], 'futbol.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'futbol_art.jpg')
-            },
-            'BASKETBALL': {
-                'icon': tools.build_path(self.__settings['path'], 'basket.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'basket_art.jpg')
-            },
-            'FORMULA 1': {
-                'icon': tools.build_path(self.__settings['path'], 'f1.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'f1_art.jpg')
-            },
-            'MOTOGP': {
-                'icon': tools.build_path(self.__settings['path'], 'motogp.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'motogp_art.jpg')
-            },
-            'TENNIS': {
-                'icon': tools.build_path(self.__settings['path'], 'tenis.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'tenis_art.jpg')
-            },
-            'MMA': {
-                'icon': tools.build_path(self.__settings['path'], 'mma.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'mma_art.jpg')
-            },
-            'CYCLING': {
-                'icon': tools.build_path(self.__settings['path'], 'ciclismo.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'ciclismo_art.jpg')
-            },
-            'FOOTBALL': {
-                'icon': tools.build_path(self.__settings['path'], 'rugby.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'rugby_art.jpg')
-            },
-            'BASEBALL': {
-                'icon': tools.build_path(self.__settings['path'], 'baseball.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'baseball_art.jpg')
-            },
-            'VOLLEYBALL': {
-                'icon': tools.build_path(self.__settings['path'], 'voley.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'voley_art.jpg')
-            },
-            'GOLF': {
-                'icon': tools.build_path(self.__settings['path'], 'golf.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'golf_art.jpg')
-            },
-            'HOCKEY': {
-                'icon': tools.build_path(self.__settings['path'], 'hockey.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'hockey_art.jpg')
-            },
-            'RUGBY': {
-                'icon': tools.build_path(self.__settings['path'], 'rugby.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'rugby_art.jpg')
-            },
-            'BOXING': {
-                'icon': tools.build_path(self.__settings['path'], 'boxeo.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'boxeo_art.jpg')
-            }
-        }
-        self.__competition_thumbs = {
-            'FRENCH CUP': tools.build_path(self.__settings['path'], 'liga_fr.png'),
-            'SPANISH LA LIGA': tools.build_path(self.__settings['path'], 'liga_es_1.png'),
-            'BUNDESLIGA': tools.build_path(self.__settings['path'], 'liga_de_1.png'),
-            'ITALIA CUP': tools.build_path(self.__settings['path'], 'liga_it.png'),
-            'PREMIER LEAGUE': tools.build_path(self.__settings['path'], 'liga_en.png'),
-            'PORTUGAL CUP': tools.build_path(self.__settings['path'], 'liga_po.png'),
-            'USA NBA': tools.build_path(self.__settings['path'], 'nba.png'),
-            'USA MLS': tools.build_path(self.__settings['path'], 'liga_usa_mls.png'),
-            'MEXICO LIGA MX': tools.build_path(self.__settings['path'], 'liga_mx.png'),
-            'MEXICO COPA MX': tools.build_path(self.__settings['path'], 'copa_mx.png'),
-            'COPA LIBERTADORES': tools.build_path(self.__settings['path'], 'copa_libertadores.png'),
-            'COPA SUDAMERICANA': tools.build_path(self.__settings['path'], 'copa_sudamerica.png'),
-            'CONCACAF CHAMPIONS LEAGUE': tools.build_path(self.__settings['path'], 'concaf_champions.jpg'),
-            'URUGUAY LEAGUE': tools.build_path(self.__settings['path'], 'liga_ur.png'),
-            'URUGUAY PRIMERA': tools.build_path(self.__settings['path'], 'liga_ur.png'),
-            'COLOMBIA PRIMERA': tools.build_path(self.__settings['path'], 'copa_colombia.png'),
-            'COLOMBIA COPA': tools.build_path(self.__settings['path'], 'copa_colombia.png'),
-            'ARGENTINA PRIMERA': tools.build_path(self.__settings['path'], 'liga_ar.png'),
-            'EUROLEAGUE': tools.build_path(self.__settings['path'], 'euroliga.png'),
-            'SPANISH LA LIGA 2': tools.build_path(self.__settings['path'], 'liga_es_2.png'),
-            'FRENCH LIGUE 1': tools.build_path(self.__settings['path'], 'liga_fr.png'),
-            'CHILE LEAGUE': tools.build_path(self.__settings['path'], 'liga_ch.png'),
-            'ITALY SERIE A': tools.build_path(self.__settings['path'], 'liga_it_serie_a.png'),
-            'PORTUGAL A LIGA': tools.build_path(self.__settings['path'], 'liga_po.png'),
-            'SPANISH ACB': tools.build_path(self.__settings['path'], 'liga_acb.png'),
-            'WBO WORLD TITLE': tools.build_path(self.__settings['path'], 'wbo.png'),
-            'UEFA CHAMPIONS LEAGUE': tools.build_path(self.__settings['path'], 'champions_league.png'),
-            'UEFA EUROPA LEAGUE': tools.build_path(self.__settings['path'], 'europa_league.png'),
-            'ATP WORLD TOUR': tools.build_path(self.__settings['path'], 'atp_world_tour.png')
-        }
-
     def __init__(self, settings):
         self.__settings = settings
-        self.__build_thumbs()
 
     def get_menu(self):
         """
@@ -176,20 +42,14 @@ class Arenavision:
             }]
 
     def __get_competition_art(self, sport, competition):
-        icon = self.__competition_thumbs.get(tools.str_sanitize(competition).upper(), None)
-        sport_art = self.__get_sport_art(sport)
+        icon = art.get_competition_icon(competition, self.__settings['path'])
+        sport_art = art.get_sport_art(sport, self.__settings['path'])
         if icon is None:
             icon = sport_art['icon']
         return {
             'icon': icon,
             'fanart': sport_art['fanart']
         }
-
-    def __get_sport_art(self, sport):
-        return self.__sport_art.get(tools.str_sanitize(sport).upper(), {
-            'icon': tools.build_path(self.__settings['path'], 'sports.png'),
-            'fanart': tools.build_path(self.__settings['path'], 'sports_art.jpg')
-        })
 
     def __get_event_name(self, event, date, time, competition):
         color = 'yellow'
@@ -216,7 +76,7 @@ class Arenavision:
         name = '%s - %s' % (name[0], name[1]) if len(name) == 2 else event
 
         return '[COLOR %s](%s %s:%s)[/COLOR] (%s) [B]%s[/B]' % \
-               (color, date[:5], event_time[0], event_time[1], self.__translations.get(competition, competition), name)
+               (color, date[:5], event_time[0], event_time[1], lang.es.get(competition, competition), name)
 
     def __get_urls(self, page):
         channels = []
@@ -427,12 +287,12 @@ class Arenavision:
         # Construye la lista deportes: añade al título el número de eventos que contiene
         for sport in sports:
             sport_events[:] = []
-            sport_art = self.__get_sport_art(sport)
+            sport_art = art.get_sport_art(sport, self.__settings['path'])
             for event in events:
                 if event['sport'] == sport:
                     sport_events.append(sport)
             sports_list.append({
-                'name': '[B]%s[/B] (%i)' % (self.__translations.get(sport, sport), len(sport_events)),
+                'name': '[B]%s[/B] (%i)' % (lang.es.get(sport, sport), len(sport_events)),
                 'sport_id': sport,
                 'icon': sport_art['icon'],
                 'fanart': sport_art['fanart']
@@ -460,7 +320,7 @@ class Arenavision:
                 if event['competition'] == competition:
                     competition_events.append(competition)
             competitions_list.append({
-                'name': '[B]%s[/B] (%i)' % (self.__translations.get(competition, competition), len(competition_events)),
+                'name': '[B]%s[/B] (%i)' % (lang.es.get(competition, competition), len(competition_events)),
                 'competition_id': competition,
                 'icon': art['icon'],
                 'fanart': art['fanart']

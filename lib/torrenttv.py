@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 import tools
+from lib import lang, art
 
 from lib.cache import Cache
 from lib.errors import WebSiteError
@@ -10,88 +11,43 @@ class TorrentTV:
 
     __agenda_url = 'http://super-pomoyka.us.to/trash/ttv-list/ttv.json'
 
-    __translations = {
-        u'узыка': 'Música',
-        u'ознавательные': 'Educativo',
-        u'ротика': 'Adultos',
-        u'ильмы': 'Películas',
-        u'порт': 'Deportes'
-    }
-
-    def __build_thumbs(self):
-        self.__art = {
-            'Música': {
-                'icon': tools.build_path(self.__settings['path'], 'musica.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'musica_art.jpg')
-            },
-            'Educativo': {
-                'icon': tools.build_path(self.__settings['path'], 'educativo.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'educativo_art.jpg')
-            },
-            'Adultos': {
-                'icon': tools.build_path(self.__settings['path'], 'adultos.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'adultos_art.jpg')
-            },
-            'Películas': {
-                'icon': tools.build_path(self.__settings['path'], 'peliculas.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'ttv_art.jpg')
-            },
-            'Deportes': {
-                'icon': tools.build_path(self.__settings['path'], 'sports.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'sports_art.jpg')
-            }
-        }
-
     def __init__(self, settings):
         self.__settings = settings
-        self.__build_thumbs()
 
     def get_menu(self):
         """
-        Get the Torrent-TV.ru categories menu
+        Get the Torrent-TV.ru genres menu
 
-        :return: The list of Torrent-TV.ru categories
+        :return: The list of Torrent-TV.ru genres
         :rtype: list
         """
-        category_events = []
-        categories = []
-        categories_list = []
+        genre_events = []
+        genres = []
+        genres_list = []
         events = self.__get_all_events()
 
         # Lista de categorias en la guía
         for event in events:
-            if event['cat'] not in categories:
-                categories.append(event['cat'])
+            if event['cat'] not in genres:
+                genres.append(event['cat'])
 
-        # Construye la lista categorias: añade al título el número de eventos que contiene
-        for category in categories:
-            category_events[:] = []
-            category_art = self.__get_art(category)
+        # Construye la lista géneros: añade al título el número de eventos que contiene
+        for genre in genres:
+            genre_events[:] = []
+            genre_art = art.get_genre_art(genre, self.__settings['path'])
             for event in events:
-                if event['cat'] == category:
-                    category_events.append(category)
-            category_id = self.__translations.get(category[1:], None)
-            if category_id and (category_id != 'Adultos' or self.__settings['adult']):
-                categories_list.append({
-                    'name': '[B]%s[/B] (%i)' % (category_id, len(category_events)),
-                    'category_id': category_id,
-                    'icon': category_art['icon'],
-                    'fanart': category_art['fanart']
+                if event['cat'] == genre:
+                    genre_events.append(genre)
+            genre_id = lang.es.get(genre[1:], None)
+            if genre_id and (genre_id != 'Adultos' or self.__settings['adult']):
+                genres_list.append({
+                    'name': '[B]%s[/B] (%i)' % (genre_id, len(genre_events)),
+                    'genre_id': genre_id,
+                    'icon': genre_art['icon'],
+                    'fanart': genre_art['fanart']
                 })
 
-        return categories_list
-
-    def __get_art(self, category):
-        """
-        Get a dict containing the icon and fanart URLs for a given category
-
-        :return: The dict containing icon and fanart for a given category
-        :rtype: dict
-        """
-        return self.__art.get(self.__translations.get(category[1:]), {
-            'icon': tools.build_path(self.__settings['path'], 'sports.png'),
-            'fanart': tools.build_path(self.__settings['path'], 'sports_art.jpg')
-        })
+        return genres_list
 
     def __get_all_events(self):
         """
@@ -150,26 +106,26 @@ class TorrentTV:
         cache.save(self.__agenda_url, events)
         return events
 
-    def get_events_by_category(self, category):
+    def get_events_by_genre(self, genre):
         """
-        Get Torrent-TV.ru events by a given category
+        Get Torrent-TV.ru events by a given genre
 
-        :param category: The category name
-        :type: category: str
+        :param genre: The genre name
+        :type: genre: str
         :return: The list of Torrent-TV.ru events
         :rtype: list
         """
-        categories = []
+        genres = []
         events = self.__get_all_events()
 
         for event in events:
-            if self.__translations.get(event['cat'][1:]) == category:
-                art = self.__get_art(event['cat'])
-                categories.append({
+            if lang.es.get(event['cat'][1:]) == genre:
+                genre_art = art.get_genre_art(event['cat'], self.__settings['path'])
+                genres.append({
                     'name': event['name'],
-                    'icon': art['icon'],
-                    'fanart': art['fanart'],
+                    'icon': genre_art['icon'],
+                    'fanart': genre_art['fanart'],
                     'hash': event['url']
                 })
 
-        return categories
+        return genres
