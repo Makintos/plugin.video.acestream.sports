@@ -165,7 +165,12 @@ def get_genre_art(genre, path):
     :return: The dict containing icon and fanart for a given category
     :rtype: dict
     """
-    return __genre.get(genre, {
+    art = __genre.get(genre, {
         'icon': tools.build_path(path, 'sports.png'),
         'fanart': tools.build_path(path, 'sports_art.jpg')
     })
+
+    return {
+        'icon': tools.build_path(path, art['icon']),
+        'fanart': tools.build_path(path, art['fanart'])
+    }
