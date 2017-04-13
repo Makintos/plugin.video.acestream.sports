@@ -34,7 +34,7 @@ class TorrentTV:
         # Construye la lista géneros: añade al título el número de eventos que contiene
         for genre in genres:
             genre_events[:] = []
-            genre_art = art.get_genre_art(genre, self.__settings['path'])
+            genre_art = art.get_genre_art(lang.es.get(genre[1:]), self.__settings['path'])
             for event in events:
                 if event['cat'] == genre:
                     genre_events.append(genre)
@@ -120,7 +120,7 @@ class TorrentTV:
 
         for event in events:
             if lang.es.get(event['cat'][1:]) == genre:
-                genre_art = art.get_genre_art(event['cat'], self.__settings['path'])
+                genre_art = art.get_genre_art(lang.es.get(event['cat'][1:]), self.__settings['path'])
                 genres.append({
                     'name': event['name'],
                     'icon': genre_art['icon'],
