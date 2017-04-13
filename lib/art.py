@@ -138,7 +138,7 @@ def get_sport_art(sport, path):
 
     return {
         'icon': tools.build_path(path, art['icon']),
-        'fanart': tools.build_path(path, art['icon'])
+        'fanart': tools.build_path(path, art['fanart'])
     }
 
 
