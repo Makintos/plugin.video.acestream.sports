@@ -125,7 +125,12 @@ __genre = {
 
 
 def get_sport_art(sport, path):
-    
+    """
+
+    :param sport: 
+    :param path: 
+    :return: 
+    """
     art = __sport.get(tools.str_sanitize(sport).upper(), {
         'icon': 'sports.png',
         'fanart': 'sports_art.jpg'
@@ -138,7 +143,19 @@ def get_sport_art(sport, path):
 
 
 def get_competition_icon(competition, path, default=None):
-    return tools.build_path(path, __sport.get(tools.str_sanitize(competition), default))
+    """
+
+    :param competition: 
+    :param path: 
+    :param default: 
+    :return: 
+    """
+    icon = __competition.get(tools.str_sanitize(competition), default)
+
+    if icon:
+        icon = tools.build_path(path, icon)
+
+    return icon
 
 
 def get_genre_art(genre, path):
