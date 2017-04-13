@@ -16,38 +16,47 @@ class TorrentTV:
 
     def get_menu(self):
         """
-        Get the Torrent-TV.ru genres menu
+        Get the Torrent-TV.ru categories menu
 
-        :return: The list of Torrent-TV.ru genres
+        :return: The list of Torrent-TV.ru categories
         :rtype: list
         """
-        genre_events = []
-        genres = []
-        genres_list = []
+        category_events = []
+        categories = []
+        categories_list = []
         events = self.__get_all_events()
 
         # Lista de categorias en la guía
         for event in events:
-            if event['cat'] not in genres:
-                genres.append(event['cat'])
+            if event['cat'] not in categories:
+                categories.append(event['cat'])
 
-        # Construye la lista géneros: añade al título el número de eventos que contiene
-        for genre in genres:
-            genre_events[:] = []
-            genre_art = art.get_genre_art(lang.es.get(genre[1:]), self.__settings['path'])
+        # Construye la lista categorias: añade al título el número de eventos que contiene
+        for category in categories:
+            category_events[:] = []
+            category_art = self.__get_art(category)
             for event in events:
-                if event['cat'] == genre:
-                    genre_events.append(genre)
-            genre_id = lang.es.get(genre[1:], None)
-            if genre_id and (genre_id != 'Adultos' or self.__settings['adult']):
-                genres_list.append({
-                    'name': '[B]%s[/B] (%i)' % (genre_id, len(genre_events)),
-                    'genre_id': genre_id,
-                    'icon': genre_art['icon'],
-                    'fanart': genre_art['fanart']
+                if event['cat'] == category:
+                    category_events.append(category)
+            category_id = lang.es.get(category[1:], None)
+            if category_id and (category_id != 'Adultos' or self.__settings['adult']):
+                categories_list.append({
+                    'name': '[B]%s[/B] (%i)' % (category_id, len(category_events)),
+                    'category_id': category_id,
+                    'icon': category_art['icon'],
+                    'fanart': category_art['fanart']
                 })
 
-        return genres_list
+        return categories_list
+
+    def __get_art(self, category):
+        """
+        Get a dict containing the icon and fanart URLs for a given category
+
+        :return: The dict containing icon and fanart for a given category
+        :rtype: dict
+        """
+        return art.get_genre_art(lang.es.get(category[1:], self.__settings['path']))
 
     def __get_all_events(self):
         """
@@ -106,26 +115,26 @@ class TorrentTV:
         cache.save(self.__agenda_url, events)
         return events
 
-    def get_events_by_genre(self, genre):
+    def get_events_by_category(self, category):
         """
-        Get Torrent-TV.ru events by a given genre
+        Get Torrent-TV.ru events by a given category
 
-        :param genre: The genre name
-        :type: genre: str
+        :param category: The category name
+        :type: category: str
         :return: The list of Torrent-TV.ru events
         :rtype: list
         """
-        genres = []
+        categories = []
         events = self.__get_all_events()
 
         for event in events:
-            if lang.es.get(event['cat'][1:]) == genre:
-                genre_art = art.get_genre_art(lang.es.get(event['cat'][1:]), self.__settings['path'])
-                genres.append({
+            if lang.es.get(event['cat'][1:]) == category:
+                art = self.__get_art(event['cat'])
+                categories.append({
                     'name': event['name'],
-                    'icon': genre_art['icon'],
-                    'fanart': genre_art['fanart'],
+                    'icon': art['icon'],
+                    'fanart': art['fanart'],
                     'hash': event['url']
                 })
 
-        return genres
+        return categories
