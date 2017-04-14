@@ -1,7 +1,6 @@
 Version 1.0.8
 - Nuevo scrapper para LiveFootballVideo.com
 - Los hashlink de Arenavision sólo se obtienen si se intenta reproducir un canal
-- Si aparecen nuevas categorías/géneros en TorrentTV se incluyen
 - Añadido fanart al menú de las webs
 - Nueva base para traducciones
 
