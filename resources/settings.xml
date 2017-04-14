@@ -13,7 +13,7 @@
                  default="false"/>
     </category>
     <category label="Notificaciones">
-        <setting label="Duración" type="lsep"/>
+        <setting label="Duración del Mensaje" type="lsep"/>
         <setting id="notify_secs"
                  type="labelenum"
                  label="Mostrar las notificaciones durante"
