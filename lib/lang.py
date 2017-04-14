@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 __es = {
-    u'узыка': 'Música',
-    u'ознавательные': 'Educativo',
-    u'ротика': 'Adultos',
-    u'ильмы': 'Películas',
-    u'порт': 'Deportes',
+    u'УЗЫКА': 'Música',
+    u'ОЗНАВАТЕЛЬНЫЕ': 'Educativo',
+    u'РОТИКА': 'Adultos',
+    u'ИЛЬМЫ': 'Películas',
+    u'ПОРТ': 'Deportes',
 
     'SOCCER': 'Fútbol',
     'BASKETBALL': 'Baloncesto',
