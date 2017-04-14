@@ -111,9 +111,21 @@ def get_web_page(url):
 
 
 def get_hashlink(url, settings, minutes=10):
-    cache = Cache(settings['path'], minutes=minutes)
+    # ¿La URL contiene el hashlink?
+    if 'http' not in url:
+        ace_hash = re.findall(r'([a-f0-9]{40})', url, re.U)
+        if ace_hash:
+            return url[12:]
+        else:
+            write_log("URL mal formada: '%s'" % url, xbmc.LOGERROR)
+            raise WebSiteError(
+                u'Enlace mal formado',
+                u'Puede que hayan hecho cambios en la Web',
+                time=settings['notify_secs']
+            )
 
     # Busca el hash en cache
+    cache = Cache(settings['path'], minutes=minutes)
     c_hash = cache.load(url)
     if c_hash:
         return c_hash['hash']

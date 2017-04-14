@@ -190,6 +190,8 @@ def get_genre_art(genre, path):
 
 
 def get_channel_art(channel_name, path):
+    tools.write_log('******** %s' % channel_name)
+
     if 'arenavision' in channel_name.lower():
         return tools.build_path(path, 'arenavision.jpg')
 

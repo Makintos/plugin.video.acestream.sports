@@ -297,10 +297,10 @@ class LiveFootballVideo:
             ch_type = tools.str_sanitize(cells[0].find('a').get('title'))
             ch_lang = tools.str_sanitize(cells[2].get_text())
             ch_rate = tools.str_sanitize(cells[3].get_text())
-            ch_link = tools.str_sanitize(cells[4].get_text())
+            ch_link = tools.str_sanitize(cells[4].find('a').get('href'))
 
             # Si no es un enlace acestream continua
-            if not tools.str_sanitize(ch_type) == 'acestream' and 'acestream' not in ch_link.lower():
+            if not tools.str_sanitize(ch_type) == 'acestream' and 'acestream' not in ch_link:
                 continue
 
             # Prepara el idioma
@@ -312,7 +312,7 @@ class LiveFootballVideo:
             channels.append(
                 {
                     'name': self.__get_channel_name(ch_name, ch_rate, ch_lang),
-                    'icon': art.get_channel_art(self.__settings['path'], ch_name),
+                    'icon': art.get_channel_art(ch_name, self.__settings['path']),
                     'fanart': tools.build_path(self.__settings['path'], 'lfv_art.jpg'),
                     'link': ch_link
                 }

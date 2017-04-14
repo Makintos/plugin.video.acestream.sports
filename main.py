@@ -16,10 +16,12 @@ from lib.livefootballol import LiveFootbalLOL
 from lib.livefootballvideo import LiveFootballVideo
 from lib.torrenttv import TorrentTV
 
+
 __addon__ = xbmcaddon.Addon()
 __version__ = __addon__.getAddonInfo('version')
 __path__ = __addon__.getAddonInfo('path')
 __lang__ = __addon__.getLocalizedString
+
 
 # Plugin url (plugin://)
 _url = sys.argv[0]
@@ -30,6 +32,7 @@ _handle = int(sys.argv[1])
 # Server addon.xml
 _server_addon_xml_url = \
     'https://raw.githubusercontent.com/Makintos/repository.makintos/master/plugin.video.acestream.sports/addon.xml'
+
 
 _web_pages = [
     {

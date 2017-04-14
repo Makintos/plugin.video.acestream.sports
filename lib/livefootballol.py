@@ -322,7 +322,7 @@ class LiveFootbalLOL:
                                 channel_data['signal'],
                                 link['hd'],
                                 ch_lang),
-                            'icon': art.get_channel_art(self.__settings['path'], channel_data['name']),
+                            'icon': art.get_channel_art(channel_data['name'], self.__settings['path']),
                             'fanart': tools.build_path(self.__settings['path'], 'lfol_art.jpg'),
                             'hash': link['hash']
                         }
