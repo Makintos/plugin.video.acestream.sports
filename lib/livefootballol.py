@@ -70,7 +70,7 @@ class LiveFootbalLOL:
         name = '%s - %s' % (name[0], name[1]) if len(name) == 2 else event
 
         return '[COLOR %s](%s %s:%s)[/COLOR] (%s) [B]%s[/B]' % \
-               (color, date[:5], event_time[0], event_time[1], lang.es.get(competition, competition), name)
+               (color, date[:5], event_time[0], event_time[1], lang.translate(competition), name)
 
     def __get_urls(self, page):
         agenda_url = None
@@ -233,7 +233,7 @@ class LiveFootbalLOL:
                 if event['competition'] == competition:
                     competition_events.append(competition)
             competitions_list.append({
-                'name': '[B]%s[/B] (%i)' % (lang.es.get(competition, competition), len(competition_events)),
+                'name': '[B]%s[/B] (%i)' % (lang.translate(competition), len(competition_events)),
                 'competition_id': competition,
                 'icon': competition_art['icon'],
                 'fanart': competition_art['fanart']

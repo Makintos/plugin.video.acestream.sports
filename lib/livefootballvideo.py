@@ -62,9 +62,9 @@ class LiveFootballVideo:
             color,
             start.strftime('%d/%m'),
             start.strftime('%H:%M'),
-            lang.es.get(event['competition'], event['competition']),
-            event['team1'],
-            event['team2']
+            lang.translate(event['competition']),
+            event['team1'].replace('&amp;', '&'),
+            event['team2'].replace('&amp;', '&')
         )
 
     @staticmethod
@@ -112,6 +112,8 @@ class LiveFootballVideo:
 
         # Obtiene la tabla de eventos
         for page_number in range(0, total_pages):
+            # GET livefootballvideo.com/streaming/page/page_number
+            page = tools.get_web_page('%s/page/%i' % (agenda_url, page_number + 1)) if page_number > 0 else page
             if page:
                 e = re.findall(
                     '<li\s*(?:class="odd")?>\s*<div\s*class="leaguelogo\s*column">\s*<img.+?src=".+?"\s*alt=".+?"/>' +
@@ -124,8 +126,6 @@ class LiveFootballVideo:
                     page)
                 if e:
                     web_events.extend(map(list, e))
-            # GET livefootballvideo.com/streaming/page/page_number
-            page = tools.get_web_page('%s/page/%i' % (agenda_url, page_number + 1))
 
         if len(web_events) == 0:
             raise WebSiteError(
@@ -234,7 +234,7 @@ class LiveFootballVideo:
                 if event['competition'] == competition:
                     competition_events.append(competition)
             competitions_list.append({
-                'name': '[B]%s[/B] (%i)' % (lang.es.get(competition, competition), len(competition_events)),
+                'name': '[B]%s[/B] (%i)' % (lang.translate(competition), len(competition_events)),
                 'competition_id': competition,
                 'icon': competition_art['icon'],
                 'fanart': competition_art['fanart']
@@ -319,7 +319,7 @@ class LiveFootballVideo:
             match = re.findall(r'class="thick">(.*)</h3>', page, re.U)
             raise WebSiteError(
                 u'%s - %s' % (match[0], match[1]) if match else u'LiveFootballVideo.com',
-                u'Hay enlaces del partido pero no son de acestream',
+                u'Hay enlaces del partido pero no son de acestream. Inténtalo más tarde...',
                 time=self.__settings['notify_secs']
             )
 

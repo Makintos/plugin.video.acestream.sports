@@ -62,14 +62,21 @@ __sport = {
 }
 
 __competition = {
-    'FRENCH CUP': 'liga_fr.png',
+    'LA LIGA': 'liga_es_1.png',
     'SPANISH LA LIGA': 'liga_es_1.png',
+    'SPANISH LA LIGA 2': 'liga_es_2.png',
+    'SPANISH PRIMERA DIVISION': 'liga_es_1.png',
+    'SPANISH SEGUNDA DIVISION': 'liga_es_2.png',
     'BUNDESLIGA': 'liga_de_1.png',
-    'ITALIA CUP': 'liga_it.png',
+    'GERMAN BUNDESLIGA': 'liga_de_1.png',
+    'ITALIA CUP': 'copa_italia.png',
     'PREMIER LEAGUE': 'liga_en.png',
+    'ENGLISH PREMIER LEAGUE': 'liga_en.png',
     'PORTUGAL CUP': 'liga_po.png',
     'USA NBA': 'nba.png',
     'USA MLS': 'liga_usa_mls.png',
+    'MLS': 'liga_usa_mls.png',
+    'LIGA MX': 'liga_mx.png',
     'MEXICO LIGA MX': 'liga_mx.png',
     'MEXICO COPA MX': 'copa_mx.png',
     'COPA LIBERTADORES': 'copa_libertadores.png',
@@ -80,24 +87,28 @@ __competition = {
     'COLOMBIA PRIMERA': 'copa_colombia.png',
     'COLOMBIA COPA': 'copa_colombia.png',
     'ARGENTINA PRIMERA': 'liga_ar.png',
-    'EUROLEAGUE': 'euroliga.png',
-    'SPANISH LA LIGA 2': 'liga_es_2.png',
+    'PRIMERA DIVISION': 'liga_ar.png',
+    'LIGUE 1': 'liga_fr.png',
     'FRENCH LIGUE 1': 'liga_fr.png',
+    'FRENCH CUP': 'copa_francia.png',
     'CHILE LEAGUE': 'liga_ch.png',
     'ITALY SERIE A': 'liga_it_serie_a.png',
+    'ITALIAN SERIE A': 'liga_it_serie_a.png',
+    'SERIE A': 'liga_it_serie_a.png',
     'PORTUGAL A LIGA': 'liga_po.png',
+    'PRIMEIRA LIGA': 'liga_po.png',
     'SPANISH ACB': 'liga_acb.png',
+    'EUROLEAGUE': 'euroliga.png',
     'WBO WORLD TITLE': 'wbo.png',
     'UEFA CHAMPIONS LEAGUE': 'champions_league.png',
     'UEFA EUROPA LEAGUE': 'europa_league.png',
     'ATP WORLD TOUR': 'atp_world_tour.png',
-    'Italian Serie A': 'liga_it_serie_a.png',
-    'German Bundesliga': 'liga_de_1.png',
-    'French Ligue 1': 'liga_fr.png',
-    'UEFA Champions League': 'champions_league.png',
-    'UEFA Europa League': 'europa_league.jpg',
-    'Spanish Primera Division': 'liga_es_1.png',
-    'English Premier League': 'liga_en.png'
+    'A-LEAGUE': 'liga_au.png',
+    'CHAMPIONSHIP': 'liga_efl.png',
+    'EREDIVISIE': 'liga_ho.png',
+    'SCOTTISH PREMIERSHIP': 'liga_esc.png',
+    'RUSSIAN PREMIER LEAGUE': 'liga_ru.png',
+    'J1 LEAGUE': 'liga_j1.png'
 }
 
 __genre = {
@@ -150,7 +161,7 @@ def get_competition_icon(competition, path, default=None):
     :param default: 
     :return: 
     """
-    icon = __competition.get(tools.str_sanitize(competition), default)
+    icon = __competition.get(tools.str_sanitize(competition).upper(), default)
 
     if icon:
         icon = tools.build_path(path, icon)

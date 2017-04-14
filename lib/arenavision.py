@@ -77,7 +77,7 @@ class Arenavision:
         name = '%s - %s' % (name[0], name[1]) if len(name) == 2 else event
 
         return '[COLOR %s](%s %s:%s)[/COLOR] (%s) [B]%s[/B]' % \
-               (color, date[:5], event_time[0], event_time[1], lang.es.get(competition, competition), name)
+               (color, date[:5], event_time[0], event_time[1], lang.translate(competition), name)
 
     def __get_urls(self, page):
         channels = []
@@ -295,7 +295,7 @@ class Arenavision:
                 if event['sport'] == sport:
                     sport_events.append(sport)
             sports_list.append({
-                'name': '[B]%s[/B] (%i)' % (lang.es.get(sport, sport), len(sport_events)),
+                'name': '[B]%s[/B] (%i)' % (lang.translate(sport), len(sport_events)),
                 'sport_id': sport,
                 'icon': sport_art['icon'],
                 'fanart': sport_art['fanart']
@@ -323,7 +323,7 @@ class Arenavision:
                 if event['competition'] == competition:
                     competition_events.append(competition)
             competitions_list.append({
-                'name': '[B]%s[/B] (%i)' % (lang.es.get(competition, competition), len(competition_events)),
+                'name': '[B]%s[/B] (%i)' % (lang.translate(competition), len(competition_events)),
                 'competition_id': competition,
                 'icon': competition_art['icon'],
                 'fanart': competition_art['fanart']
