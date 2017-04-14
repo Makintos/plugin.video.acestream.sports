@@ -1,7 +1,6 @@
 Version 1.0.8
 - Nuevo scrapper para LiveFootballVideo.com
 - Los hashlink de Arenavision sólo se obtienen si se intenta reproducir un canal
--
 
 Version 1.0.7
 - Nuevos iconos de canales

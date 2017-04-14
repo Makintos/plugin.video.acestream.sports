@@ -29,8 +29,8 @@
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
         <news>Version 1.0.8
-- Los canales de Arenavision sólo se obtienen si se intentan reproducir
-- Varios arreglos menores
+- Nuevo scrapper para LiveFootballVideo.com
+- Los hashlink de Arenavision sólo se obtienen si se intenta reproducir un canal
 
 Version 1.0.7
 - Nuevos iconos de canales
