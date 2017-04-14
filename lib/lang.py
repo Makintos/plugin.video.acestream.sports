@@ -1,12 +1,6 @@
 # -*- coding: utf-8 -*-
 
 __es = {
-    u'УЗЫКА': 'Música',
-    u'ОЗНАВАТЕЛЬНЫЕ': 'Educativo',
-    u'РОТИКА': 'Adultos',
-    u'ИЛЬМЫ': 'Películas',
-    u'ПОРТ': 'Deportes',
-
     'SOCCER': 'Fútbol',
     'BASKETBALL': 'Baloncesto',
     'FORMULA 1': 'Formula 1',
@@ -46,6 +40,7 @@ __es = {
     'USA MLS': 'Liga de USA',
     'SPANISH ACB': 'Liga ACB',
     'USA NBA': 'NBA',
+    'USA NBA PLAYOFFS': 'Playoffs de la NBA',
     'WBO WORLD TITLE': 'Título Mundial WBO',
     'ATP WORLD TOUR': 'ATP World Tour',
     'SPANISH PRIMERA DIVISION': 'La Liga',

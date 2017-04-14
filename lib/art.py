@@ -74,6 +74,7 @@ __competition = {
     'ENGLISH PREMIER LEAGUE': 'liga_en.png',
     'PORTUGAL CUP': 'liga_po.png',
     'USA NBA': 'nba.png',
+    'USA NBA PLAYOFFS': 'nba_playoffs.png',
     'USA MLS': 'liga_usa_mls.png',
     'MLS': 'liga_usa_mls.png',
     'LIGA MX': 'liga_mx.png',
