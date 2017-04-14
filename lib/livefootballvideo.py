@@ -335,7 +335,7 @@ class LiveFootballVideo:
     def __get_channel_name(name, bitrate, lang_code):
         color = 'yellow'
 
-        kbps = bitrate.slipt(' ')[0]
+        kbps = bitrate.split(' ')[0]
 
         if not kbps.isdigit():
             color = 'silver'
