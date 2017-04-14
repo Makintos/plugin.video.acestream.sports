@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 
 __es = {
+    # Categorías/Géneros de TorrentTV
+    'genre': {
+        u'узыка': 'Música',
+        u'ознавательные': 'Educativo',
+        u'ротика': 'Adultos',
+        u'ильмы': 'Películas',
+        u'порт': 'Deportes'
+    },
+    # Deportes
     'SOCCER': 'Fútbol',
     'BASKETBALL': 'Baloncesto',
     'FORMULA 1': 'Formula 1',
@@ -15,7 +24,7 @@ __es = {
     'HOCKEY': 'Hockey',
     'RUGBY': 'Rugby',
     'BOXING': 'Boxeo',
-
+    # Competiciones
     'UEFA CHAMPIONS LEAGUE': 'UEFA Champions League',
     'UEFA EUROPA LEAGUE': 'UEFA Europa League',
     'URUGUAY LEAGUE': 'Liga Uruguaya',
@@ -61,7 +70,7 @@ __es = {
     'LIGA MX': 'Liga Mexicana',
     'PRIMERA DIVISION': 'Liga Argentina',
     'J1 LEAGUE': 'Liga Japonesa',
-    'PAULISTA A1': 'Liga de São Paulo'
+    'PAULISTA A1': 'Liga de Sao Paulo'
 }
 
 
@@ -70,6 +79,18 @@ def translate(name, lang='es', default_none=False):
         return name
     elif lang == 'es':
         translation = __es.get(name.upper(), None)
+        if translation:
+            return translation
+        elif default_none:
+            return None
+    return name
+
+
+def genre(name, lang='es', default_none=True):
+    if lang == 'ru':
+        return name
+    elif lang == 'es':
+        translation = __es['genre'].get(name, None)
         if translation:
             return translation
         elif default_none:
