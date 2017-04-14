@@ -319,7 +319,6 @@ class LiveFootbalLOL:
                             'name': self.__get_channel_name(
                                 channel_data['name'],
                                 channel_data['bitrate'],
-                                channel_data['signal'],
                                 link['hd'],
                                 ch_lang),
                             'icon': art.get_channel_art(channel_data['name'], self.__settings['path']),
@@ -412,12 +411,16 @@ class LiveFootbalLOL:
         return channel_data
 
     @staticmethod
-    def __get_channel_name(name, bitrate, signal, is_hd, lang_code):
+    def __get_channel_name(name, bitrate, is_hd, lang_code):
         color = 'yellow'
 
-        if 'high' == signal.lower():
+        kbps = bitrate.slipt(' ')[0]
+
+        if not kbps.isdigit():
+            color = 'silver'
+        elif int(kbps) >= 2000:
             color = 'lime'
-        elif 'low' == signal.lower():
+        elif int(kbps) < 1000:
             color = 'red'
 
         return '%s %s [COLOR %s]%s(%s)[/COLOR]' % (name, lang_code, color, '[B](HD)[/B] ' if is_hd else '', bitrate)
