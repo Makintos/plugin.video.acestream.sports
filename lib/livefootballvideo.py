@@ -66,8 +66,8 @@ class LiveFootballVideo:
             start.strftime('%d/%m'),
             start.strftime('%H:%M'),
             lang.translate(event['competition']),
-            event['team1'].replace('&amp;', '&'),
-            event['team2'].replace('&amp;', '&')
+            event['team1'].encode('utf-8').replace('&amp;', '&'),
+            event['team2'].encode('utf-8').replace('&amp;', '&')
         )
 
     @staticmethod

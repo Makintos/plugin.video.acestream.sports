@@ -2,7 +2,7 @@
 import re
 import tools
 
-from lib import art
+from lib import art, lang
 from lib.cache import Cache
 from lib.errors import WebSiteError
 
@@ -10,14 +10,6 @@ from lib.errors import WebSiteError
 class TorrentTV:
 
     __agenda_url = 'http://super-pomoyka.us.to/trash/ttv-list/ttv.json'
-
-    __translations = {
-        u'узыка': 'Música',
-        u'ознавательные': 'Educativo',
-        u'ротика': 'Adultos',
-        u'ильмы': 'Películas',
-        u'порт': 'Deportes'
-    }
 
     def __init__(self, settings):
         self.__settings = settings
@@ -46,7 +38,7 @@ class TorrentTV:
             for event in events:
                 if event['cat'] == category:
                     category_events.append(category)
-            category_id = self.__translations.get(category[1:], None)
+            category_id = lang.genre(category[1:])
             if category_id and (category_id != 'Adultos' or self.__settings['adult']):
                 categories_list.append({
                     'name': '[B]%s[/B] (%i)' % (category_id, len(category_events)),
@@ -64,7 +56,7 @@ class TorrentTV:
         :return: The dict containing icon and fanart for a given category
         :rtype: dict
         """
-        return art.get_genre_art(self.__translations.get(category[1:]), self.__settings['path'])
+        return art.get_genre_art(lang.genre(category[1:]), self.__settings['path'])
 
     def __get_all_events(self):
         """
@@ -136,7 +128,7 @@ class TorrentTV:
         events = self.__get_all_events()
 
         for event in events:
-            if self.__translations.get(event['cat'][1:]) == category:
+            if lang.genre(event['cat'][1:]) == category:
                 event_art = self.__get_art(event['cat'])
                 categories.append({
                     'name': event['name'],
