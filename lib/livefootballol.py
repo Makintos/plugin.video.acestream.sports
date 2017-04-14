@@ -243,7 +243,7 @@ class LiveFootbalLOL:
 
     def get_channels(self, event_url):
         """
-        Get LiveFootbalLOL event links by a given event URL
+        Get LiveFootbalLOL channels by a given event URL
 
         :param event_url: The event URL
         :type: event_url: str
@@ -253,7 +253,7 @@ class LiveFootbalLOL:
         cache = Cache(self.__settings['path'], minutes=10)
 
         # Busca los canales del evento en caché
-        channels = cache.load(event_url, False)
+        channels = cache.load(event_url, True)
         if channels:
             return channels
 

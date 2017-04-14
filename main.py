@@ -13,6 +13,7 @@ from lib.errors import WebSiteError
 from lib.kodi import Kodi
 from lib.arenavision import Arenavision
 from lib.livefootballol import LiveFootbalLOL
+from lib.livefootballvideo import LiveFootballVideo
 from lib.torrenttv import TorrentTV
 
 __addon__ = xbmcaddon.Addon()
@@ -35,6 +36,11 @@ _web_pages = [
         'name': 'Arenavision',
         'icon': tools.build_path(__path__, 'arenavision.jpg'),
         'fanart': tools.build_path(__path__, 'arenavision_art.jpg')
+    },
+{
+        'name': 'LiveFootballVideo',
+        'icon': tools.build_path(__path__, 'lfv.png'),
+        'fanart': tools.build_path(__path__, 'lfv_art.jpg')
     },
     {
         'name': 'LiveFootbalLOL',
@@ -124,6 +130,9 @@ def controller(paramstring):
             if params['page'] == 'Arenavision':
                 kodi.show_menu(Arenavision(settings).get_menu(), source=params['page'])
 
+            elif params['page'] == 'LiveFootballVideo':
+                kodi.show_menu(LiveFootballVideo(settings).get_menu(), source=params['page'])
+
             elif params['page'] == 'LiveFootbalLOL':
                 kodi.show_menu(LiveFootbalLOL(settings).get_menu(), source=params['page'])
 
@@ -182,8 +191,56 @@ def controller(paramstring):
                     )
 
             # Viene del menú de canales: busca hashlink en url y lo reproduce
-            if params['action'] == 'link':
-                hashlink = arenavision.get_hashlink(params['url'])
+            if params['action'] == 'play':
+                hashlink = tools.get_hashlink(params['url'], settings)
+                Kodi.play_acestream_link(hashlink, params['name'], params['icon'])
+
+        # Opciones de LiveFootballVideo
+        elif params['source'] == 'LiveFootballVideo':
+            livefootballvideo = LiveFootballVideo(settings)
+            if params['action'] == 'show':
+
+                # Menú de LiveFootbalLOL
+                if 'item' in params:
+
+                    if params['item'] == 'Hoy y mañana':
+                        kodi.show_menu(
+                            livefootballvideo.get_events_today_and_tomorrow(),
+                            source=params['source'],
+                            show_plot=settings['plot']
+                        )
+
+                    elif params['item'] == 'Agenda 7 días':
+                        kodi.show_menu(
+                            livefootballvideo.get_all_events(),
+                            source=params['source'],
+                            show_plot=settings['plot']
+                        )
+
+                    elif params['item'] == 'Competiciones':
+                        kodi.show_menu(
+                            livefootballvideo.get_competitions(),
+                            source=params['source']
+                        )
+
+                # Menú de Competiciones
+                elif 'competition_id' in params:
+                    kodi.show_menu(
+                        livefootballvideo.get_events_by_competition(params['competition_id']),
+                        source=params['source'],
+                        show_plot=settings['plot']
+                    )
+
+                # Menú de Canales AV1, Sports1, AV3...
+                elif 'event' in params:
+                    kodi.show_channels(
+                        livefootballvideo.get_channels(params['event']),
+                        source=params['source']
+                    )
+
+            # Viene del menú de canales: busca hashlink en url y lo reproduce
+            if params['action'] == 'play':
+                hashlink = tools.get_hashlink(params['url'], settings)
                 Kodi.play_acestream_link(hashlink, params['name'], params['icon'])
 
         # Opciones de LiveFootbalLOL

@@ -67,7 +67,7 @@ class Kodi:
             if source is None:
                 url = self.__get_url(action='show', page=entry['name'])
 
-            # Si hay channel_url vengo de la lista de eventos de LiveFootbalLOL y voy a lista de canales (AV8, Canal1..)
+            # Si hay channel_url vengo de la lista de eventos y voy a lista de canales (AV8, Canal1..)
             elif 'channel_url' in entry:
                 url = self.__get_url(source=source, action='show', event=entry['channel_url'])
 
@@ -151,7 +151,7 @@ class Kodi:
             if 'link' in event:
                 url = self.__get_url(
                     source=source,
-                    action='link',
+                    action='play',
                     url=event['link'],
                     name=event['name'],
                     icon=event['icon']

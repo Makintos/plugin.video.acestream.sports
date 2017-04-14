@@ -13,6 +13,7 @@ import re
 
 
 # Constants
+from lib.cache import Cache
 from lib.errors import WebSiteError
 
 
@@ -107,6 +108,38 @@ def get_web_page(url):
             u'Se ha producido un error en Kodi',
             time=6000
         )
+
+
+def get_hashlink(url, settings, minutes=10):
+    cache = Cache(settings['path'], minutes=minutes)
+
+    # Busca el hash en cache
+    c_hash = cache.load(url)
+    if c_hash:
+        return c_hash['hash']
+
+    # No está en cache, lo obtiene
+    page = get_web_page(url)
+    if not page:
+        raise WebSiteError(
+            u'Error de conexión',
+            u'¿Estás conectado a Internet?',
+            time=settings['notify_secs']
+        )
+
+    ace_hash = re.search(r'.*loadPlayer\(\"([a-f0-9]{40})\",.*', page, re.U).groups()
+    if not ace_hash:
+        write_log("Hashlink no encontrado en '%s'" % url, xbmc.LOGERROR)
+        raise WebSiteError(
+            u'Enlace no encontrado',
+            u'Puede que hayan hecho cambios en la Web',
+            time=settings['notify_secs']
+        )
+
+    # Guarda el hash en caché
+    cache.save(url, {"hash": ace_hash[0]})
+
+    return ace_hash[0]
 
 
 def build_path(path, file_name, resource='images'):

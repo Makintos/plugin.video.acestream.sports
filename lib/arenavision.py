@@ -360,34 +360,3 @@ class Arenavision:
                         u'No hay enlaces para %s' % event['name'],
                         time=self.__settings['notify_secs'])
                 return event['channels']
-
-    def get_hashlink(self, url):
-        cache = Cache(self.__settings['path'], minutes=10)
-
-        # Busca el hash en cache
-        c_hash = cache.load(url)
-        if c_hash:
-            return c_hash['hash']
-
-        # No está en cache, lo obtiene
-        page = tools.get_web_page(url)
-        if not page:
-            raise WebSiteError(
-                u'Error de conexión',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
-
-        ace_hash = re.search(r'.*loadPlayer\(\"([a-f0-9]{40})\",.*', page, re.U).groups()
-        if not ace_hash:
-            tools.write_log("Hashlink no encontrado en '%s'" % url, xbmc.LOGERROR)
-            raise WebSiteError(
-                u'Enlace no encontrado',
-                u'Los de Arenavision han hecho cambios en la Web',
-                time=self.__settings['notify_secs']
-            )
-
-        # Guarda el hash en caché
-        cache.save(url, {"hash": ace_hash[0]})
-
-        return ace_hash[0]
