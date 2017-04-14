@@ -109,7 +109,8 @@ __competition = {
     'EREDIVISIE': 'liga_ho.png',
     'SCOTTISH PREMIERSHIP': 'liga_esc.png',
     'RUSSIAN PREMIER LEAGUE': 'liga_ru.png',
-    'J1 LEAGUE': 'liga_j1.png'
+    'J1 LEAGUE': 'liga_j1.png',
+    'PAULISTA A1': 'liga_br_sao.png'
 }
 
 __genre = {

@@ -60,7 +60,8 @@ __es = {
     'LA LIGA': 'La Liga',
     'LIGA MX': 'Liga Mexicana',
     'PRIMERA DIVISION': 'Liga Argentina',
-    'J1 LEAGUE': 'Liga Japonesa'
+    'J1 LEAGUE': 'Liga Japonesa',
+    'PAULISTA A1': 'Liga de São Paulo'
 }
 
 
