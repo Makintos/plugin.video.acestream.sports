@@ -30,12 +30,15 @@ class LiveFootbalLOL:
             {
                 'name': 'Hoy y mañana',
                 'icon': tools.build_path(self.__settings['path'], 'hoy_manana.png'),
+                'fanart': tools.build_path(self.__settings['path'], 'lfol_art.jpg')
             }, {
                 'name': 'Agenda 7 días',
                 'icon': tools.build_path(self.__settings['path'], 'siete_dias.png'),
+                'fanart': tools.build_path(self.__settings['path'], 'lfol_art.jpg')
             }, {
                 'name': 'Competiciones',
                 'icon': tools.build_path(self.__settings['path'], 'competiciones.png'),
+                'fanart': tools.build_path(self.__settings['path'], 'lfol_art.jpg')
             }]
 
     def __get_competition_art(self, competition):
