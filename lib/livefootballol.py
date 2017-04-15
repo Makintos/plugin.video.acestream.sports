@@ -255,8 +255,11 @@ class LiveFootbalLOL:
         """
         cache = Cache(self.__settings['path'], minutes=10)
 
+        # Monta la URL del evento
+        e_url = '%s%s' % (self.__web_url[:-1] if event_url.startswith('/') else self.__web_url, event_url)
+
         # Busca los canales del evento en caché
-        channels = cache.load(event_url, True)
+        channels = cache.load(e_url, True)
         if channels:
             return channels
 
@@ -264,11 +267,10 @@ class LiveFootbalLOL:
         # Vuelve a obtenerlos
         channels = []
 
-        # GET event_url
-        page = tools.get_web_page(
-            '%s%s' % (self.__web_url[:-1] if event_url.startswith('/') else self.__web_url, event_url))
+        # GET e_url
+        page = tools.get_web_page(e_url)
         if not page:
-            tools.write_log('Can\'t retrieve: ' + event_url, xbmc.LOGERROR)
+            tools.write_log('Can\'t retrieve: ' + e_url, xbmc.LOGERROR)
             raise WebSiteError(
                 u'Error de conexión',
                 u'¿Estás conectado a Internet?',
@@ -335,7 +337,7 @@ class LiveFootbalLOL:
             )
 
         # Guarda los eventos en caché
-        cache.save(event_url, channels)
+        cache.save(e_url, channels)
 
         return channels
 
