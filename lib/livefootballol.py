@@ -296,11 +296,14 @@ class LiveFootbalLOL:
             # ¿Hay ya enlaces?
             if 'will be here' in ch_name:
                 match = re.findall(r'[Mm][Aa][Tt][Cc][Hh]</td>\s*<td><strong>(.*)</strong></td>', page, re.U)
-                raise WebSiteError(
-                    match[0] if match else u'LiveFootbalLOL',
-                    u'Todavía no se han publicado los enlaces del partido',
-                    time=self.__settings['notify_secs']
-                )
+                if len(channels) > 0:
+                    break
+                else:
+                    raise WebSiteError(
+                        match[0] if match else u'LiveFootbalLOL',
+                        u'Todavía no se han publicado los enlaces del partido',
+                        time=self.__settings['notify_secs']
+                    )
 
             # Si no es un enlace acestream continua
             ch_link = tools.str_sanitize(cells[1].find('a').get('href'))
@@ -309,8 +312,8 @@ class LiveFootbalLOL:
 
             # Obtiene el idioma
             if not ch_lang or not re.findall(r'(\[[A-Z]{2}\])', ch_lang, re.U):
-                ch_lang = prev_lang
-            prev_lang = ch_lang
+                ch_lang = prev_lang if prev_lang else '[--]'
+            prev_lang = ch_lang if ch_lang else '[--]'
 
             # Obtiene los datos extendidos y los hashlinks del canal
             channel_data = self.__get_channel_data(cache, ch_link)
@@ -323,7 +326,7 @@ class LiveFootbalLOL:
                                 channel_data['bitrate'],
                                 link['hd'],
                                 ch_lang),
-                            'icon': art.get_channel_art(channel_data['name'], self.__settings['path']),
+                            'icon': art.get_channel_icon(channel_data['name'], self.__settings['path']),
                             'fanart': tools.build_path(self.__settings['path'], 'lfol_art.jpg'),
                             'hash': link['hash']
                         }

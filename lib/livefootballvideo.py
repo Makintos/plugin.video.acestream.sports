@@ -66,8 +66,8 @@ class LiveFootballVideo:
             start.strftime('%d/%m'),
             start.strftime('%H:%M'),
             lang.translate(event['competition']),
-            event['team1'].encode('utf-8').replace('&amp;', '&'),
-            event['team2'].encode('utf-8').replace('&amp;', '&')
+            tools.str_sanitize(event['team1']),
+            tools.str_sanitize(event['team2'])
         )
 
     @staticmethod
@@ -312,7 +312,7 @@ class LiveFootballVideo:
             channels.append(
                 {
                     'name': self.__get_channel_name(ch_name, ch_rate, ch_lang),
-                    'icon': art.get_channel_art(ch_name, self.__settings['path']),
+                    'icon': art.get_channel_icon(ch_name, self.__settings['path']),
                     'fanart': tools.build_path(self.__settings['path'], 'lfv_art.jpg'),
                     'link': ch_link
                 }

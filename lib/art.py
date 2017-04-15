@@ -189,7 +189,7 @@ def get_genre_art(genre, path):
     }
 
 
-def get_channel_art(channel_name, path):
+def get_channel_icon(channel_name, path):
     if 'arenavision' in channel_name.lower():
         return tools.build_path(path, 'arenavision.jpg')
 
