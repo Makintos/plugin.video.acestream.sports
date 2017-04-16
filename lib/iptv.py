@@ -139,6 +139,7 @@ class MovistarTV:
         :rtype: dict
         """
         return {
+            # Cuando tenga logos de canales
             # art.get_channel_icon(channel, self.__settings['path']),
             'icon': tools.build_path(self.__settings['path'], 'movistar.png'),
             'fanart': tools.build_path(self.__settings['path'], 'movistar_art.jpg')
