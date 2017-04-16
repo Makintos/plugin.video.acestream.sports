@@ -114,8 +114,12 @@ class Kodi:
 
         :param events: The events list
         :type events: list
+        :param source: The website source
+        :type source: str
         :param show_plot: Show name as description
         :type show_plot: bool
+        :param is_playable: IsPlayable property
+        :type is_playable: bool
         """
         # Iterate through events.
         for event in events:
@@ -144,6 +148,10 @@ class Kodi:
                 'fanart': event['fanart']}
             )
 
+            # This is mandatory for playable items!
+            if 'video' in event:
+                list_item.setProperty('IsPlayable', 'true')
+
             # Create a URL for a plugin recursive call.
             # plugin://plugin.video.acestream.sports/?source=Arenavision&action=play&url=2af45ce4cd32c3998af2ed
 
@@ -153,6 +161,14 @@ class Kodi:
                     source=source,
                     action='play',
                     url=event['link'],
+                    name=event['name'],
+                    icon=event['icon']
+                )
+            elif 'video' in event:
+                url = self.__get_url(
+                    source=source,
+                    action='play',
+                    video=event['video'],
                     name=event['name'],
                     icon=event['icon']
                 )
@@ -177,6 +193,19 @@ class Kodi:
 
         # Finish creating a virtual folder.
         xbmcplugin.endOfDirectory(self.__settings['handle'])
+
+    def play_video(self, url):
+        """
+        Play a video by the provided path.
+        
+        :param url: Fully-qualified video URL
+        :type url: str
+        """
+        # Crea un elemento reproducible en Kodi
+        play_item = xbmcgui.ListItem(path=url)
+
+        # Envía el elemento a Kodi
+        xbmcplugin.setResolvedUrl(self.__settings['handle'], True, listitem=play_item)
 
     @staticmethod
     def play_acestream_link(url, name='Video', icon=None):

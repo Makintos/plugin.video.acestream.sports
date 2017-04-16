@@ -10,6 +10,7 @@ from urlparse import parse_qsl
 from lib import tools
 from lib.cache import Cache
 from lib.errors import WebSiteError
+from lib.iptv import MovistarTV
 from lib.kodi import Kodi
 from lib.arenavision import Arenavision
 from lib.livefootballol import LiveFootbalLOL
@@ -54,6 +55,11 @@ _web_pages = [
         'name': 'TorrentTV',
         'icon': tools.build_path(__path__, 'ttv.png'),
         'fanart': tools.build_path(__path__, 'ttv_art.jpg')
+    },
+    {
+        'name': 'MovistarTV',
+        'icon': tools.build_path(__path__, 'movistar.png'),
+        'fanart': tools.build_path(__path__, 'movistar_art.jpg')
     }
 ]
 
@@ -141,6 +147,9 @@ def controller(paramstring):
 
             elif params['page'] == 'TorrentTV':
                 kodi.show_menu(TorrentTV(settings).get_menu(), source=params['page'])
+
+            elif params['page'] == 'MovistarTV':
+                kodi.show_menu(MovistarTV(settings).get_menu(), source=params['page'])
 
         # Opciones de Arenavision
         elif params['source'] == 'Arenavision':
@@ -298,8 +307,20 @@ def controller(paramstring):
                         show_plot=settings['plot']
                     )
 
+        # Opciones de MovistarTV
+        elif params['source'] == 'MovistarTV':
+            movistartv = MovistarTV(settings)
+            if params['action'] == 'show':
+
+                # Menú de MovistarTV
+                if 'event' in params:
+                    kodi.show_channels(movistartv.get_channels(params['event']))
+
         elif params['action'] == 'play':
-            Kodi.play_acestream_link(params['url'], params['name'], params['icon'])
+            if 'url' in params:
+                Kodi.play_acestream_link(params['url'], params['name'], params['icon'])
+            elif 'video' in params:
+                kodi.play_video(params['video'])
 
 
 if __name__ == '__main__':

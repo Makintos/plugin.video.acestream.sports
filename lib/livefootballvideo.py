@@ -275,9 +275,18 @@ class LiveFootballVideo:
                 time=self.__settings['notify_secs']
             )
 
-        # Obtiene la tabla de datos de los canales
+        # Obtiene el bloque que contiene la tabla de enlaces acestream
         soup = BeautifulSoup(page, 'html5lib')
-        table = soup.find('table', attrs={'class': 'streamtable'})
+        div = soup.find('div', attrs={'id': 'livelist'})
+        if not div:
+            raise WebSiteError(
+                u'No hay enlaces',
+                u'Los de LiveFootballVideo han hecho cambios en la Web',
+                time=self.__settings['notify_secs']
+            )
+
+        # Obtiene la tabla de datos de los canales
+        table = div.find('table', attrs={'class': 'streamtable'})
         if not table:
             # No hay enlaces
             match = re.findall(r'class="thick">(.*)</h3>', page, re.U)
@@ -300,7 +309,7 @@ class LiveFootballVideo:
             ch_link = tools.str_sanitize(cells[4].find('a').get('href'))
 
             # Si no es un enlace acestream continua
-            if not tools.str_sanitize(ch_type) == 'acestream' and 'acestream' not in ch_link:
+            if not tools.str_sanitize(ch_type).lower() == 'acestream' and 'acestream' not in ch_link:
                 continue
 
             # Prepara el idioma
@@ -344,4 +353,4 @@ class LiveFootballVideo:
         elif int(kbps) < 1000:
             color = 'red'
 
-        return '%s %s [COLOR %s](%s)[/COLOR]' % (name, lang_code, color, bitrate)
+        return '%s [%s] [COLOR %s](%s)[/COLOR]' % (name, lang_code, color, bitrate)

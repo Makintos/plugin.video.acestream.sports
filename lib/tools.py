@@ -35,7 +35,6 @@ def write_log(message, level=xbmc.LOGNOTICE):
 
 def str_sanitize(text):
     return re.sub(r'<[^>]*>', '', str(text.encode('utf8')
-                                      .replace('_', ' ')
                                       .replace('\t', '')
                                       .replace('\n', ' ')
                                       .replace('  ', ' ')

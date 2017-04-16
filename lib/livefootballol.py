@@ -333,9 +333,10 @@ class LiveFootbalLOL:
                     )
 
         if len(channels) == 0:
+            match = re.findall(r'[Mm][Aa][Tt][Cc][Hh]</td>\s*<td><strong>(.*)</strong></td>', page, re.U)
             raise WebSiteError(
-                u'No hay enlaces',
-                u'Los de LiveFootbalLOL han hecho cambios en la Web',
+                u'%s' % (match[0]) if match else u'LiveFootbalLOL.me',
+                u'Hay enlaces del partido pero no son de acestream. Inténtalo más tarde...',
                 time=self.__settings['notify_secs']
             )
 
