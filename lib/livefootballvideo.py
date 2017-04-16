@@ -74,7 +74,7 @@ class LiveFootballVideo:
     def __get_number_of_pages(page):
         pages = re.findall(r'>[Pp][Aa][Gg][Ee]\s[0-9]+\sof\s([0-9]+)<', page, re.U)
         if not pages:
-            tools.write_log('LiveFootballVideo: No se encuentra el número de páginas')
+            tools.write_log(u'LiveFootballVideo: No se encuentra el número de páginas')
             return None
         return int(pages[0])
 
