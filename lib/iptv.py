@@ -140,6 +140,6 @@ class MovistarTV:
         """
         return {
             # art.get_channel_icon(channel, self.__settings['path']),
-            'icon': 'http://www.images.mediadata.tv/api_image/fotos/2014/10/15268795.jpg',
+            'icon': tools.build_path(self.__settings['path'], 'movistar.png'),
             'fanart': tools.build_path(self.__settings['path'], 'movistar_art.jpg')
         }
