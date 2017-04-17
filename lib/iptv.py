@@ -3,9 +3,7 @@ import re
 
 import tools
 
-from lib import art
 from lib.cache import Cache
-from lib.epg import EPG
 from lib.errors import WebSiteError
 
 
@@ -118,15 +116,6 @@ class MovistarTV:
                 u'La lista no contiene canales que se puedan reproducir',
                 time=self.__settings['notify_secs']
             )
-
-        # Añade la EPG
-        # No puede haber bucle aquí, hay que pasar la lista entera
-        #
-        # epg = EPG(self.__settings)
-        # for channel in channels:
-        #    epg_data = epg.get_epg_data(channel['name'])
-        #    if epg_data:
-        #        channel.update(epg_data)
 
         cache.save(url, channels)
         return channels
