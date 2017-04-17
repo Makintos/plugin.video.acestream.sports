@@ -41,7 +41,7 @@ _web_pages = [
         'icon': tools.build_path(__path__, 'arenavision.jpg'),
         'fanart': tools.build_path(__path__, 'arenavision_art.jpg')
     },
-{
+    {
         'name': 'LiveFootballVideo',
         'icon': tools.build_path(__path__, 'lfv.png'),
         'fanart': tools.build_path(__path__, 'lfv_art.jpg')
