@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.8"
+       version="1.0.9"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,7 +28,12 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.8
+        <news>Version 1.0.9
+- Si la agenda de Arenavision no incluye la hora de un evento la establece las 00:00h
+- Nuevo scrapper para la guía EPG
+- Detecta correctamente las peticiones HTTP que generan errores 404 (página no encontrada)
+
+Version 1.0.8
 - Nuevo scrapper para LiveFootballVideo.com
 - Nuevo scrapper para IPTV
 - El scrapper de LiveFootbalLOL.me detecta si se han publicado enlaces

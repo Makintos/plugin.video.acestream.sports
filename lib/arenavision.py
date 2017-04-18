@@ -165,11 +165,13 @@ class Arenavision:
             cells = row.findAll("td")
             links = self.__get_links(tools.str_sanitize(cells[5].get_text()), urls['channels'])
             if links and len(links) > 0:
+                time_e = re.findall(r'([0-2][0-9]:[0-5][0-9])', cells[1].get_text(), re.U)
+                time_e = time_e[0] if time_e else '00:00'
                 competition_art = self.__get_competition_art(cells[2].get_text(), cells[3].get_text())
                 events.append(
                     {
                         'date': tools.str_sanitize(cells[0].get_text()),
-                        'time': tools.str_sanitize(cells[1].get_text()[:5]),
+                        'time': tools.str_sanitize(time_e),
                         'sport': tools.str_sanitize(cells[2].get_text()),
                         'competition': tools.str_sanitize(cells[3].get_text()),
                         'event': tools.str_sanitize(cells[4].get_text()),
@@ -177,7 +179,7 @@ class Arenavision:
                         'name': self.__get_event_name(
                             tools.str_sanitize(cells[4].get_text()),
                             tools.str_sanitize(cells[0].get_text()),
-                            tools.str_sanitize(cells[1].get_text()[:5]),
+                            tools.str_sanitize(time_e),
                             tools.str_sanitize(cells[3].get_text())),
                         'icon': competition_art['icon'],
                         'fanart': competition_art['fanart']

@@ -137,16 +137,31 @@ class Kodi:
             if show_plot:
                 info['plot'] = event['name']
 
+            if 'video' in event:
+                info['tvshowtitle'] = event['tvshowtitle'] if 'tvshowtitle' in event else ''
+                info['plot'] = event['plot'] if 'plot' in event else ''
+                info['plotoutline'] = event['plotoutline'] if 'plotoutline' in event else ''
+                info['genre'] = event['genre'] if 'genre' in event else ''
+                info['cast'] = event['cast'] if 'cast' in event else []
+                info['director'] = event['director'] if 'director' in event else ''
+                info['credits'] = event['credits'] if 'credits' in event else ''
+                info['aired'] = event['aired'] if 'aired' in event else ''
+                info['duration'] = event['duration'] if 'duration' in event else ''
+                info['mediatype'] = event['mediatype'] if 'mediatype' in event else 'tvshow'
+
             list_item.setInfo('video', info)
 
             # Set graphics for the list item
             # Thumbnail, fanart, banner, poster, landscape...
 
-            list_item.setArt({
+            art = {
                 'thumb': event['icon'],
                 'icon': event['icon'],
-                'fanart': event['fanart']}
-            )
+                'poster': event['icon'],
+                'fanart': event['fanart'],
+            }
+
+            list_item.setArt(art)
 
             # This is mandatory for playable items!
             if 'video' in event:

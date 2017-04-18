@@ -1,3 +1,8 @@
+Version 1.0.9
+- Si la agenda de Arenavision no incluye la hora de un evento la establece las 00:00h
+- Nuevo scrapper para la guía EPG
+- Detecta correctamente las peticiones HTTP que generan errores 404 (página no encontrada)
+
 Version 1.0.8
 - Nuevo scrapper para LiveFootballVideo.com
 - Nuevo scrapper para IPTV

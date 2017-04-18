@@ -2,8 +2,10 @@
 import re
 
 import tools
+from lib import art
 
 from lib.cache import Cache
+from lib.epg import EPG
 from lib.errors import WebSiteError
 
 
@@ -70,10 +72,13 @@ class MovistarTV:
 
     def get_channels(self, url):
         cache = Cache(self.__settings['path'], minutes=360)
+        epg = EPG(self.__settings)
 
         # Busca los canales en cache
         channels = cache.load(url)
         if channels:
+            # Añade o actualiza la EPG a los canales
+            epg.add_metadata(channels)
             return channels
 
         # No están en cache, los obtiene
@@ -102,12 +107,11 @@ class MovistarTV:
             ch_name = tools.str_sanitize(ch[0])
             ch_link = tools.str_sanitize(ch[1])
             if not (ch_link.endswith('.m3u8') or ch_link.endswith('.m3u')):
-                channel_art = self.__get_art(ch_name)
                 channels.append({
                     'name': ch_name,
                     'video': ch_link,
-                    'icon': channel_art['icon'],
-                    'fanart': channel_art['fanart']
+                    'icon': tools.build_path(self.__settings['path'], 'movistar.png'),
+                    'fanart': tools.build_path(self.__settings['path'], 'movistar_art.jpg')
                 })
 
         if len(channels) == 0:
@@ -117,19 +121,9 @@ class MovistarTV:
                 time=self.__settings['notify_secs']
             )
 
+        # Añade la EPG a los canales
+        epg.add_metadata(channels)
+
+        # Guarda los canales en caché y los devuelve
         cache.save(url, channels)
         return channels
-
-    def __get_art(self, channel):
-        """
-        Get a dict containing the icon and fanart URLs for a given category
-
-        :return: The dict containing icon and fanart for a given category
-        :rtype: dict
-        """
-        return {
-            # Cuando tenga logos de canales
-            # art.get_channel_icon(channel, self.__settings['path']),
-            'icon': tools.build_path(self.__settings['path'], 'movistar.png'),
-            'fanart': tools.build_path(self.__settings['path'], 'movistar_art.jpg')
-        }

@@ -34,12 +34,14 @@ def write_log(message, level=xbmc.LOGNOTICE):
 
 
 def str_sanitize(text):
-    return re.sub(r'<[^>]*>', '', str(text.encode('utf8')
-                                      .replace('\t', '')
-                                      .replace('\n', ' ')
-                                      .replace('  ', ' ')
-                                      .replace('&amp;', '&')
-                                      ).strip())
+    return re.sub(r'<[^>]*>', '', str_unescape(
+        text.encode('utf8').replace('\t', '').replace('\n', ' ').replace('  ', ' ')
+    ).strip())
+
+
+def str_unescape(str):
+    return str.replace('&quot;', '"')\
+        .replace('&gt;', '>').replace('&lt;', '<').replace('&amp;', '&').replace('\/', '/').replace('&#039;', "'")
 
 
 def random_agent():
@@ -106,13 +108,20 @@ def get_web_page(url):
         if response.getcode() == 200:
             return content
         return None
-    except:
+    except urllib2.HTTPError, e:
         write_log('Exception on GET %s' % url, xbmc.LOGERROR)
-        raise WebSiteError(
-            u'Error de conexión',
-            u'Se ha producido un error en Kodi',
-            time=6000
-        )
+        if e.code == 404:
+            raise WebSiteError(
+                u'La página no existe',
+                u'Seguramente estén actualizando la agenda. Inténtalo más tarde...',
+                time=5000
+            )
+        else:
+            raise WebSiteError(
+                u'Error de conexión',
+                u'Se ha producido un error en Kodi al conectar, ignóralo',
+                time=5000
+            )
 
 
 def get_hashlink(url, settings, minutes=10):
