@@ -153,19 +153,48 @@ def get_hashlink(url, settings, minutes=10):
             time=settings['notify_secs']
         )
 
-    ace_hash = re.search(r'.*loadPlayer\(\"([a-f0-9]{40})\",.*', page, re.U).groups()
+    # Busca el hash de acestream
+    ace_hash = find_hash(page)
+    if not ace_hash:
+        # No lo ha encontrado, busca una URL que pueda contener el hash
+        hash_url = find_hash_url(page)
+        if hash_url:
+            # Hay URL, busca el hash en la nueva página
+            page = get_web_page(hash_url[0])
+            if page:
+                ace_hash = find_hash(page)
+            else:
+                raise WebSiteError(
+                    u'Error de conexión',
+                    u'¿Estás conectado a Internet?',
+                    time=settings['notify_secs']
+                )
+
     if not ace_hash:
         write_log("Hashlink no encontrado en '%s'" % url, xbmc.LOGERROR)
         raise WebSiteError(
             u'Enlace no encontrado',
-            u'Puede que hayan hecho cambios en la Web',
+            u'El enlace está en otra página y no se puede llegar a ella',
             time=settings['notify_secs']
         )
 
     # Guarda el hash en caché
-    cache.save(url, {"hash": ace_hash[0]})
+    cache.save(url, {"hash": ace_hash})
 
-    return ace_hash[0]
+    return ace_hash
+
+
+def find_hash(page):
+    ace_hash = re.search(r'.*loadPlayer\(\"([a-f0-9]{40})\",.*', page, re.U)
+    return ace_hash.groups()[0] if ace_hash else None
+
+
+def find_hash_url(page):
+    # RegEx para Rivo ACEXX
+    hash_url = re.findall(r'<iframe\s*id="player"\s*src=[\'"](.*)[\'"]\s+width=', page, re.U)
+    if hash_url:
+        return hash_url[0]
+    return None
 
 
 def build_path(path, file_name, resource='images'):
