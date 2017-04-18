@@ -160,7 +160,7 @@ def get_hashlink(url, settings, minutes=10):
         hash_url = find_hash_url(page)
         if hash_url:
             # Hay URL, busca el hash en la nueva página
-            page = get_web_page(hash_url[0])
+            page = get_web_page(hash_url)
             if page:
                 ace_hash = find_hash(page)
             else:
