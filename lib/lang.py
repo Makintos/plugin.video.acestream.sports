@@ -14,6 +14,7 @@ __es = {
     'BASKETBALL': 'Baloncesto',
     'FORMULA 1': 'Formula 1',
     'MOTOGP': 'Moto GP',
+    'MOTO GP': 'Moto GP',
     'TENNIS': 'Tenis',
     'MMA': 'Lucha',
     'CYCLING': 'Ciclismo',

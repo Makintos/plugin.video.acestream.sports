@@ -19,6 +19,10 @@ __sport = {
         'icon': 'motogp.png',
         'fanart': 'motogp_art.jpg'
     },
+    'MOTO GP': {
+        'icon': 'motogp.png',
+        'fanart': 'motogp_art.jpg'
+    },
     'TENNIS': {
         'icon': 'tenis.png',
         'fanart': 'tenis_art.jpg'
