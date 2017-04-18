@@ -71,14 +71,14 @@ class MovistarTV:
         return ch_lists
 
     def get_channels(self, url):
-        cache = Cache(self.__settings['path'], minutes=360)
+        cache = Cache(self.__settings['path'], minutes=120)
         epg = EPG(self.__settings)
 
         # Busca los canales en cache
         channels = cache.load(url)
         if channels:
-            # Añade o actualiza la EPG a los canales
-            epg.add_metadata(channels)
+            # Actualiza la EPG de los canales
+            epg.update_metadata(channels)
             return channels
 
         # No están en cache, los obtiene

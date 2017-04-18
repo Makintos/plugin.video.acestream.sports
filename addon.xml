@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.9"
+       version="1.0.10"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,7 +28,11 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.9
+        <news>Version 1.0.10
+- Nuevo sistema de búsqueda de enlaces hash de acestream
+- La EPG se actualiza correctamente al leer los datos de la caché
+
+Version 1.0.9
 - Si la agenda de Arenavision no incluye la hora de un evento la establece las 00:00h
 - Nuevo scrapper para la guía EPG
 - Detecta correctamente las peticiones HTTP que generan errores 404 (página no encontrada)
