@@ -95,7 +95,7 @@ def check_for_updates(notify, notify_secs):
             sv = server_v[0].split('.')
             lv = __version__.split('.')
             if float('%s.%s' % (sv[0], sv[1])) > float('%s.%s' % (lv[0], lv[1])) or \
-                    (float('%s.%s' % (sv[0], sv[1])) == float('%s.%s' % (lv[0], lv[1])) and sv[2] > lv[2]):
+                    (float('%s.%s' % (sv[0], sv[1])) == float('%s.%s' % (lv[0], lv[1])) and int(sv[2]) > int(lv[2])):
                 tools.write_log('Server version: %s' % server_v[0])
                 tools.write_log('Installed version: %s' % __version__)
                 if notify:
