@@ -313,7 +313,7 @@ class LiveFootballVideo:
                 continue
 
             # Prepara el idioma
-            ch_lang = '[%s]' % '--' if not ch_lang or '-' in ch_lang else ch_lang
+            ch_lang = '--' if not ch_lang or '-' in ch_lang else ch_lang
 
             # Prepara el bitrate
             ch_rate = 'desconocido' if not ch_rate or '-' in ch_rate else ch_rate
