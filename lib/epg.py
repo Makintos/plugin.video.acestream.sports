@@ -7,6 +7,7 @@ import time
 import tools
 from lib import art
 from lib.cache import Cache
+from lib.errors import WebSiteError
 
 
 class EPG:
@@ -46,9 +47,10 @@ class EPG:
         epg = []
 
         # GET url
-        page = tools.get_web_page(self.__channels_epg)
-        if not page:
-            tools.write_log('GET 404 %s' % self.__channels_epg)
+        try:
+            page = tools.get_web_page(self.__channels_epg)
+        except WebSiteError as e:
+            tools.write_log('%s: %s' % (e.title, e.message))
             return epg
 
         # Busca los datos en formato json
@@ -57,8 +59,8 @@ class EPG:
             tools.write_log('data-json= not found in %s' % self.__channels_epg)
             return epg
 
+        # Carga y guarda la EPG
         try:
-            # Carga y guarda la EPG
             epg = json.loads(tools.str_sanitize(data[0]))['channels']
             cache.save(self.__channels_epg, epg)
         except (ValueError, IndexError, KeyError):

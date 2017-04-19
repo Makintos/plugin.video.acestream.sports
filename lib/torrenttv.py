@@ -77,12 +77,6 @@ class TorrentTV:
 
         # GET http://super-pomoyka.us.to/trash/ttv-list/ttv.json
         channels = tools.get_web_page(self.__agenda_url)
-        if not channels:
-            raise WebSiteError(
-                u'La página no está online',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
 
         # Busca todas las etiquetas name, url y cat
         # y las guarda en una lista de tuplas ('etiqueta', 'valor')

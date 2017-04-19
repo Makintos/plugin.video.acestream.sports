@@ -111,12 +111,6 @@ class LiveFootbalLOL:
 
         # GET livefootballol.in
         page = tools.get_web_page(self.__web_url)
-        if not page:
-            raise WebSiteError(
-                u'La página no está online',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
 
         # Averigua la URI de la agenda
         urls = self.__get_urls(page)
@@ -132,12 +126,6 @@ class LiveFootbalLOL:
 
         # GET agenda
         agenda = tools.get_web_page(urls['agenda'])
-        if not agenda:
-            raise WebSiteError(
-                u'Error de conexión',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
 
         # Obtiene la tabla de eventos
         a_events = re.findall(
@@ -269,13 +257,6 @@ class LiveFootbalLOL:
 
         # GET e_url
         page = tools.get_web_page(e_url)
-        if not page:
-            tools.write_log('Can\'t retrieve: ' + e_url, xbmc.LOGERROR)
-            raise WebSiteError(
-                u'Error de conexión',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
 
         # Busca la jornada
         # match_week = re.findall(r'[Mm][Aa][Tt][Cc][Hh]\s[Ww][Ee]{2}[Kk]</td>\s*<td>([0-9]+)</td>', page, re.U)
@@ -364,13 +345,6 @@ class LiveFootbalLOL:
 
         # GET url
         page = tools.get_web_page(url)
-        if not page:
-            tools.write_log('Error al conectar: ' + url, xbmc.LOGERROR)
-            raise WebSiteError(
-                u'Error de conexión',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
 
         # Obtiene la tabla de canales
         soup = BeautifulSoup(page, 'html5lib')

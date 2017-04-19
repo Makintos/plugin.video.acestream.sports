@@ -126,12 +126,6 @@ class Arenavision:
 
         # GET arenavision.in
         page = tools.get_web_page(self.__web_url)
-        if not page:
-            raise WebSiteError(
-                u'La página no está online',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
 
         # Averigua la URI de la agenda y los enlaces de los canales
         # buscando en todas las URL de la página principal:
@@ -150,12 +144,6 @@ class Arenavision:
 
         # GET agenda
         agenda = tools.get_web_page(urls['agenda'])
-        if not agenda:
-            raise WebSiteError(
-                u'Error de conexión',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
 
         # Obtiene la tabla de eventos
         soup = BeautifulSoup(agenda, 'html5lib')
@@ -200,7 +188,7 @@ class Arenavision:
 
     def __get_links(self, channels, urls):
         """
-        Get channel links list for a given event
+        Get link list of channels URL's for a given string
 
         :param channels: The channels string
         :type: channels: str

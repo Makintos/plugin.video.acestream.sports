@@ -11,12 +11,11 @@ import platform
 import json
 import re
 
-
-# Constants
 from lib.cache import Cache
 from lib.errors import WebSiteError
 
 
+# Constants
 def STRING():
     return 0
 
@@ -107,9 +106,9 @@ def get_web_page(url):
         write_log('GET %i %s' % (response.getcode(), url))
         if response.getcode() == 200:
             return content
-        return None
+        raise urllib2.HTTPError
     except urllib2.HTTPError, e:
-        write_log('Exception on GET %s' % url, xbmc.LOGERROR)
+        write_log('HTTPError %i on GET %s' % (e.code, url), xbmc.LOGERROR)
         if e.code == 404:
             raise WebSiteError(
                 u'La página no existe',
@@ -119,9 +118,23 @@ def get_web_page(url):
         else:
             raise WebSiteError(
                 u'Error de conexión',
-                u'Se ha producido un error en Kodi al conectar, ignóralo',
+                u'La web se ha caído, inténtalo en otra',
                 time=5000
             )
+    except urllib2.URLError:
+        write_log('URL error on GET %s' % url, xbmc.LOGERROR)
+        raise WebSiteError(
+            u'Error de conexión',
+            u'No hay conexión a Internet o la Web ya no existe...',
+            time=5000
+        )
+    except ValueError:
+        write_log('Value error on GET %s' % url, xbmc.LOGERROR)
+        raise WebSiteError(
+            u'URL mal formada',
+            u'Han hecho cambios en la Web, inténtalo en otra...',
+            time=5000
+        )
 
 
 def get_hashlink(url, settings, minutes=10):
@@ -146,12 +159,6 @@ def get_hashlink(url, settings, minutes=10):
 
     # No está en cache, lo obtiene
     page = get_web_page(url)
-    if not page:
-        raise WebSiteError(
-            u'Error de conexión',
-            u'¿Estás conectado a Internet?',
-            time=settings['notify_secs']
-        )
 
     # Busca el hash de acestream
     ace_hash = find_hash(page)
@@ -161,20 +168,13 @@ def get_hashlink(url, settings, minutes=10):
         if hash_url:
             # Hay URL, busca el hash en la nueva página
             page = get_web_page(hash_url)
-            if page:
-                ace_hash = find_hash(page)
-            else:
-                raise WebSiteError(
-                    u'Error de conexión',
-                    u'¿Estás conectado a Internet?',
-                    time=settings['notify_secs']
-                )
+            ace_hash = find_hash(page)
 
     if not ace_hash:
         write_log("Hashlink no encontrado en '%s'" % url, xbmc.LOGERROR)
         raise WebSiteError(
             u'Enlace no encontrado',
-            u'El enlace está en otra página y no se puede llegar a ella',
+            u'El enlace está en otra página y no se puede llegar a él',
             time=settings['notify_secs']
         )
 

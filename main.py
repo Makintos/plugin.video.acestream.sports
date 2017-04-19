@@ -88,24 +88,23 @@ def check_for_updates(notify, notify_secs):
 
     # No está en caché, comprueba la última versión
     xml = tools.get_web_page(_server_addon_xml_url)
-    if xml:
-        server_v = re.findall(r'version="([0-9]{1,5}\.[0-9]{1,5}\.[0-9]{1,5})"', xml, re.U)
-        if server_v and type(server_v) == list and len(server_v) > 0:
-            cache.save(_server_addon_xml_url, {'version': server_v[0]})
-            sv = server_v[0].split('.')
-            lv = __version__.split('.')
-            if float('%s.%s' % (sv[0], sv[1])) > float('%s.%s' % (lv[0], lv[1])) or \
-                    (float('%s.%s' % (sv[0], sv[1])) == float('%s.%s' % (lv[0], lv[1])) and int(sv[2]) > int(lv[2])):
-                tools.write_log('Server version: %s' % server_v[0])
-                tools.write_log('Installed version: %s' % __version__)
-                if notify:
-                    tools.Notify().notify(
-                        u'Acestream Sports',
-                        u'Se está actualizando a la versión %s' % server_v[0],
-                        disp_time=notify_secs
-                    )
-                xbmc.executebuiltin("UpdateAddonRepos")
-                xbmc.executebuiltin("UpdateLocalAddons")
+    server_v = re.findall(r'version="([0-9]{1,5}\.[0-9]{1,5}\.[0-9]{1,5})"', xml, re.U)
+    if server_v and type(server_v) == list and len(server_v) > 0:
+        cache.save(_server_addon_xml_url, {'version': server_v[0]})
+        sv = server_v[0].split('.')
+        lv = __version__.split('.')
+        if float('%s.%s' % (sv[0], sv[1])) > float('%s.%s' % (lv[0], lv[1])) or \
+                (float('%s.%s' % (sv[0], sv[1])) == float('%s.%s' % (lv[0], lv[1])) and int(sv[2]) > int(lv[2])):
+            tools.write_log('Server version: %s' % server_v[0])
+            tools.write_log('Installed version: %s' % __version__)
+            if notify:
+                tools.Notify().notify(
+                    u'Acestream Sports',
+                    u'Se está actualizando a la versión %s' % server_v[0],
+                    disp_time=notify_secs
+                )
+            xbmc.executebuiltin("UpdateAddonRepos")
+            xbmc.executebuiltin("UpdateLocalAddons")
 
 
 def controller(paramstring):

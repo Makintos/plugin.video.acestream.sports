@@ -101,12 +101,6 @@ class LiveFootballVideo:
 
         # GET livefootballvideo.com/streaming
         page = tools.get_web_page(agenda_url)
-        if not page:
-            raise WebSiteError(
-                u'La página no está online',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
 
         # Obtiene el número de páginas de la agenda
         total_pages = self.__get_number_of_pages(page)
@@ -115,20 +109,19 @@ class LiveFootballVideo:
 
         # Obtiene la tabla de eventos
         for page_number in range(0, total_pages):
-            # GET livefootballvideo.com/streaming/page/page_number
+            # GET livefootballvideo.com/streaming/page/{page_number}
             page = tools.get_web_page('%s/page/%i' % (agenda_url, page_number + 1)) if page_number > 0 else page
-            if page:
-                e = re.findall(
-                    '<li\s*(?:class="odd")?>\s*<div\s*class="leaguelogo\s*column">\s*<img.+?src=".+?"\s*alt=".+?"/>' +
-                    '\s*</div>\s*<div\s*class="league\s*column">\s*<a\s*href=".+?"\s*title=".+?">(.+?)</a>\s*</div>' +
-                    '\s*<div\s*class="date_time\s*column"><span\s*class="starttime\s*time"\s*rel="(.+?)">.+?</span>' +
-                    '\s*-\s*<span\s*class="endtime\s*time"\s*rel="(.+?)">.+?</span></div>\s*<div\s*class="team' +
-                    '\s*column"><img.+?alt="(.+?)"\s*src=".+?"><span>.+?</span></div>\s*<div\s*class="versus' +
-                    '\s*column">vs.</div>\s*<div\s*class="team\s*away\s*column"><span>(.+?)</span><img.+?alt=".+?"' +
-                    '\s*src=".+?"></div>\s*<div\s*class="live_btn\s*column">\s*<a\s*(class="online")?\s*href="(.+?)">',
-                    page)
-                if e:
-                    web_events.extend(map(list, e))
+            e = re.findall(
+                '<li\s*(?:class="odd")?>\s*<div\s*class="leaguelogo\s*column">\s*<img.+?src=".+?"\s*alt=".+?"/>' +
+                '\s*</div>\s*<div\s*class="league\s*column">\s*<a\s*href=".+?"\s*title=".+?">(.+?)</a>\s*</div>' +
+                '\s*<div\s*class="date_time\s*column"><span\s*class="starttime\s*time"\s*rel="(.+?)">.+?</span>' +
+                '\s*-\s*<span\s*class="endtime\s*time"\s*rel="(.+?)">.+?</span></div>\s*<div\s*class="team' +
+                '\s*column"><img.+?alt="(.+?)"\s*src=".+?"><span>.+?</span></div>\s*<div\s*class="versus' +
+                '\s*column">vs.</div>\s*<div\s*class="team\s*away\s*column"><span>(.+?)</span><img.+?alt=".+?"' +
+                '\s*src=".+?"></div>\s*<div\s*class="live_btn\s*column">\s*<a\s*(class="online")?\s*href="(.+?)">',
+                page)
+            if e:
+                web_events.extend(map(list, e))
 
         if len(web_events) == 0:
             raise WebSiteError(
@@ -267,13 +260,6 @@ class LiveFootballVideo:
 
         # GET event_url
         page = tools.get_web_page(event_url)
-        if not page:
-            tools.write_log('Can\'t retrieve: ' + event_url, xbmc.LOGERROR)
-            raise WebSiteError(
-                u'Error de conexión',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
 
         # Obtiene el bloque que contiene la tabla de enlaces acestream
         soup = BeautifulSoup(page, 'html5lib')

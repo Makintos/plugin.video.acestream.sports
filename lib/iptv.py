@@ -35,12 +35,6 @@ class MovistarTV:
 
         # GET http://iptv.filmover.com/category/spain/
         page = tools.get_web_page(self.__channels_url)
-        if not page:
-            raise WebSiteError(
-                u'La página no está online',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
 
         # Busca todas URL de listas de canales
         # Una por día, la primera es la lista más reciente
@@ -86,12 +80,6 @@ class MovistarTV:
 
         # GET url
         page = tools.get_web_page(url)
-        if not page:
-            raise WebSiteError(
-                u'La página no está online',
-                u'¿Estás conectado a Internet?',
-                time=self.__settings['notify_secs']
-            )
 
         # Obtiene los nombres y urls de los canales
         chs = re.findall(r'#EXTINF:.*,(.*)<br\s/>\s(http[s]?://.*)<', page, re.U)
