@@ -88,6 +88,7 @@ class EPG:
         for channel in channels:
 
             # Añade el logo del canal
+            # TODO: Quitar los encode/decode de la EPG
             chn = channel['name'].encode('utf-8').lower().replace('ç', 'c').replace(' ', '') \
                 if isinstance(channel['name'], unicode) \
                 else channel['name'].decode('utf-8').lower().replace(u'ç', u'c').replace(' ', '')
@@ -133,16 +134,19 @@ class EPG:
         return channels
 
     def update_metadata(self, channels):
+
         # Obtiene la EPG
         epg = self.__get_epg_data()
         if not epg:
             return channels
 
         # Añade los datos
+        tools.write_log('Updating EPG metadata')
         for channel in channels:
+            chn = channel['name'].split(' [COLOR ')[0]
 
             # Busca la EPG del canal
-            channel_epg = self.__get_by_channel_name(epg, channel['name'].split(' [COLOR ')[0])
+            channel_epg = self.__get_by_channel_name(epg, chn)
             if not channel_epg:
                 continue
 
@@ -157,9 +161,7 @@ class EPG:
             hora = datetime.datetime.fromtimestamp(epg_info['starts']).strftime('%H:%M')
             channel.update(epg_info)
 
-            channel['name'] = '%s [COLOR yellow](%s %s)[/COLOR]' % (
-                channel['name'].split(' [COLOR ')[0], hora, epg_info['title']
-            )
+            channel['name'] = '%s [COLOR yellow](%s %s)[/COLOR]' % (chn, hora, epg_info['title'])
 
             if epg_info['image'] and epg_info['image'].startswith('http'):
                 channel['icon'] = epg_info['image']
@@ -180,7 +182,7 @@ class EPG:
         if type(epg_programs) == list:
             for event in epg_programs:
                 # noinspection PyTypeChecker
-                if event['eventid'] != 0 and float(event['starts']) <= now <= float(event['ends']):
+                if event['eventid'] != 0 and float(event['starts']) <= now < float(event['ends']):
                     return {
                         'starts': event['starts'],
                         'ends': event['ends'],
