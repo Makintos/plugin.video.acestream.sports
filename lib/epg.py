@@ -17,7 +17,7 @@ class EPG:
     __channels = [
         'La 1', 'La 2', 'Antena 3', 'Cuatro', 'Telecinco', 'Sexta', '24', 'Clan', 'Teledeporte', 'Neox', 'Nova',
         'Atres', 'Mega', 'FDF', 'Energy', 'Be Mad', 'Divinity', 'Boing', 'Gol', 'MAX', '13tv', 'Intereconom',
-        'Disney Channel', 'TEN', 'Kiss', 'Real Madrid', 'Paramount', 'Telemadrid', 'Otra', 'TV3', '33', 'sport 3',
+        'Disney Ch', 'TEN', 'Kiss', 'Real Madrid', 'Paramount', 'Telemadrid', 'Otra', 'TV3', '33', 'sport 3',
         'TB 1', 'TB 2', 'TB 3', 'TB 4', 'TVG', 'Canal Sur', 'Andaluc', 'Mancha', 'Arag', 'TPA', 'Extremadura',
         'Estrenos', 'Series', '#0', 'tbol', 'beIN LaLiga', 'beIN Sport', 'AXN', 'Life', 'FOX', 'TNT', 'Nickelodeon',
         'Calle 13', 'Sy', 'Historia', 'Geographic', 'Odis', 'Discovery', 'COSMO', 'Decasa', 'Cocina', 'Viajar',
@@ -34,9 +34,7 @@ class EPG:
         :return: The list containing the EPG data
         :rtype: list
         """
-        # TODO: El tiempo no son 30 min sino hasta las 6:30h del mismo o próximo día, depende de la hora que sea
-        # o mejor: hasta el timestamp de fin de uno de los eventos de algún canal de la guia
-        cache = Cache(self.__settings['path'], minutes=30)
+        cache = Cache(self.__settings['path'], minutes=180)
 
         # Busca la EPG en cache
         epg = cache.load(self.__channels_epg, log_read_ok=False)
@@ -70,7 +68,7 @@ class EPG:
 
     def __get_by_channel_name(self, epg, channel_name):
         for ch_name in self.__channels:
-            chn = channel_name \
+            chn = channel_name.encode('utf-8').lower().replace('ç', 'c').replace(' ', '') \
                 if isinstance(channel_name, unicode) \
                 else channel_name.decode('utf-8').lower().replace(u'ç', u'c').replace(' ', '')
             if ch_name.lower().replace(' ', '') in chn:
@@ -90,7 +88,6 @@ class EPG:
         for channel in channels:
 
             # Añade el logo del canal
-            # TODO: Quitar los encode/decode de la EPG
             chn = channel['name'].encode('utf-8').lower().replace('ç', 'c').replace(' ', '') \
                 if isinstance(channel['name'], unicode) \
                 else channel['name'].decode('utf-8').lower().replace(u'ç', u'c').replace(' ', '')
@@ -101,7 +98,7 @@ class EPG:
             if not channel_epg:
                 continue
 
-            # Busca en la EPG del canal los eventos ahora TODO: y después
+            # Busca en la EPG del canal el programa que se está emitiendo
             epg_info = self.__get_program_data(channel_epg['events'])
             if not epg_info:
                 continue

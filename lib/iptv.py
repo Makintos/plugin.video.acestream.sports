@@ -2,7 +2,6 @@
 import re
 
 import tools
-from lib import art
 
 from lib.cache import Cache
 from lib.epg import EPG
@@ -23,7 +22,7 @@ class MovistarTV:
         :return: The list of MovistarTV channel lists
         :rtype: list
         """
-        cache = Cache(self.__settings['path'], minutes=360)
+        cache = Cache(self.__settings['path'], minutes=60)
 
         # Busca las listas de canales en cache
         ch_lists = cache.load(self.__channels_url)
@@ -38,7 +37,7 @@ class MovistarTV:
 
         # Busca todas URL de listas de canales
         # Una por día, la primera es la lista más reciente
-        urls = re.findall(r'<h2\s*class="entry-tit.*le">\s*<a href="(.*)"\s*rel="bookmark">(.*)</a></h2>',page, re.U)
+        urls = re.findall(r'<h2\s*class="entry-tit.*le">\s*<a href="(.*)"\s*rel="bookmark">(.*)</a></h2>', page, re.U)
         if not (urls and type(urls) == list and len(urls) > 0):
             raise WebSiteError(
                 u'Lista de canales no encontrada',
@@ -65,7 +64,7 @@ class MovistarTV:
         return ch_lists
 
     def get_channels(self, url):
-        cache = Cache(self.__settings['path'], minutes=120)
+        cache = Cache(self.__settings['path'], minutes=180)
         epg = EPG(self.__settings)
 
         # Busca los canales en cache

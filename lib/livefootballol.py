@@ -326,7 +326,8 @@ class LiveFootbalLOL:
 
         return channels
 
-    def __get_channel_data(self, cache, url):
+    @staticmethod
+    def __get_channel_data(cache, url):
         """
         Get channel data for an URL
 
