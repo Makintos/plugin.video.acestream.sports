@@ -15,13 +15,13 @@ class EPG:
     __channels_epg = 'http://vertele.eldiario.es/programaciontv/'
 
     __channels = [
-        'La 1', 'La 2', 'Antena 3', 'Cuatro', 'Telecinco', 'Sexta', '24', 'Clan', 'Teledeporte', 'Neox', 'Nova',
+        'Formula', 'La 1', 'La 2', 'Antena 3', 'Cuatro', 'Telecinco', 'Sexta', '24', 'Clan', 'Teledeporte', 'Neox', 'Nova',
         'Atres', 'Mega', 'FDF', 'Energy', 'Be Mad', 'Divinity', 'Boing', 'Gol', 'MAX', '13tv', 'Intereconom',
         'Disney Ch', 'TEN', 'Kiss', 'Real Madrid', 'Paramount', 'Telemadrid', 'Otra', 'TV3', '33', 'sport 3',
         'TB 1', 'TB 2', 'TB 3', 'TB 4', 'TVG', 'Canal Sur', 'Andaluc', 'Mancha', 'Arag', 'TPA', 'Extremadura',
         'Estrenos', 'Series', '#0', 'tbol', 'beIN LaLiga', 'beIN Sport', 'AXN', 'Life', 'FOX', 'TNT', 'Nickelodeon',
         'Calle 13', 'Sy', 'Historia', 'Geographic', 'Odis', 'Discovery', 'COSMO', 'Decasa', 'Cocina', 'Viajar',
-        'Hollywood', 'Comedy', 'Non Stop', 'Eurosport', 'MTV', 'TCM', 'AMC', 'Formula 1', 'MotoGP', 'Barca', '8'
+        'Hollywood', 'Comedy', 'Non Stop', 'Eurosport', 'MTV', 'TCM', 'AMC', 'MotoGP', 'Barca', '8'
     ]
 
     def __init__(self, settings):
