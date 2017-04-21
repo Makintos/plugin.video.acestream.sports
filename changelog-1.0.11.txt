@@ -1,3 +1,6 @@
+Version 1.0.11
+- Detecta errores HTTP y URL al intentar conectar a una Web
+
 Version 1.0.10
 - Nuevo sistema de búsqueda de enlaces hash de acestream
 - La EPG se actualiza correctamente al leer los datos de la caché

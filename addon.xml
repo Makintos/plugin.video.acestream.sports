@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.10"
+       version="1.0.11"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,7 +28,10 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.10
+        <news>Version 1.0.11
+- Detecta errores HTTP y URL al intentar conectar a una Web
+
+Version 1.0.10
 - Nuevo sistema de búsqueda de enlaces hash de acestream
 - La EPG se actualiza correctamente al leer los datos de la caché
 
