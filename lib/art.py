@@ -232,7 +232,11 @@ def get_channel_icon(channel_name, path):
 
 
 def get_epg_channel_logo(channel_name, path):
-    if 'la1' in channel_name:
+
+    if 'formula' in channel_name:
+        return tools.build_path(path, 'mf1.png')
+
+    elif 'la1' in channel_name:
         return tools.build_path(path, 'la1.png')
 
     elif 'la2' in channel_name:
