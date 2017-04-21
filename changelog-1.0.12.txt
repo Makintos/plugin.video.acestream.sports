@@ -1,3 +1,6 @@
+Version 1.0.12
+- Corregidos iconos de canales
+
 Version 1.0.11
 - Detecta errores HTTP y URL al intentar conectar a una Web
 
