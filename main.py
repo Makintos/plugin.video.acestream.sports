@@ -60,6 +60,11 @@ _web_pages = [
         'name': 'MovistarTV',
         'icon': tools.build_path(__path__, 'movistar.png'),
         'fanart': tools.build_path(__path__, 'movistar_art.jpg')
+    },
+    {
+        'name': 'SportsTV',
+        'icon': tools.build_path(__path__, 'bein.png'),
+        'fanart': tools.build_path(__path__, 'bein_art.jpg')
     }
 ]
 
@@ -153,6 +158,9 @@ def controller(paramstring):
 
             elif params['page'] == 'MovistarTV':
                 kodi.show_menu(MovistarTV(settings).get_menu(), source=params['page'])
+
+            elif params['page'] == 'SportsTV':
+                kodi.show_menu(MovistarTV(settings, sports=True).get_menu(), source=params['page'])
 
         # Opciones de Arenavision
         elif params['source'] == 'Arenavision':
@@ -318,6 +326,15 @@ def controller(paramstring):
                 # Menú de MovistarTV
                 if 'event' in params:
                     kodi.show_channels(movistartv.get_channels(params['event']))
+
+        # Opciones de MovistarTV
+        elif params['source'] == 'SportsTV':
+            sportstv = MovistarTV(settings, sports=True)
+            if params['action'] == 'show':
+
+                # Menú de MovistarTV
+                if 'event' in params:
+                    kodi.show_channels(sportstv.get_channels(params['event']))
 
         elif params['action'] == 'play':
             if 'url' in params:

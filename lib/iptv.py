@@ -11,9 +11,12 @@ from lib.errors import WebSiteError
 class MovistarTV:
 
     __channels_url = 'http://iptv.filmover.com/category/spain/'
+    __sports_url = 'http://iptv.filmover.com/category/sports/'
 
-    def __init__(self, settings):
+    def __init__(self, settings, sports=False):
         self.__settings = settings
+        if sports:
+            self.__channels_url = self.__sports_url
 
     def get_menu(self):
         """
