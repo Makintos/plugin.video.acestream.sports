@@ -32,7 +32,7 @@ _handle = int(sys.argv[1])
 
 # Server addon.xml
 _server_addon_xml_url = \
-    'https://raw.githubusercontent.com/Makintos/repository.makintos/master/plugin.video.acestream.sports/addon.xml'
+    'https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/VERSION'
 
 
 _web_pages = [
@@ -97,7 +97,7 @@ def check_for_updates(notify, notify_secs):
     except WebSiteError as ex:
         tools.write_log('%s: %s' % (ex.title, ex.message))
         return
-    server_v = re.findall(r'version="([0-9]{1,5}\.[0-9]{1,5}\.[0-9]{1,5})"', xml, re.U)
+    server_v = re.findall(r'([0-9]{1,5}\.[0-9]{1,5}\.[0-9]{1,5})', xml, re.U)
     if server_v and type(server_v) == list and len(server_v) > 0:
         cache.save(_server_addon_xml_url, {'version': server_v[0]})
         sv = server_v[0].split('.')

@@ -121,15 +121,15 @@ def get_web_page(url):
                 u'La web se ha caído, inténtalo en otra',
                 time=5000
             )
-    except urllib2.URLError:
-        write_log('URL error on GET %s' % url, xbmc.LOGERROR)
+    except urllib2.URLError, e:
+        write_log('URL error on GET %s: %s' % (url, e), xbmc.LOGERROR)
         raise WebSiteError(
             u'Error de conexión',
             u'No hay conexión a Internet o la Web ya no existe...',
             time=5000
         )
-    except ValueError:
-        write_log('Value error on GET %s' % url, xbmc.LOGERROR)
+    except ValueError, e:
+        write_log('Value error on GET %s: %s' % (url, e), xbmc.LOGERROR)
         raise WebSiteError(
             u'URL mal formada',
             u'Han hecho cambios en la Web, inténtalo en otra...',

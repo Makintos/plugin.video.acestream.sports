@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.13"
+       version="1.0.14"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,7 +28,10 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.13
+        <news>Version 1.0.14
+- Nuevo archivo VERSION para comprobar actualizaciones
+
+Version 1.0.13
 - Modificado el scrapper IPTV para incluir listas de deportes
 
 Version 1.0.12
