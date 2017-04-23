@@ -28,65 +28,8 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.14
-- Nuevo archivo VERSION para comprobar actualizaciones
-
-Version 1.0.13
-- Modificado el scrapper IPTV para incluir listas de deportes
-
-Version 1.0.12
-- Corregidos iconos de canales
-
-Version 1.0.11
-- Detecta errores HTTP y URL al intentar conectar a una Web
-
-Version 1.0.10
-- Nuevo sistema de búsqueda de enlaces hash de acestream
-- La EPG se actualiza correctamente al leer los datos de la caché
-
-Version 1.0.9
-- Si la agenda de Arenavision no incluye la hora de un evento la establece las 00:00h
-- Nuevo scrapper para la guía EPG
-- Detecta correctamente las peticiones HTTP que generan errores 404 (página no encontrada)
-
-Version 1.0.8
-- Nuevo scrapper para LiveFootballVideo.com
-- Nuevo scrapper para IPTV
-- El scrapper de LiveFootbalLOL.me detecta si se han publicado enlaces
-- Los hashlink de Arenavision sólo se obtienen si se intenta reproducir un canal
-- Añadido fanart al menú de las webs
-- Nueva base para traducciones
-
-Version 1.0.7
-- Nuevos iconos de canales
-- Ahora se muestran notificaciones en vez de listas vacías
-
-Version 1.0.6
-- Nuevo scrapper para LiveFootbalLOL.me
-- Añadidias nuevas competiciones
-- Varios arreglos
-
-Version 1.0.5
-- Nuevo scrapper para Torrent-TV.ru
-- El scrapper de Arenavision ahora busca siguiendo patrones las URL de la agenda y los canales
-- Ahora se comprueba la versión del servidor y, si es superior, fuerza la actualización del addon
-- Añadidas las opciones del addon:
-    * Copiar el nombre del partido, evento o canal en la descripción
-    * Mostrar canales para adultos
-    * Ver notificaciones al actualizar
-    * Duración en segundos de las notificaciones
-
-Version 1.0.4
-- Varias correcciones en addon.xml
-
-Version 1.0.3
-- Añadido al repositorio
-- Ahora se autoactualiza
-
-Version 1.0.2
-- Arreglados varios problemas con la codificación de caracteres
-
-Version 1.0.1
-- Versión inicial</news>
+        <news>Version 1.0.15
+- La etiqueta news de addon.xml sólo incluye los cambios de la versión actual
+- La comprobación de actualizaciones vuelve a hacerse a través de addon.xml</news>
     </extension>
 </addon>

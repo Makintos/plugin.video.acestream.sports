@@ -1,3 +1,7 @@
+Version 1.0.15
+- La etiqueta news de addon.xml sólo incluye los cambios de la versión actual
+- La comprobación de actualizaciones vuelve a hacerse a través de addon.xml
+
 Version 1.0.14
 - Nuevo archivo VERSION para comprobar actualizaciones
 
