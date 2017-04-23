@@ -32,7 +32,7 @@ _handle = int(sys.argv[1])
 
 # Server addon.xml
 _server_addon_xml_url = \
-    'https://raw.githubusercontent.com/Makintos/plugin.video.acestream.sports/master/VERSION'
+    'https://raw.githubusercontent.com/Makintos/repository.makintos/master/VERSION'
 
 
 _web_pages = [
