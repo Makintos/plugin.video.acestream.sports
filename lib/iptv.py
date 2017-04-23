@@ -15,8 +15,7 @@ class MovistarTV:
 
     def __init__(self, settings, sports=False):
         self.__settings = settings
-        if sports:
-            self.__channels_url = self.__sports_url
+        self.__sports = sports
 
     def get_menu(self):
         """
@@ -28,7 +27,7 @@ class MovistarTV:
         cache = Cache(self.__settings['path'], minutes=60)
 
         # Busca las listas de canales en cache
-        ch_lists = cache.load(self.__channels_url)
+        ch_lists = cache.load(self.__sports_url if self.__sports else self.__channels_url)
         if ch_lists:
             return ch_lists
 
@@ -36,7 +35,7 @@ class MovistarTV:
         ch_lists = []
 
         # GET http://iptv.filmover.com/category/spain/
-        page = tools.get_web_page(self.__channels_url)
+        page = tools.get_web_page(self.__sports_url if self.__sports else self.__channels_url)
 
         # Busca todas URL de listas de canales
         # Una por día, la primera es la lista más reciente
@@ -52,8 +51,9 @@ class MovistarTV:
             ch_lists.append({
                 'name': tools.str_sanitize(url[1]),
                 'channel_url': tools.str_sanitize(url[0]),
-                'icon': tools.build_path(self.__settings['path'], 'movistar.png'),
-                'fanart': tools.build_path(self.__settings['path'], 'movistar_art.jpg')
+                'icon': tools.build_path(self.__settings['path'], 'bein.png' if self.__sports else 'movistar.png'),
+                'fanart': tools.build_path(self.__settings['path'], 'bein_art.jpg' if self.__sports else
+                                           'movistar_art.jpg')
             })
 
         if len(ch_lists) == 0:
@@ -63,7 +63,7 @@ class MovistarTV:
                 time=self.__settings['notify_secs']
             )
 
-        cache.save(self.__channels_url, ch_lists)
+        cache.save(self.__sports_url if self.__sports else self.__channels_url, ch_lists)
         return ch_lists
 
     def get_channels(self, url):
@@ -100,8 +100,9 @@ class MovistarTV:
                 channels.append({
                     'name': ch_name,
                     'video': ch_link,
-                    'icon': tools.build_path(self.__settings['path'], 'movistar.png'),
-                    'fanart': tools.build_path(self.__settings['path'], 'movistar_art.jpg')
+                    'icon': tools.build_path(self.__settings['path'], 'bein.png' if self.__sports else 'movistar.png'),
+                    'fanart': tools.build_path(self.__settings['path'], 'bein_art.jpg' if self.__sports else
+                                               'movistar_art.jpg')
                 })
 
         if len(channels) == 0:
@@ -112,7 +113,8 @@ class MovistarTV:
             )
 
         # Añade la EPG a los canales
-        epg.add_metadata(channels)
+        if not self.__sports:
+            epg.add_metadata(channels)
 
         # Guarda los canales en caché y los devuelve
         cache.save(url, channels)

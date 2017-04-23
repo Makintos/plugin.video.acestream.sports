@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.15"
+       version="1.0.16"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,8 +28,7 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.15
-- La etiqueta news de addon.xml sólo incluye los cambios de la versión actual
-- La comprobación de actualizaciones vuelve a hacerse a través de addon.xml</news>
+        <news>Version 1.0.16
+- Arreglados icono y fanart de SportsTV</news>
     </extension>
 </addon>
