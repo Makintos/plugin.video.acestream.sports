@@ -100,16 +100,16 @@ def get_web_page(url, cookie=None, agent=None):
     try:
         req = urllib2.Request(url)
         user_agent = agent if agent else random_agent()
-        req.add_header('Host', url.split('/')[2])
-        req.add_header('Connection', 'keep-alive')
-        req.add_header('Cache-Control', 'max-age=0')
-        req.add_header('Upgrade-Insecure-Requests', 1)
         req.add_header('User-Agent', user_agent)
-        req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8')
-        req.add_header('DNT', 1)
-        req.add_header('Referer', url)
-        req.add_header('Accept-Language', 'es-ES,es;q=0.8')
         if cookie:
+            req.add_header('Host', url.split('/')[2])
+            req.add_header('Connection', 'keep-alive')
+            req.add_header('Cache-Control', 'max-age=0')
+            req.add_header('Upgrade-Insecure-Requests', 1)
+            req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8')
+            req.add_header('DNT', 1)
+            req.add_header('Referer', url)
+            req.add_header('Accept-Language', 'es-ES,es;q=0.8')
             req.add_header('Cookie', cookie)
         response = urllib2.urlopen(req)
         headers = response.headers.dict
@@ -121,11 +121,7 @@ def get_web_page(url, cookie=None, agent=None):
                 cfduid = re.findall(r'__cfduid=[\w\d]+', headers['set-cookie'], re.U)
                 cookie = re.findall(r'document.cookie=[\'"]?([^;,\'" ]+)', content, re.U)
                 if not cfduid or not cookie:
-                    raise WebSiteError(
-                        u'Error de CloudFlare',
-                        u'Han hecho cambios en la Web. Inténtalo en otra...',
-                        time=5000
-                    )
+                    return content
                 return get_web_page(url, '%s; %s' % (cfduid[0], cookie[0]), user_agent)
             else:
                 write_log('GET %i %s' % (response.getcode(), url))
