@@ -136,12 +136,11 @@ def get_web_page(url, cookie=None, agent=None):
                 u'Seguramente estén actualizando la agenda. Inténtalo más tarde...',
                 time=5000
             )
-        else:
-            raise WebSiteError(
-                u'Error de conexión',
-                u'La web se ha caído, inténtalo en otra',
-                time=5000
-            )
+        raise WebSiteError(
+            u'Error de conexión',
+            u'La web se ha caído, inténtalo en otra',
+            time=5000
+        )
     except urllib2.URLError, e:
         write_log('URL error on GET %s: %s' % (url, e), xbmc.LOGERROR)
         raise WebSiteError(
