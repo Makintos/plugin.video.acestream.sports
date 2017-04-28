@@ -27,6 +27,7 @@ __es = {
     'BOXING': 'Boxeo',
     # Competiciones
     'UEFA CHAMPIONS LEAGUE': 'UEFA Champions League',
+    'UEFA WOMEN CHAMPIONS LEAGUE': 'UEFA Champions League Fenemina',
     'UEFA EUROPA LEAGUE': 'UEFA Europa League',
     'UEFA YOUTH LEAGUE': 'UEFA Youth League',
     'URUGUAY LEAGUE': 'Liga Uruguaya',
@@ -63,6 +64,8 @@ __es = {
     'FA CUP': 'Copa Inglesa',
     'ENGLISH FA CUP': 'Copa Inglesa',
     'BELGIAN LEAGUE': 'Liga Belga',
+    'KNVB BEKER': 'Copa Holandesa',
+    'SUPER LIG': 'Liga Turka',
     'AFC CUP': 'Copa AFC',
     'AFC CHAMPIONS LEAGUE': 'AFC Champions League',
     'ITALIAN SERIE A': 'Liga Italiana',
