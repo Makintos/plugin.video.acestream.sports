@@ -38,8 +38,8 @@ def str_sanitize(text):
     ).strip())
 
 
-def str_unescape(str):
-    return str.replace('&quot;', '"')\
+def str_unescape(strn):
+    return strn.replace('&quot;', '"')\
         .replace('&gt;', '>').replace('&lt;', '<').replace('&amp;', '&').replace('\/', '/').replace('&#039;', "'")
 
 
