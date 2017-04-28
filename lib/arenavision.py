@@ -117,7 +117,8 @@ class Arenavision:
             if events:
                 for event in events:
                     event['name'] = self.__get_event_name(
-                        event['event'], event['date'], event['time'], event['competition'])
+                        event['event'], event['date'], event['time'], event['competition']
+                    )
                 return events
 
         # La URI de la agenda y los enlaces no están en cache
