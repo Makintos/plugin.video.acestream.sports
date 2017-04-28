@@ -54,7 +54,7 @@ __es = {
     'USA NBA': 'NBA',
     'USA NBA PLAYOFF': 'Playoffs de la NBA',
     'USA NBA PLAYOFFS': 'Playoffs de la NBA',
-    'WBO WORLD TITLE': 'Título Mundial WBO',
+    'WBO WORLD TITLE': 'Titulo Mundial WBO',
     'ATP WORLD TOUR': 'ATP World Tour',
     'ATPWORLD TOUR': 'ATP World Tour',
     'SPANISH PRIMERA DIVISION': 'La Liga',
