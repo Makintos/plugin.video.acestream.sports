@@ -118,8 +118,6 @@ class Kodi:
         :type source: str
         :param show_plot: Show name as description
         :type show_plot: bool
-        :param is_playable: IsPlayable property
-        :type is_playable: bool
         """
         # Iterate through events.
         for event in events:
