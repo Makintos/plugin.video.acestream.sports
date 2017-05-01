@@ -208,7 +208,7 @@ class Arenavision:
             ch_lang = re.findall(r'\[[\w]+\]', ch_data, re.U)
             for ch_number in ch_numbers:
                 chs.append({
-                    'name': 'AV%s %s' % (ch_number, ch_lang[0] if ch_lang else '[--]'),
+                    'name': 'AV%s %s' % (ch_number, ch_lang[0] if ch_lang else '[---]'),
                     'icon': tools.build_path(self.__settings['path'], 'arenavision.jpg'),
                     'fanart': tools.build_path(self.__settings['path'], 'arenavision_art.jpg'),
                     'link': urls[int(ch_number) - 1]
