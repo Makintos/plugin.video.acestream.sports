@@ -334,7 +334,7 @@ class Arenavision:
 
     def get_channels(self, name, date, time):
         """
-        Get Arenavision channels by a given event name
+        Get Arenavision event channels by a given event name, date and time
 
         :param name: The event name
         :type: name: str
