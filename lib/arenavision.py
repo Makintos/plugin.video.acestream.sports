@@ -204,15 +204,19 @@ class Arenavision:
             return None
 
         for x in range(0, len(ch_temp) / 2):
-            numbers = ch_temp[x * 2].split('-')
-            lang_code = ch_temp[x * 2 + 1]
-            for number in numbers:
-                ch_list.append({
-                    'name': 'AV%s %s' % (number, lang_code),
-                    'icon': tools.build_path(self.__settings['path'], 'arenavision.jpg'),
-                    'fanart': tools.build_path(self.__settings['path'], 'arenavision_art.jpg'),
-                    'link': urls[int(number) - 1]
-                })
+            try:
+                numbers = ch_temp[x * 2].split('-')
+                lang_code = ch_temp[x * 2 + 1]
+                for number in numbers:
+                    ch_list.append({
+                        'name': 'AV%s %s' % (number, lang_code),
+                        'icon': tools.build_path(self.__settings['path'], 'arenavision.jpg'),
+                        'fanart': tools.build_path(self.__settings['path'], 'arenavision_art.jpg'),
+                        'link': urls[int(number) - 1]
+                    })
+            except ValueError:
+                tools.write_log('Enlaces mal formados: ' + str(ch_temp), xbmc.LOGERROR)
+                continue
 
         return ch_list
 
