@@ -196,29 +196,25 @@ class Arenavision:
         :return: The list of Arenavision events
         :rtype: list
         """
-        ch_list = []
-        ch_temp = channels.split(' ')
-
-        if len(ch_temp) < 2:
-            tools.write_log('No se pueden extraer los enlaces: ' + str(ch_temp), xbmc.LOGERROR)
+        ch_list = re.findall(r'[\d-]+\s*\[[\w]+\]', channels, re.U)
+        if not ch_list:
+            tools.write_log('No se pueden extraer los enlaces: %s' % ch_list, xbmc.LOGERROR)
             return None
 
-        for x in range(0, len(ch_temp) / 2):
-            try:
-                numbers = ch_temp[x * 2].split('-')
-                lang_code = ch_temp[x * 2 + 1]
-                for number in numbers:
-                    ch_list.append({
-                        'name': 'AV%s %s' % (number, lang_code),
-                        'icon': tools.build_path(self.__settings['path'], 'arenavision.jpg'),
-                        'fanart': tools.build_path(self.__settings['path'], 'arenavision_art.jpg'),
-                        'link': urls[int(number) - 1]
-                    })
-            except ValueError:
-                tools.write_log('Enlaces mal formados: ' + str(ch_temp), xbmc.LOGERROR)
-                continue
+        chs = []
 
-        return ch_list
+        for ch_data in ch_list:
+            ch_numbers = re.findall(r'[\d]+', ch_data, re.U)
+            ch_lang = re.findall(r'\[[\w]+\]', ch_data, re.U)
+            for ch_number in ch_numbers:
+                chs.append({
+                    'name': 'AV%s %s' % (ch_number, ch_lang[0] if ch_lang else '[--]'),
+                    'icon': tools.build_path(self.__settings['path'], 'arenavision.jpg'),
+                    'fanart': tools.build_path(self.__settings['path'], 'arenavision_art.jpg'),
+                    'link': urls[int(ch_number) - 1]
+                })
+
+        return chs
 
     def get_events_today_and_tomorrow(self):
         """

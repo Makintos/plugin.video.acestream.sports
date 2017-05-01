@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.18"
+       version="1.0.19"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,7 +28,7 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.18
-- Si los datos de los canales de Arenavision no tienen el formato correcto los ignora en vez de saltar un error</news>
+        <news>Version 1.0.19
+- Nuevo método para obtener los canales de los partidos de Arenavision basado en expresiones regulares</news>
     </extension>
 </addon>
