@@ -29,7 +29,7 @@ __es = {
     'UEFA CHAMPIONS LEAGUE': 'UEFA Champions League',
     'UEFA WOMEN CHAMPIONS LEAGUE': 'UEFA Champions League Fenemina',
     'UEFA EUROPA LEAGUE': 'UEFA Europa League',
-    'UEFA EURO U-17': 'UEFA Eurocopa Sub-17',
+    'UEFA EURO U-17': 'UEFA Euro Sub-17',
     'UEFA YOUTH LEAGUE': 'UEFA Youth League',
     'URUGUAY LEAGUE': 'Liga Uruguaya',
     'URUGUAY PRIMERA': 'Liga Uruguaya',
