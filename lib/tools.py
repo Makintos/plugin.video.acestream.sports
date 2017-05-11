@@ -12,6 +12,7 @@ import json
 import re
 
 from lib.cache import Cache
+from lib.cloudflare import Cloudflare
 from lib.errors import WebSiteError
 
 
@@ -96,12 +97,12 @@ def random_agent():
     )
 
 
-def get_web_page(url, cookie=None, agent=None):
+def get_web_page(url, cfduid=None, cookie=None, agent=None):
     try:
         req = urllib2.Request(url)
         user_agent = agent if agent else random_agent()
         req.add_header('User-Agent', user_agent)
-        if cookie:
+        if cookie or cfduid:
             req.add_header('Host', url.split('/')[2])
             req.add_header('Connection', 'keep-alive')
             req.add_header('Cache-Control', 'max-age=0')
@@ -110,7 +111,7 @@ def get_web_page(url, cookie=None, agent=None):
             req.add_header('DNT', 1)
             req.add_header('Referer', url)
             req.add_header('Accept-Language', 'es-ES,es;q=0.8')
-            req.add_header('Cookie', cookie)
+            req.add_header('Cookie', cookie if cookie else cfduid)
         response = urllib2.urlopen(req)
         headers = response.headers.dict
         content = response.read().decode(response.headers.getparam('charset') or 'utf-8')
@@ -118,29 +119,38 @@ def get_web_page(url, cookie=None, agent=None):
         if response.getcode() == 200:
             if not cookie and 'server' in headers and 'cloudflare' in headers['server']:
                 write_log('GET %i CloudFlare %s' % (response.getcode(), url))
-                cfduid = re.findall(r'__cfduid=[\w\d]+', headers['set-cookie'], re.U)
+                cfduid = [cfduid] if cfduid else re.findall(r'__cfduid=[\w\d]+', headers['set-cookie'], re.U)
                 cookie = re.findall(r'document.cookie=[\'"]?([^;,\'" ]+)', content, re.U)
                 if not cfduid or not cookie:
                     return content
-                return get_web_page(url, '%s; %s' % (cfduid[0], cookie[0]), user_agent)
+                return get_web_page(url, cfduid[0], '%s; %s' % (cfduid[0], cookie[0]), user_agent)
             else:
                 write_log('GET %i %s' % (response.getcode(), url))
                 return content
         else:
             raise urllib2.HTTPError
     except urllib2.HTTPError, e:
-        write_log('HTTPError %i on GET %s' % (e.code, url), xbmc.LOGERROR)
         if e.code == 404:
+            write_log('HTTPError 404 on GET %s' % url, xbmc.LOGERROR)
             raise WebSiteError(
                 u'La página no existe',
                 u'Seguramente estén actualizando la agenda. Inténtalo más tarde...',
                 time=5000
             )
-        raise WebSiteError(
-            u'Error de conexión',
-            u'La web se ha caído, inténtalo en otra',
-            time=5000
-        )
+        cf = Cloudflare({
+            'url': url,
+            'data': e.read().decode(e.headers.getparam('charset') or 'utf-8'),
+            'headers': e.headers.dict
+        })
+        if cf.is_cloudflare:
+            return get_web_page(cf.get_auth_url(), cf.get_cfduid())
+        else:
+            write_log('HTTPError %i on GET %s' % (e.code, url), xbmc.LOGERROR)
+            raise WebSiteError(
+                u'Error de conexión',
+                u'La web se ha caído, inténtalo en otra',
+                time=5000
+            )
     except urllib2.URLError, e:
         write_log('URL error on GET %s: %s' % (url, e), xbmc.LOGERROR)
         raise WebSiteError(
