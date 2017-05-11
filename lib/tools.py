@@ -119,7 +119,7 @@ def get_web_page(url, cfduid=None, cookie=None, agent=None):
         if response.getcode() == 200:
             if not cookie and 'server' in headers and 'cloudflare' in headers['server']:
                 write_log('GET %i CloudFlare %s' % (response.getcode(), url))
-                cfduid = [cfduid] if cfduid else re.findall(r'__cfduid=[\w\d]+', headers['set-cookie'], re.U)
+                cfduid = re.findall(r'__cfduid=[\w\d]+', headers['set-cookie'], re.U)
                 cookie = re.findall(r'document.cookie=[\'"]?([^;,\'" ]+)', content, re.U)
                 if not cfduid or not cookie:
                     return content
