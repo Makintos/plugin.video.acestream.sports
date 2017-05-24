@@ -1,3 +1,7 @@
+Version 1.0.20
+- Añadido soporte para protección DDoS de CloudFlare (preliminar)
+- Arreglado ArenaVision tras el bloqueo
+
 Version 1.0.19
 - Nuevo método para obtener los canales de los partidos de Arenavision basado en expresiones regulares
 

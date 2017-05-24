@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.19"
+       version="1.0.20"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,7 +28,8 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.19
-- Nuevo método para obtener los canales de los partidos de Arenavision basado en expresiones regulares</news>
+        <news>Version 1.0.20
+- Añadido soporte para protección DDoS de CloudFlare (preliminar)
+- Arreglado ArenaVision tras el bloqueo</news>
     </extension>
 </addon>

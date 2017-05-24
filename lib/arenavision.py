@@ -14,7 +14,7 @@ from lib.errors import WebSiteError
 
 class Arenavision:
 
-    __web_url = 'http://arenavision.in/'
+    __web_url = 'https://arenavision.in/'
 
     def __init__(self, settings):
         self.__settings = settings
