@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.20"
+       version="1.0.21"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,8 +28,7 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.20
-- Añadido soporte para protección DDoS de CloudFlare (preliminar)
-- Arreglado ArenaVision tras el bloqueo</news>
+        <news>Version 1.0.21
+- Arreglado ArenaVision tras el cambio de URI de la guía</news>
     </extension>
 </addon>
