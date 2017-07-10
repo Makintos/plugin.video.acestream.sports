@@ -1,3 +1,6 @@
+Version 1.0.22
+- Cambio de dominio de ArenaVision
+
 Version 1.0.21
 - Arreglado ArenaVision tras el cambio de URI de la guía
 
