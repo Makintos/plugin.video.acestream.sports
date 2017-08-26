@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import datetime
 import re
-import tools
+from bs4 import BeautifulSoup
 
 import xbmc
 
-from bs4 import BeautifulSoup
-
+import tools
 from lib import lang, art
+from lib.arenavision import Arenavision
 from lib.cache import Cache
 from lib.errors import WebSiteError
 
@@ -293,6 +293,9 @@ class LiveFootballVideo:
             ch_lang = tools.str_sanitize(cells[2].get_text())
             ch_rate = tools.str_sanitize(cells[3].get_text())
             ch_link = tools.str_sanitize(cells[4].find('a').get('href'))
+
+            if ch_link.startswith('http://arenavision.'):
+                ch_link = '%s%s' % (Arenavision.web_url, re.findall(r'http://.*/([0-3][0-9]).*', ch_link, re.U)[0])
 
             # Si no es un enlace acestream continua
             if not tools.str_sanitize(ch_type).lower() == 'acestream' and 'acestream' not in ch_link:

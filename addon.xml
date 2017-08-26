@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.22"
+       version="1.0.23"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,7 +28,7 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.22
-- Cambio de dominio de ArenaVision</news>
+        <news>Version 1.0.23
+- Arreglado ArenaVision tras el nuevo bloqueo, LiveFootballVideo y LiveFootballLOL</news>
     </extension>
 </addon>

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import urlparse
 import re
 import urllib
+import urlparse
 
 import xbmc
 
@@ -31,7 +31,7 @@ class Cloudflare:
             for line in challenge.split(';'):
                 sections = line.split('=')
                 value = self.__decode(sections[1])
-                js_value = int(eval(str(js_value) + sections[0][-1] + str(value)))
+                js_value = int(eval("{0}{1}{2}".format(str(js_value), sections[0][-1], str(value))))
 
             answer = js_value + len(urlparse.urlparse(response['url']).netloc)
 

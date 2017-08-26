@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import datetime
 import re
-import tools
+from bs4 import BeautifulSoup
 
 import xbmc
 
-from bs4 import BeautifulSoup
-
+import tools
 from lib import lang, art
 from lib.cache import Cache
 from lib.errors import WebSiteError
@@ -14,7 +13,7 @@ from lib.errors import WebSiteError
 
 class Arenavision:
 
-    __web_url = 'https://arenavision.ru/'
+    web_url = 'http://arenavision2017.cf/'
 
     def __init__(self, settings):
         self.__settings = settings
@@ -90,12 +89,12 @@ class Arenavision:
         if not (urls and type(urls) == list and len(urls) > 30):
             return None
         for url in urls:
-            if re.search(r'^.*av.*[1-3]?[0-9]\W*$', url, re.U):
+            if re.search(r'^/[0-3][0-9]$', url, re.U):
                 channels.append(url if 'http' in url else '%s%s' % (
-                    self.__web_url[:-1] if url.startswith('/') else self.__web_url, url))
+                    self.web_url[:-1] if url.startswith('/') else self.web_url, url))
             elif 'sc' in url or 'guide' in url:
                 agenda_url = url if 'http' in url else '%s%s' % (
-                    self.__web_url[:-1] if url.startswith('/') else self.__web_url, url)
+                    self.web_url[:-1] if url.startswith('/') else self.web_url, url)
         if agenda_url and len(channels) > 0:
             return {'agenda': agenda_url, 'channels': channels}
         return None
@@ -110,7 +109,7 @@ class Arenavision:
         cache = Cache(self.__settings['path'])
 
         # Busca la URI de la agenda y los enlaces de los canales en caché
-        page = cache.load(self.__web_url, False)
+        page = cache.load(self.web_url, False)
         if page:
             # La URI de la agenda está en caché, busca también los eventos
             events = cache.load(page['agenda'])
@@ -126,7 +125,7 @@ class Arenavision:
         events = []
 
         # GET arenavision.in
-        page = tools.get_web_page(self.__web_url)
+        page = tools.get_web_page(self.web_url)
 
         # Averigua la URI de la agenda y los enlaces de los canales
         # buscando en todas las URL de la página principal:
@@ -141,7 +140,7 @@ class Arenavision:
             )
 
         # Guarda la URI de la agenda y los enlaces de los canales en caché
-        cache.save(self.__web_url, urls)
+        cache.save(self.web_url, urls)
 
         # GET agenda
         agenda = tools.get_web_page(urls['agenda'])

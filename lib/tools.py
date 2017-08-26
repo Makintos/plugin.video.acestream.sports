@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
+import json
 import os
+import platform
 import random
+import re
+import traceback
 import urllib2
 
 import xbmc
-import xbmcgui
 import xbmcaddon
-import platform
-
-import json
-import re
+import xbmcgui
 
 from lib.cache import Cache
 from lib.cloudflare import Cloudflare
@@ -159,7 +159,7 @@ def get_web_page(url, cfduid=None, cookie=None, agent=None):
             time=5000
         )
     except ValueError, e:
-        write_log('Value error on GET %s: %s' % (url, e), xbmc.LOGERROR)
+        write_log('Value error on GET %s: %s -> %s' % (url, e, traceback.format_exc()), xbmc.LOGERROR)
         raise WebSiteError(
             u'URL mal formada',
             u'Han hecho cambios en la Web, inténtalo en otra...',

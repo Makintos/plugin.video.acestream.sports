@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
+
 import datetime
 import re
-import tools
+from bs4 import BeautifulSoup
 
 import xbmc
 
-from bs4 import BeautifulSoup
-
+import tools
 from lib import lang, art
 from lib.cache import Cache
 from lib.errors import WebSiteError
@@ -129,26 +129,34 @@ class LiveFootbalLOL:
 
         # Obtiene la tabla de eventos
         a_events = re.findall(
-            r'([0-9]{1,2}:[0-9]{2}).*\[(.*)\].*<a href=[\'"]?(.*[0-9]{2}-[0-9]{2}-[0-9]{4}-.*)[\'"]>(.*)</a>',
+            r'([0-9]{1,2}:[0-9]{2})\s*<a href=[\'"]?(/streaming/(.*)/[0-9]{2}-[0-9]{2}-[0-9]{4}-.*)[\'"]>(.*)</a>',
+            agenda,
+            re.U)
+
+        # Obtiene las ligas
+        a_leagues = re.findall(
+            r'<b>(.*)</b></li>\s*<li>[0-9]{1,2}:[0-9]{2}\s*'
+            r'<a href=[\'"]?/streaming/(.*)/[0-9]{2}-[0-9]{2}-[0-9]{4}-.*[\'"]>',
             agenda,
             re.U)
 
         for a_event in a_events:
-            competition_art = self.__get_competition_art(a_event[1])
-            c_date = re.findall(r'([0-9]{2}-[0-9]{2}-[0-9]{4})-', tools.str_sanitize(a_event[2]), re.U)
+            league = self.__get_competition_name(a_event[2], a_leagues)
+            competition_art = self.__get_competition_art(league)
+            c_date = re.findall(r'([0-9]{2}-[0-9]{2}-[0-9]{4})-', tools.str_sanitize(a_event[1]), re.U)
             if c_date:
                 events.append(
                     {
                         'date': c_date[0],
                         'time': tools.str_sanitize(a_event[0]),
-                        'competition': tools.str_sanitize(a_event[1]),
+                        'competition': tools.str_sanitize(league),
                         'event': tools.str_sanitize(a_event[3]),
-                        'channel_url': a_event[2],
+                        'channel_url': a_event[1],
                         'name': self.__get_event_name(
                             tools.str_sanitize(a_event[3]),
                             c_date[0],
                             tools.str_sanitize(a_event[0]),
-                            tools.str_sanitize(a_event[1])),
+                            tools.str_sanitize(league)),
                         'icon': competition_art['icon'],
                         'fanart': competition_art['fanart']
                     }
@@ -165,6 +173,13 @@ class LiveFootbalLOL:
         cache.save(urls['agenda'], events)
 
         return events
+
+    @staticmethod
+    def __get_competition_name(event, leagues):
+        for league in leagues:
+            if event == league[1]:
+                return league[0]
+        return 'Futbol'
 
     def get_events_today_and_tomorrow(self):
         """
