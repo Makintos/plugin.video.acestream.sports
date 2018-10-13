@@ -2,9 +2,9 @@
 
 import datetime
 import re
-from bs4 import BeautifulSoup
 
 import xbmc
+from bs4 import BeautifulSoup
 
 import tools
 from lib import lang, art
@@ -165,7 +165,7 @@ class LiveFootbalLOL:
         if len(events) == 0:
             raise WebSiteError(
                 u'Problema en la agenda',
-                u'Está vacía o no hay enlaces, ve a la Web y compruébalo',
+                u'Está vacía o no hay enlaces, puedes comprobarlo en la Web',
                 time=self.__settings['notify_secs']
             )
 

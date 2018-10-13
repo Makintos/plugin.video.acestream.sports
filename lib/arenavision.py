@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import datetime
 import re
-from bs4 import BeautifulSoup
 
 import xbmc
+from bs4 import BeautifulSoup
 
 import tools
 from lib import lang, art
@@ -13,7 +13,7 @@ from lib.errors import WebSiteError
 
 class Arenavision:
 
-    web_url = 'http://arenavision2017.cf/'
+    web_url = 'http://arenavision.us/'
 
     def __init__(self, settings):
         self.__settings = settings
@@ -70,7 +70,6 @@ class Arenavision:
             int(event_time[1])
         )
 
-        # noinspection PyTypeChecker
         if event_dt_start - datetime.timedelta(minutes=5) <= now <= event_dt_start + datetime.timedelta(hours=2):
             color = 'lime'
         elif now >= event_dt_start:
@@ -89,7 +88,7 @@ class Arenavision:
         if not (urls and type(urls) == list and len(urls) > 30):
             return None
         for url in urls:
-            if re.search(r'^/[0-3][0-9]$', url, re.U):
+            if re.search(r'link/[0-9]{2}\?', url, re.U):
                 channels.append(url if 'http' in url else '%s%s' % (
                     self.web_url[:-1] if url.startswith('/') else self.web_url, url))
             elif 'sc' in url or 'guide' in url:
@@ -151,6 +150,8 @@ class Arenavision:
 
         for row in table.findAll("tr")[1:-2]:
             cells = row.findAll("td")
+            if len(cells) < 5:
+                continue
             links = self.__get_links(tools.str_sanitize(cells[5].get_text()), urls['channels'])
             if links and len(links) > 0:
                 time_e = re.findall(r'([0-2][0-9]:[0-5][0-9])', cells[1].get_text(), re.U)
@@ -177,7 +178,7 @@ class Arenavision:
         if len(events) == 0:
             raise WebSiteError(
                 u'Problema en la agenda',
-                u'No hay eventos, ve a la Web y compruébalo',
+                u'No hay eventos, puedes comprobarlo en la Web',
                 time=self.__settings['notify_secs']
             )
 

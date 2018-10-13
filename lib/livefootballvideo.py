@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import datetime
 import re
-from bs4 import BeautifulSoup
 
 import xbmc
+from bs4 import BeautifulSoup
 
 import tools
 from lib import lang, art
@@ -126,7 +126,7 @@ class LiveFootballVideo:
         if len(web_events) == 0:
             raise WebSiteError(
                 u'Problema en la agenda',
-                u'No hay eventos, ve a la Web y compruébalo',
+                u'No hay eventos, puedes comprobarlo en la Web',
                 time=self.__settings['notify_secs']
             )
 
@@ -163,7 +163,7 @@ class LiveFootballVideo:
         if len(events) == 0:
             raise WebSiteError(
                 u'Problema en la agenda',
-                u'Está vacía o no hay enlaces, ve a la Web y compruébalo',
+                u'Está vacía o no hay enlaces, puedes comprobarlo en la Web',
                 time=self.__settings['notify_secs']
             )
 

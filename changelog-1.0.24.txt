@@ -1,3 +1,6 @@
+Version 1.0.24
+- Arreglado ArenaVision y cambios menores
+
 Version 1.0.23
 - Arreglado ArenaVision tras el nuevo bloqueo, LiveFootballVideo y LiveFootballLOL
 

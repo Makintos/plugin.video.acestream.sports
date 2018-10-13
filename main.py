@@ -1,22 +1,20 @@
 # -*- coding: utf-8 -*-
 import re
 import sys
+from urlparse import parse_qsl
 
 import xbmc
 import xbmcaddon
 
-from urlparse import parse_qsl
-
 from lib import tools
+from lib.arenavision import Arenavision
 from lib.cache import Cache
 from lib.errors import WebSiteError
 from lib.iptv import MovistarTV
 from lib.kodi import Kodi
-from lib.arenavision import Arenavision
 from lib.livefootballol import LiveFootbalLOL
 from lib.livefootballvideo import LiveFootballVideo
 from lib.torrenttv import TorrentTV
-
 
 __addon__ = xbmcaddon.Addon()
 __version__ = __addon__.getAddonInfo('version')
@@ -130,7 +128,7 @@ def controller(paramstring):
     # Busca actualizaciones
     check_for_updates(settings['notify'], settings['notify_secs'])
 
-    # Kodi: funciones para mostar las listas y los vídeos
+    # Kodi: funciones para mostrar las listas y los vídeos
     kodi = Kodi(settings)
 
     # Convierte la cadena de parámetros URL a un diccionario {<parameter>: <value>}
@@ -167,7 +165,7 @@ def controller(paramstring):
             arenavision = Arenavision(settings)
             if params['action'] == 'show':
 
-                # Menú de Arenavisión
+                # Menú de Arenavision
                 if 'item' in params:
 
                     if params['item'] == 'Hoy y mañana':
@@ -332,7 +330,7 @@ def controller(paramstring):
             sportstv = MovistarTV(settings, sports=True)
             if params['action'] == 'show':
 
-                # Menú de MovistarTV
+                # Menú de SportsTV
                 if 'event' in params:
                     kodi.show_channels(sportstv.get_channels(params['event']))
 
