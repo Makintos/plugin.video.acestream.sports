@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.24"
+       version="1.0.25"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -28,7 +28,7 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.24
-- Arreglado ArenaVision y cambios menores</news>
+        <news>Version 1.0.25
+- Arreglado TorrentTV</news>
     </extension>
 </addon>

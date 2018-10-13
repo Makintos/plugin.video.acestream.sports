@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
-import tools
 
+import tools
 from lib import art, lang
 from lib.cache import Cache
 from lib.errors import WebSiteError
@@ -9,7 +9,7 @@ from lib.errors import WebSiteError
 
 class TorrentTV:
 
-    __agenda_url = 'http://super-pomoyka.us.to/trash/ttv-list/ttv.json'
+    __agenda_url = 'http://91.92.66.82/trash/ttv-list/ttv.json'
 
     def __init__(self, settings):
         self.__settings = settings
