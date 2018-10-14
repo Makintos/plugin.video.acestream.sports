@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.25"
+       version="1.0.26"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -18,7 +18,7 @@
         <description lang="es">Todo el deporte en el salón de tu casa. Descarga las agendas de Arenavision.in y otras páginas web y reproduce los enlaces en Kodi.
         </description>
         <disclaimer lang="en">Use at your own risk</disclaimer>
-        <disclaimer lang="es">2017</disclaimer>
+        <disclaimer lang="es">2018</disclaimer>
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.jpg</fanart>
@@ -28,7 +28,8 @@
             <screenshot>resources/screenshots/screenshot-04.jpg</screenshot>
             <screenshot>resources/screenshots/screenshot-05.jpg</screenshot>
         </assets>
-        <news>Version 1.0.25
-- Arreglado TorrentTV</news>
+        <news>- Arreglado ArenaVision
+- Arreglado TorrentTV
+- Nuevos logos de competiciones</news>
     </extension>
 </addon>
