@@ -74,7 +74,7 @@ __competition = {
     'SPANISH LEAGUE 2': 'liga_es_2.png',
     'SPANISH PRIMERA DIVISION': 'liga_es_1.png',
     'SPANISH SEGUNDA DIVISION': 'liga_es_2.png',
-    'SPANISH CUP': 'liga_es.png',
+    'SPANISH CUP': 'copa_es.png',
     'BUNDESLIGA': 'liga_de_1.png',
     'GERMAN BUNDESLIGA': 'liga_de_1.png',
     'ITALIA CUP': 'copa_italia.png',

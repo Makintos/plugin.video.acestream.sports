@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.27"
+       version="1.0.28"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -31,6 +31,7 @@
         <news>- Arreglado ArenaVision
 - Arreglado TorrentTV
 - Nuevos logos de competiciones
-- Nuevas traducciones</news>
+- Nuevas traducciones
+- Corregido el logo de la Copa del Rey</news>
     </extension>
 </addon>

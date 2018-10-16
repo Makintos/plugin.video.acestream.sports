@@ -1,3 +1,6 @@
+Version 1.0.28
+- Corregido el logo de la Copa del Rey
+
 Version 1.0.27
 - Nuevas traducciones
 
