@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.26"
+       version="1.0.27"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
@@ -30,6 +30,7 @@
         </assets>
         <news>- Arreglado ArenaVision
 - Arreglado TorrentTV
-- Nuevos logos de competiciones</news>
+- Nuevos logos de competiciones
+- Nuevas traducciones</news>
     </extension>
 </addon>
