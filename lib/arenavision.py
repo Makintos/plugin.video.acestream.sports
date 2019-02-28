@@ -88,7 +88,7 @@ class Arenavision:
         if not (urls and type(urls) == list and len(urls) > 30):
             return None
         for url in urls:
-            if re.search(r'link/[0-9]{2}\?', url, re.U):
+            if re.search(r'/[0-9]{2}\?', url, re.U):
                 channels.append(url if 'http' in url else '%s%s' % (
                     self.web_url[:-1] if url.startswith('/') else self.web_url, url))
             elif 'sc' in url or 'guide' in url:

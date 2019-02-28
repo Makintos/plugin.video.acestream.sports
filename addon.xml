@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.acestream.sports"
-       version="1.0.28"
+       version="1.0.29"
        name="Acestream Sports"
        provider-name="Iván Makintos">
     <requires>
